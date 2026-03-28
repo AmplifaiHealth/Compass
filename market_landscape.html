@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athlete Performance Software — Market Landscape · NUR Platform by Amplifai Health</title>
+<style>
+  /* ─────────────────────────────────────────
+     Design tokens — Light mode
+  ───────────────────────────────────────── */
+  :root {
+    /* Surfaces */
+    --bg:       #f4f6f9;
+    --surface:  #ffffff;
+    --surface2: #eef1f6;
+    --surface3: #e4e9f0;
+    --border:   #dae0ea;
+
+    /* Typography */
+    --text:       #0f172a;
+    --text-muted: #475569;
+    --text-dim:   #94a3b8;
+
+    /* Brand */
+    --accent:  #0369a1;
+    --accent2: #6d28d9;
+
+    /* Clinical zones */
+    --safe:      #15803d;
+    --recovery:  #b45309;
+    --deceptive: #c2410c;
+    --danger:    #b91c1c;
+
+    /* Shape */
+    --radius:    12px;
+    --radius-sm: 8px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.05);
+    --shadow:    0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.05);
+  }
+
+  /* ─────────────────────────────────────────
+     Reset & Base
+  ───────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ─────────────────────────────────────────
+     Sidebar Navigation
+  ───────────────────────────────────────── */
+  nav {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    padding: 28px 0 40px;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    padding: 0 24px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .nav-logo .logo-mark {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-logo .logo-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  nav .nav-section {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    padding: 16px 24px 6px;
+    font-weight: 700;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    border-left: 3px solid transparent;
+  }
+  nav a:hover,
+  nav a.active {
+    color: var(--accent);
+    background: #e8f3fa;
+    border-left-color: var(--accent);
+  }
+  nav a .nav-num {
+    font-size: 11px;
+    color: var(--text-dim);
+    min-width: 22px;
+    font-weight: 600;
+  }
+
+  /* ─────────────────────────────────────────
+     Main Content Area
+  ───────────────────────────────────────── */
+  main {
+    margin-left: 260px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ─────────────────────────────────────────
+     Hero Banner
+  ───────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 60%, #fce7f3 100%);
+    padding: 80px 60px 70px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(3,105,161,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(109,40,217,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(3,105,161,0.1);
+    border: 1px solid rgba(3,105,161,0.25);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 22px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .hero-meta-item strong { color: var(--text); }
+
+  /* ─────────────────────────────────────────
+     Section Layout & Typography
+  ───────────────────────────────────────── */
+  section {
+    padding: 64px 60px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 19px;
+    font-weight: 600;
+    margin: 32px 0 14px;
+    color: var(--text);
+  }
+
+  p {
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    font-size: 15px;
+    max-width: 760px;
+  }
+
+  .section-intro {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  /* ─────────────────────────────────────────
+     Category Header
+  ───────────────────────────────────────── */
+  .cat-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .cat-number {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    padding: 4px 11px;
+    white-space: nowrap;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
+  }
+
+  .cat-title-block h2 { margin-bottom: 4px; }
+
+  .cat-definition {
+    font-size: 14px;
+    color: var(--text-dim);
+    font-style: italic;
+    max-width: 680px;
+    margin-bottom: 0;
+  }
+
+  /* ─────────────────────────────────────────
+     Provider Table
+  ───────────────────────────────────────── */
+  .provider-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .provider-table thead tr {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+  }
+  .provider-table thead th {
+    text-align: left;
+    padding: 11px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+  .provider-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  .provider-table tbody tr:last-child { border-bottom: none; }
+  .provider-table tbody tr:hover { background: var(--surface2); }
+  .provider-table td {
+    padding: 14px 16px;
+    vertical-align: top;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .provider-table td:first-child {
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    min-width: 170px;
+  }
+  .provider-table td:nth-child(2) {
+    color: var(--accent);
+    font-size: 13px;
+    min-width: 220px;
+    font-weight: 500;
+  }
+
+  /* ─────────────────────────────────────────
+     Callout Boxes
+  ───────────────────────────────────────── */
+  .gap-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-top: 28px;
+    max-width: 760px;
+  }
+  .gap-box .gap-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--danger);
+    margin-bottom: 6px;
+  }
+  .gap-box p { color: var(--text-muted); font-size: 14px; margin: 0; max-width: none; }
+
+  .insight {
+    background: linear-gradient(135deg, #e0f2fe, #ede9fe);
+    border: 1px solid #bae6fd;
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin: 28px 0;
+    max-width: 760px;
+    position: relative;
+  }
+  .insight p { color: var(--text); font-size: 14.5px; margin: 0; max-width: none; font-style: italic; line-height: 1.65; }
+  .insight strong { color: var(--accent); font-style: normal; }
+
+  /* ─────────────────────────────────────────
+     NUR Highlight Section
+  ───────────────────────────────────────── */
+  .nur-section {
+    background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 100%);
+    border: 1px solid #bae6fd;
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-top: 8px;
+    box-shadow: var(--shadow-sm);
+  }
+  .nur-section h3 { margin-top: 0; color: var(--accent); }
+  .nur-section p { max-width: none; }
+
+  .nur-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+    border: 1px solid #bae6fd;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .nur-table thead tr {
+    background: rgba(3,105,161,0.06);
+    border-bottom: 2px solid #bae6fd;
+  }
+  .nur-table thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+  .nur-table tbody tr { border-bottom: 1px solid #dbeafe; }
+  .nur-table tbody tr:last-child { border-bottom: none; }
+  .nur-table td {
+    padding: 12px 14px;
+    vertical-align: top;
+    color: var(--text-muted);
+    line-height: 1.55;
+    font-size: 14px;
+  }
+  .nur-table td:first-child { color: var(--text); font-weight: 600; }
+  .nur-table td:nth-child(2) { color: var(--text-dim); font-style: italic; }
+  .nur-table td:last-child { color: var(--accent); font-weight: 500; }
+
+  /* ─────────────────────────────────────────
+     Comparison Matrix
+  ───────────────────────────────────────── */
+  .comp-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 13.5px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .comp-matrix thead tr {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+  }
+  .comp-matrix th {
+    padding: 11px 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-dim);
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .comp-matrix th:first-child { text-align: left; min-width: 210px; }
+  .comp-matrix th.nur-col {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    background: #e0f2fe;
+  }
+
+  .comp-matrix tbody tr { border-bottom: 1px solid var(--border); }
+  .comp-matrix tbody tr:last-child { border-bottom: none; }
+  .comp-matrix tbody tr:hover { background: var(--surface2); }
+  .comp-matrix td {
+    padding: 11px 12px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .comp-matrix td:first-child {
+    text-align: left;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  .comp-matrix td.nur-col {
+    background: #f0f9ff;
+    border-left: 1px solid #bae6fd;
+    border-right: 1px solid #bae6fd;
+  }
+
+  .cell-yes     { color: var(--safe);      font-weight: 700; }
+  .cell-partial { color: var(--recovery);  font-weight: 600; }
+  .cell-no      { color: var(--text-dim);  }
+
+  .comp-legend {
+    display: flex;
+    gap: 24px;
+    margin: 16px 0 4px;
+    font-size: 13px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+  .comp-legend span { display: flex; align-items: center; gap: 7px; }
+
+  /* ─────────────────────────────────────────
+     Gap Matrix
+  ───────────────────────────────────────── */
+  .gap-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .gap-matrix thead tr {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--border);
+  }
+  .gap-matrix thead th {
+    text-align: left;
+    padding: 11px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+  .gap-matrix tbody tr { border-bottom: 1px solid var(--border); }
+  .gap-matrix tbody tr:last-child { border-bottom: none; }
+  .gap-matrix tbody tr:hover { background: var(--surface2); }
+  .gap-matrix td {
+    padding: 13px 16px;
+    vertical-align: top;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .gap-matrix td:first-child { color: var(--text); font-weight: 600; min-width: 200px; }
+
+  .badge-gap {
+    display: inline-block;
+    background: #fee2e2;
+    color: var(--danger);
+    border: 1px solid #fca5a5;
+    border-radius: 4px;
+    padding: 2px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-nur {
+    display: inline-block;
+    background: #e0f2fe;
+    color: var(--accent);
+    border: 1px solid #7dd3fc;
+    border-radius: 4px;
+    padding: 2px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─────────────────────────────────────────
+     Summary Stats
+  ───────────────────────────────────────── */
+  .stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 140px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .stat-chip:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+  .stat-chip .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat-chip .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+  }
+
+  /* ─────────────────────────────────────────
+     Table & Matrix Links
+  ───────────────────────────────────────── */
+  .provider-table a,
+  .gap-matrix a,
+  .comp-matrix a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .provider-table a:hover,
+  .gap-matrix a:hover,
+  .comp-matrix a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ─────────────────────────────────────────
+     Scrollbar
+  ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">NUR</div>
+    <div class="logo-sub">Amplifai Health</div>
+  </div>
+
+  <div class="nav-section">Market Landscape</div>
+  <a href="#overview">Overview</a>
+  <a href="#cat1"><span class="nav-num">01</span>Biomechanical Analysis</a>
+  <a href="#cat2"><span class="nav-num">02</span>Physiological Monitoring</a>
+  <a href="#cat3"><span class="nav-num">03</span>Workload Management</a>
+  <a href="#cat4"><span class="nav-num">04</span>Gameplay &amp; Tactical</a>
+  <a href="#cat5"><span class="nav-num">05</span>Thermal &amp; Imaging</a>
+  <a href="#cat6"><span class="nav-num">06</span>Integrated Multi-Modal</a>
+
+  <div class="nav-section">NUR Positioning</div>
+  <a href="#positioning">Competitive Positioning &amp; Market Gap Analysis</a>
+</nav>
+
+<!-- ── Main ── -->
+<main>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">Market Intelligence · Amplifai Health</div>
+    <h1>Athlete Performance Software<br><span>Market Landscape</span></h1>
+    <p class="hero-sub">A structured classification of the major platforms in sports performance technology, organized by provider and category — with NUR Platform's unique market position identified.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>6</strong> categories</div>
+      <div class="hero-meta-item"><strong>45+</strong> platforms mapped</div>
+      <div class="hero-meta-item"><strong>1</strong> uncontested position</div>
+      <div class="hero-meta-item"><strong>March 2026</strong></div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <section id="overview">
+    <div class="section-label">Overview</div>
+    <h2>Classification Framework</h2>
+    <p class="section-intro">The athlete performance software market spans six distinct functional categories. Most platforms operate within a single category with varying depth. A smaller number of integrated platforms aggregate across categories. <strong>NUR Platform sits within Category 06 — Integrated Multi-Modal — as its sole occupant to fuse thermal imaging with physiological readiness into a deterministic clinical decision support framework.</strong> No other platform in this category integrates thermographic tissue stress as a first-class computational input.</p>
+
+    <div class="stats-row">
+      <div class="stat-chip"><div class="stat-num">14</div><div class="stat-label">Biomechanical</div></div>
+      <div class="stat-chip"><div class="stat-num">8</div><div class="stat-label">Physiological</div></div>
+      <div class="stat-chip"><div class="stat-num">9</div><div class="stat-label">Workload</div></div>
+      <div class="stat-chip"><div class="stat-num">9</div><div class="stat-label">Gameplay</div></div>
+      <div class="stat-chip"><div class="stat-num">3</div><div class="stat-label">Thermal</div></div>
+      <div class="stat-chip"><div class="stat-num">7</div><div class="stat-label">Integrated</div></div>
+    </div>
+  </section>
+
+  <!-- Cat 1 -->
+  <section id="cat1">
+    <div class="cat-header">
+      <div class="cat-number">CAT 01</div>
+      <div class="cat-title-block">
+        <h2>Biomechanical Analysis</h2>
+        <p class="cat-definition">Platforms that quantify human movement using motion capture, force measurement, or kinematic/kinetic analysis. Output is typically joint angles, ground reaction forces, power, symmetry indices, and movement quality scores.</p>
+      </div>
+    </div>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Products</th>
+          <th>What It Measures / Does</th>
+          <th>Target Audience</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.valdperformance.com" target="_blank" rel="noopener noreferrer">VALD Performance</a></td>
+          <td>ForceDecks, HumanTrak, NordBord, ForceFrame</td>
+          <td>Dual force plates (CMJ, RFD, bilateral symmetry), markerless 3D motion analysis, instrumented Nordic hamstring bench, isometric dynamometry for hip/shoulder/knee bilateral strength</td>
+          <td>Physiotherapists, S&amp;C coaches, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.hawkindynamics.com" target="_blank" rel="noopener noreferrer">Hawkin Dynamics</a></td>
+          <td>Hawkin System</td>
+          <td>Wireless force plates — phase-specific jump force-time metrics; designed for team-scale daily testing workflows</td>
+          <td>S&amp;C coaches, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.spartascience.com" target="_blank" rel="noopener noreferrer">Sparta Science</a></td>
+          <td>Sparta Platform</td>
+          <td>Force plate "Movement Signature" (Load, Explode, Drive) linked to injury risk via ML normative database</td>
+          <td>S&amp;C coaches, team physicians</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.darimotion.com" target="_blank" rel="noopener noreferrer">DARI Motion</a></td>
+          <td>DARI System</td>
+          <td>Structured-light markerless full-body 3D motion capture — comprehensive joint biomechanics without markers or lab setup</td>
+          <td>Sports scientists, physiotherapists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.noraxon.com" target="_blank" rel="noopener noreferrer">Noraxon</a></td>
+          <td>Ultium EMG, myoMOTION</td>
+          <td>Surface EMG synchronized with kinematics and force plates — research-grade clinical biomechanics</td>
+          <td>Researchers, sports scientists, physiotherapists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.qualisys.com" target="_blank" rel="noopener noreferrer">Qualisys</a></td>
+          <td>Miqus, Oqus</td>
+          <td>High-end optical motion capture (infrared markers) — gold standard for research and high-performance sports institutes</td>
+          <td>Researchers, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.vicon.com" target="_blank" rel="noopener noreferrer">Vicon</a></td>
+          <td>Vantage, Nexus</td>
+          <td>Competing gold-standard optical motion capture — widely used in elite sports, research facilities, and clinical gait labs globally</td>
+          <td>Researchers, sports scientists, clinical gait labs</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.btsbioengineering.com" target="_blank" rel="noopener noreferrer">BTS Bioengineering</a></td>
+          <td>BTS SMART, FreeEMG</td>
+          <td>Force plates, EMG, motion capture, and pressure platforms — strong in clinical rehabilitation and sports science</td>
+          <td>Physiotherapists, rehabilitation clinicians</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.contemplas.com" target="_blank" rel="noopener noreferrer">Contemplas</a></td>
+          <td>Templo</td>
+          <td>Video-based 2D/3D gait and movement analysis — used in clinics, sports medicine, and performance labs</td>
+          <td>Clinicians, sports medicine professionals</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.kinovea.org" target="_blank" rel="noopener noreferrer">Kinovea</a></td>
+          <td>Kinovea (open source)</td>
+          <td>Free 2D video angle measurement, trajectory tracking, and side-by-side comparison — widely used entry-level tool</td>
+          <td>Coaches, entry-level analysts</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.k-vest.com" target="_blank" rel="noopener noreferrer">K-Vest</a></td>
+          <td>K-VEST 6D</td>
+          <td>Wearable inertial sensor system for rotational sport mechanics — measures pelvis, torso, and arm segment sequencing (golf, baseball)</td>
+          <td>Golf/baseball coaches, swing coaches</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Cat 2 -->
+  <section id="cat2">
+    <div class="cat-header">
+      <div class="cat-number">CAT 02</div>
+      <div class="cat-title-block">
+        <h2>Physiological Monitoring</h2>
+        <p class="cat-definition">Platforms that track internal biological state — autonomic nervous system metrics (HRV), cardiovascular, metabolic, sleep architecture, and hormonal/blood markers. Primary output is readiness and recovery status.</p>
+      </div>
+    </div>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Products</th>
+          <th>What It Measures / Does</th>
+          <th>Target Audience</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.whoop.com" target="_blank" rel="noopener noreferrer">Whoop</a></td>
+          <td>WHOOP 4.0</td>
+          <td>Continuous HRV, resting HR, respiratory rate, sleep staging (REM/deep/light), skin temperature — outputs daily Recovery Score and Strain Score. Subscription model, app-centric.</td>
+          <td>Athletes, coaches</td>
+        </tr>
+        <tr>
+          <td><a href="https://ouraring.com" target="_blank" rel="noopener noreferrer">Oura</a></td>
+          <td>Oura Ring Gen3</td>
+          <td>Ring-form continuous HRV, resting HR, temperature deviation, SpO2, sleep staging — outputs Readiness Score. Strong sleep accuracy.</td>
+          <td>Athletes, wellness professionals</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.polar.com" target="_blank" rel="noopener noreferrer">Polar</a></td>
+          <td>H10, Vantage V3, Grit X</td>
+          <td>Research-grade chest strap HRV (H10 is a lab standard), GPS sports watches, Polar Flow platform for long-term load and recovery monitoring</td>
+          <td>Athletes, coaches, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.firstbeat.com" target="_blank" rel="noopener noreferrer">Firstbeat (Garmin)</a></td>
+          <td>Firstbeat Analytics</td>
+          <td>White-label HRV analytics engine powering Garmin Body Battery. Enterprise solution for teams — HRV-based EPOC, stress, and recovery quantification.</td>
+          <td>Sports scientists, team physicians, coaches</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.garmin.com" target="_blank" rel="noopener noreferrer">Garmin</a></td>
+          <td>Forerunner, Fenix, Epix</td>
+          <td>GPS sports watches with HRV Status, Body Battery (Firstbeat-powered), sleep tracking, training load, VO2max estimation</td>
+          <td>Athletes, coaches</td>
+        </tr>
+        <tr>
+          <td><a href="https://biostrap.com" target="_blank" rel="noopener noreferrer">Biostrap</a></td>
+          <td>Biostrap EVO</td>
+          <td>Medical-grade optical PPG wearable emphasizing HRV accuracy — API-first, integrator-friendly, targets health systems and elite sports</td>
+          <td>Sports medicine teams, health system integrators</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.supersapiens.com" target="_blank" rel="noopener noreferrer">Supersapiens</a></td>
+          <td>Supersapiens CGM</td>
+          <td>Continuous glucose monitor integration (Abbott Libre Sense) — tracks interstitial glucose in real time during training and recovery for metabolic substrate management</td>
+          <td>Endurance athletes, performance nutritionists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.haloneuro.com" target="_blank" rel="noopener noreferrer">Halo Neuroscience</a></td>
+          <td>Halo Sport 2</td>
+          <td>Transcranial direct current stimulation (tDCS) headset targeting motor cortex priming for skill acquisition acceleration — a neuromodulation intervention, not a monitoring device</td>
+          <td>Athletes, coaches (skill acquisition focus)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Cat 3 -->
+  <section id="cat3">
+    <div class="cat-header">
+      <div class="cat-number">CAT 03</div>
+      <div class="cat-title-block">
+        <h2>Workload &amp; Training Load Management</h2>
+        <p class="cat-definition">Platforms that quantify external training load (what the body was asked to do) and combine it with internal load context to model fatigue accumulation and injury risk via load ratios.</p>
+      </div>
+    </div>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Products</th>
+          <th>What It Measures / Does</th>
+          <th>Target Audience</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.catapultsports.com" target="_blank" rel="noopener noreferrer">Catapult Sports</a></td>
+          <td>Vector, OptimEye, Catapult AMS</td>
+          <td>Market leader in GPS/IMU athlete tracking. Measures distance, speed, acceleration, deceleration, PlayerLoad, mechanical load. Includes load management dashboards, ACWR, and wellness questionnaires. Serves 3,000+ teams globally.</td>
+          <td>Coaches, performance analysts, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://statsports.com" target="_blank" rel="noopener noreferrer">STATSports</a></td>
+          <td>Apex, Sonra</td>
+          <td>Primary Catapult competitor. GPS tracking with Sonra software for session load dashboards, speed zone comparisons, and wellness integration. Used by major national football federations.</td>
+          <td>Coaches, performance analysts</td>
+        </tr>
+        <tr>
+          <td><a href="https://kinexon.com" target="_blank" rel="noopener noreferrer">Kinexon</a></td>
+          <td>Kinexon PERFORM</td>
+          <td>Ultra-wideband (UWB) real-time location system for indoor sports (NBA, NHL, handball). Sub-10cm positioning accuracy — measures distance, speed, load, collisions, and sport-specific metrics.</td>
+          <td>Coaches, performance analysts (indoor sports)</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.zebra.com" target="_blank" rel="noopener noreferrer">Zebra Technologies</a></td>
+          <td>MotionWorks Sport</td>
+          <td>RFID chips in shoulder pads — official NFL Next Gen Stats provider. Measures speed, distance, route running, and separation at stadium scale.</td>
+          <td>Team analytics staff, league data operations</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.playermaker.com" target="_blank" rel="noopener noreferrer">PlayerMaker</a></td>
+          <td>PlayerMaker Pod</td>
+          <td>Boot lace-attached wearable for soccer — measures ball touches, preferred foot, pass kinematics, and distance. Targeted at development academies.</td>
+          <td>Youth/academy coaches</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.fusionsport.com" target="_blank" rel="noopener noreferrer">Fusion Sport</a></td>
+          <td>Smartabase</td>
+          <td>Universal athlete management system. Aggregates data from GPS devices, wearables, wellness forms, and test results into a unified athlete database. Provides dashboards, alerts, and longitudinal tracking.</td>
+          <td>Performance directors, athletic trainers</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.kitmanlabs.com" target="_blank" rel="noopener noreferrer">Kitman Labs</a></td>
+          <td>Kitman Platform</td>
+          <td>Athlete intelligence platform combining load data, medical records, wellness, and biometric data. Strong AI-driven injury prediction and risk flagging. Used by NFL, MLB, and elite soccer clubs.</td>
+          <td>Team physicians, coaches, performance analysts</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.zone7.ai" target="_blank" rel="noopener noreferrer">Zone7</a></td>
+          <td>Zone7 AI</td>
+          <td>AI-driven injury prediction platform. Ingests multi-source data (GPS, wellness, biometrics) and outputs probabilistic injury risk scores. Predictive rather than descriptive.</td>
+          <td>Team physicians, coaches</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.sportsware.com" target="_blank" rel="noopener noreferrer">Sportsware</a></td>
+          <td>Sportsware Online</td>
+          <td>Legacy athlete health management system used primarily in US college athletics. Injury tracking, medical records, compliance reporting.</td>
+          <td>Athletic trainers, team physicians (US collegiate)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Cat 4 -->
+  <section id="cat4">
+    <div class="cat-header">
+      <div class="cat-number">CAT 04</div>
+      <div class="cat-title-block">
+        <h2>Gameplay &amp; Tactical Analysis</h2>
+        <p class="cat-definition">Platforms that analyze match footage, player positioning, tactical patterns, and ball-flight data to support coaching, scouting, and recruitment decisions.</p>
+      </div>
+    </div>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Products</th>
+          <th>What It Measures / Does</th>
+          <th>Target Audience</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.hudl.com" target="_blank" rel="noopener noreferrer">Hudl</a></td>
+          <td>Hudl, Sportscode, Wyscout</td>
+          <td>Market-leading video analysis platform across all sport levels. Video upload, tagging, clip sharing, telestration. Sportscode is the premium elite-team coding suite. Wyscout is the European scouting database.</td>
+          <td>Coaches, scouts, video analysts</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.dartfish.com" target="_blank" rel="noopener noreferrer">Dartfish</a></td>
+          <td>Dartfish 10</td>
+          <td>Stromotion (stroboscopic image overlay), side-by-side comparison, and technique analysis. Strong in Olympic programs, gymnastics, and swimming biomechanics coaching.</td>
+          <td>Coaches, sports scientists (technique focus)</td>
+        </tr>
+        <tr>
+          <td><a href="https://geniussports.com" target="_blank" rel="noopener noreferrer">Genius Sports</a></td>
+          <td>Second Spectrum</td>
+          <td>AI optical tracking and machine learning platform — official NBA tracking provider. Extracts spatial data from broadcast feeds using computer vision.</td>
+          <td>Team analytics staff, broadcasters</td>
+        </tr>
+        <tr>
+          <td><a href="https://chyronhego.com" target="_blank" rel="noopener noreferrer">ChyronHego</a></td>
+          <td>Tracab</td>
+          <td>Stadium multi-camera optical tracking — generates x/y/z coordinates for all players and ball. Official FIFA World Cup tracking provider and used across top leagues.</td>
+          <td>Team analytics, league officials</td>
+        </tr>
+        <tr>
+          <td><a href="https://instat.pro" target="_blank" rel="noopener noreferrer">InStat</a></td>
+          <td>InStat Scout</td>
+          <td>Video scouting and analysis platform with large match footage database. Used for player recruitment and opponent analysis in soccer, ice hockey, and basketball.</td>
+          <td>Coaches, scouts</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.trackman.com" target="_blank" rel="noopener noreferrer">TrackMan</a></td>
+          <td>TrackMan 4</td>
+          <td>Doppler radar ball and club tracking — gold standard in golf (all PGA Tour events) and baseball. Outputs spin axis, spin rate, launch angle, and carry distance.</td>
+          <td>Coaches, players (golf/baseball)</td>
+        </tr>
+        <tr>
+          <td><a href="https://rapsodo.com" target="_blank" rel="noopener noreferrer">Rapsodo</a></td>
+          <td>Rapsodo Pitching, Golf</td>
+          <td>Radar and camera fusion for pitch analytics (spin rate, velocity, break, release point) and golf launch monitoring. Competes directly with TrackMan at lower price points.</td>
+          <td>Coaches, players</td>
+        </tr>
+        <tr>
+          <td><a href="https://blastmotion.com" target="_blank" rel="noopener noreferrer">Blast Motion</a></td>
+          <td>Blast Baseball, Tennis</td>
+          <td>Inertial sensor attached to bat handle or racket — measures swing speed, time to contact, attack angle, and early connection for development training.</td>
+          <td>Coaches, athletes (development training)</td>
+        </tr>
+        <tr>
+          <td><a href="https://motusglobal.com" target="_blank" rel="noopener noreferrer">Motus Global</a></td>
+          <td>mThrow, mElbow</td>
+          <td>Sleeve-worn IMU sensor tracking medial elbow torque in baseball pitchers and catchers. Measures arm slot, arm speed, and UCL stress proxy for injury prevention.</td>
+          <td>Coaches, athletic trainers (baseball arm health)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Cat 5 -->
+  <section id="cat5">
+    <div class="cat-header">
+      <div class="cat-number">CAT 05</div>
+      <div class="cat-title-block">
+        <h2>Thermal &amp; Imaging</h2>
+        <p class="cat-definition">Platforms using non-contact or imaging-based modalities to detect tissue-level inflammation, circulatory changes, or structural stress. Thermography measures contralateral skin-surface temperature asymmetry as a proxy for underlying tissue stress.</p>
+      </div>
+    </div>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Products</th>
+          <th>What It Measures / Does</th>
+          <th>Target Audience</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://thermohuman.com" target="_blank" rel="noopener noreferrer">ThermoHuman</a></td>
+          <td>ThermoHuman Platform</td>
+          <td>Sports thermography platform — athlete thermal mapping, population-norm comparisons, and longitudinal asymmetry tracking. Closest existing commercial analogue to the thermal component of NUR/COMPASS. Thermal-only; does not fuse with systemic physiological readiness.</td>
+          <td>Physiotherapists, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.meditherm.com" target="_blank" rel="noopener noreferrer">Meditherm</a></td>
+          <td>Digitherm</td>
+          <td>Clinical thermography analysis with built-in normative databases and region-of-interest analysis. Used in sports medicine and oncology screening.</td>
+          <td>Sports medicine physicians, clinical practitioners</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.myovision.com" target="_blank" rel="noopener noreferrer">Myovision</a></td>
+          <td>ScanVision</td>
+          <td>Surface EMG combined with paraspinal thermal scanning. Used in chiropractic and sports rehabilitation to detect bilateral neuromuscular asymmetries.</td>
+          <td>Chiropractors, sports rehabilitation clinicians</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <!-- Cat 6 -->
+  <section id="cat6">
+    <div class="cat-header">
+      <div class="cat-number">CAT 06</div>
+      <div class="cat-title-block">
+        <h2>Integrated Multi-Modal</h2>
+        <p class="cat-definition">Platforms that intentionally aggregate data from multiple categories into a unified athlete model. The defining characteristic is cross-domain synthesis rather than single-modality depth.</p>
+      </div>
+    </div>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Products</th>
+          <th>What It Does</th>
+          <th>Target Audience</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.kitmanlabs.com" target="_blank" rel="noopener noreferrer">Kitman Labs</a></td>
+          <td>Kitman Platform</td>
+          <td>Strongest multi-modal integration in the market — ingests load, medical, biometric, and wellness data. Machine learning models operate across the combined dataset for injury intelligence.</td>
+          <td>Team physicians, coaches, performance analysts</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.fusionsport.com" target="_blank" rel="noopener noreferrer">Fusion Sport</a></td>
+          <td>Smartabase</td>
+          <td>True data aggregation AMS — ingests virtually any data source via API. Highly configurable. Strength is data unification and longitudinal athlete tracking, not proprietary analytics.</td>
+          <td>Performance directors, athletic trainers</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.catapultsports.com" target="_blank" rel="noopener noreferrer">Catapult Sports</a></td>
+          <td>Catapult AMS + Vector</td>
+          <td>GPS/external load-centric with wellness questionnaires and HR-based internal load integrations. Extensive third-party API integrations. Broad adoption; external load remains primary focus.</td>
+          <td>Coaches, performance analysts</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.zone7.ai" target="_blank" rel="noopener noreferrer">Zone7</a></td>
+          <td>Zone7 AI</td>
+          <td>Multi-modal data ingestion focused on a single output: probabilistic injury risk. ML model trained across GPS, HRV, wellness, and historical injury data.</td>
+          <td>Team physicians, coaches</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.spartascience.com" target="_blank" rel="noopener noreferrer">Sparta Science</a></td>
+          <td>Sparta Platform</td>
+          <td>Combines force plate movement signatures with HRV and wellness data for holistic athlete readiness. One of the more genuinely integrated single-vendor solutions.</td>
+          <td>S&amp;C coaches, sports scientists</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.coachmeplus.com" target="_blank" rel="noopener noreferrer">CoachMePlus</a></td>
+          <td>CoachMePlus Platform</td>
+          <td>Mid-market AMS with strong wearable integrations, customizable dashboards, and built-in testing modules. Competes with Smartabase in the enterprise AMS segment.</td>
+          <td>Coaches, athletic trainers</td>
+        </tr>
+        <tr>
+          <td>NUR Platform — COMPASS</td>
+          <td>NUR + COMPASS Framework · Amplifai Health</td>
+          <td>Fuses thermographic tissue stress (Thermal Asymmetry Index) with systemic physiological readiness (HRV, sleep, ACWR) into a unified 0–100 COMPASS score with deterministic, zone-based classification. Sole platform to integrate thermal imaging as a first-class computational input. Explicitly detects <em>Deceptive Readiness</em> — the clinically high-risk state where wearable data appears normal while local tissue is inflamed. Beyond scoring, NURAI generates a personalised intervention plan from the full clinical dataset — thermal asymmetry per body region, physiological metrics, reported pain entries, and athlete demographics — producing phased rehabilitation guidance and reassessment triggers tailored to each individual, not just a generic zone response.</td>
+          <td>Physiotherapists, coaches, athletes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight">
+      <p>All other Category 06 platforms aggregate GPS load, HRV, and wellness data — but <strong>none integrate thermographic tissue stress</strong> as a first-class computational input, and none produce intervention plans from the full clinical dataset. NUR Platform is the only integrated platform with a thermal modality and the only one that synthesises thermal asymmetry, physiological metrics, pain entries, and athlete demographics into a personalised, phased intervention plan.</p>
+    </div>
+  </section>
+
+  <!-- Competitive Positioning & Market Gap Analysis -->
+  <section id="positioning">
+    <div class="section-label">Competitive Intelligence</div>
+    <h2>Competitive Positioning &amp; Market Gap Analysis</h2>
+    <p class="section-intro">NUR Platform has no direct competitor within Category 06. The three platforms below represent the closest partial threats, each covering one axis of NUR's dual-axis model but unable to replicate the combined output. Five structural gaps explain why no existing platform — including other integrated multi-modal platforms — can replicate what NUR/COMPASS delivers.</p>
+
+    <h3>Closest Partial Competitors</h3>
+
+    <table class="provider-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Why They're Relevant</th>
+          <th>What They're Missing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://thermohuman.com" target="_blank" rel="noopener noreferrer">ThermoHuman</a></td>
+          <td>The only other sports-focused thermography platform. Covers the thermal side of NUR's value proposition with athlete thermal mapping and asymmetry tracking.</td>
+          <td>No systemic readiness (HRV / sleep / training load). No unified risk score. No clinical zone protocols. Population norms only — no individual SD baseline method.</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.zone7.ai" target="_blank" rel="noopener noreferrer">Zone7</a></td>
+          <td>Multi-source injury AI combining GPS, HRV, and wellness into a risk output. Closest to NUR's concept of a unified injury risk score derived from multiple signals.</td>
+          <td>No thermal signal. Produces probabilistic output ("X% injury risk") rather than NUR's deterministic zone classification with mandatory clinical protocols.</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.kitmanlabs.com" target="_blank" rel="noopener noreferrer">Kitman Labs</a></td>
+          <td>Strongest multi-modal data aggregation in the market — load, medical, biometric, and wellness data unified under ML-driven injury intelligence. Trusted by NFL and MLB teams.</td>
+          <td>No thermal signal. Functions as an aggregation and prediction platform, not a clinical decision protocol engine. Cannot detect Deceptive Readiness.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Full Feature Comparison Matrix</h3>
+    <p>NUR Platform compared against its three direct competitors and the integrated multi-modal platforms operating in the same space (Category 06).</p>
+
+    <div class="comp-legend">
+      <span><strong class="cell-yes">✓ Full</strong> — fully supported</span>
+      <span><strong class="cell-partial">◑ Partial</strong> — adjacent or limited capability</span>
+      <span><strong class="cell-no">✗ None</strong> — not present</span>
+    </div>
+
+    <div style="overflow-x:auto;">
+    <table class="comp-matrix">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th class="nur-col">NUR Platform<br><span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0">Amplifai Health</span></th>
+          <th>ThermoHuman</th>
+          <th>Zone7 AI</th>
+          <th>Kitman Labs</th>
+          <th>Sparta Science</th>
+          <th>Fusion Sport<br><span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0">Smartabase</span></th>
+          <th>CoachMePlus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Target Audience<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Primary end-users of the platform</span></td>
+          <td class="nur-col" style="font-size:12px">Physiotherapists, coaches, athletes</td>
+          <td style="font-size:12px">Physiotherapists, sports scientists</td>
+          <td style="font-size:12px">Team physicians, coaches</td>
+          <td style="font-size:12px">Team physicians, coaches, performance analysts</td>
+          <td style="font-size:12px">S&amp;C coaches, sports scientists</td>
+          <td style="font-size:12px">Performance directors, athletic trainers</td>
+          <td style="font-size:12px">Coaches, athletic trainers</td>
+        </tr>
+        <tr>
+          <td>Thermal Asymmetry Data<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Infrared thermography + contralateral comparison</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+        </tr>
+        <tr>
+          <td>Physiological Data<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">HRV, sleep staging, resting HR, respiratory rate</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+        </tr>
+        <tr>
+          <td>Training Load / ACWR<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">GPS, PlayerLoad, session load, acute:chronic ratio</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+        </tr>
+        <tr>
+          <td>Health &amp; Injury History<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Longitudinal medical records, prior injury data</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+        </tr>
+        <tr>
+          <td>Biomechanical Analysis<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Force plate, motion capture, movement quality scores</span></td>
+          <td class="nur-col"><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+        </tr>
+        <tr>
+          <td>Individual Baseline<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Personal SD baseline vs. population norms only</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+        </tr>
+        <tr>
+          <td>Multi-Modal Data Fusion<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Multiple signal types combined in a single model</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+        </tr>
+        <tr>
+          <td>Zone / Risk Classification<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Structured output with defined clinical zones</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+        </tr>
+        <tr>
+          <td>Deceptive Readiness Detection<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Normal wearables + inflamed tissue simultaneously</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+        </tr>
+        <tr>
+          <td>Clinical Intervention Protocols<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Mandatory, deterministic action recommendations per zone</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+        </tr>
+        <tr>
+          <td>AI / Injury Prediction<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Probabilistic ML-based injury risk scoring</span></td>
+          <td class="nur-col"><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-partial">◑ Partial</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+        </tr>
+        <tr>
+          <td>Personalized Intervention Plan<br><span style="font-size:12px;font-weight:400;color:var(--text-dim)">Athlete-specific plan from combined thermal + physiological + history</span></td>
+          <td class="nur-col"><span class="cell-yes">✓ Full</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+          <td><span class="cell-no">✗ None</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>The Structural Moat</h3>
+    <p>The <strong>Deceptive Readiness zone</strong> — where an athlete's wearable data appears normal while local tissue is inflamed — is invisible to every Tier 1 competitor. Detecting it requires both axes present in the same scoring model. This is the condition most likely to result in soft-tissue injury under full training load, and it is the highest-value clinical insight NUR produces.</p>
+  </section>
+
+</main>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
