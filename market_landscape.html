@@ -629,6 +629,105 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* ─────────────────────────────────────────
+     Differentiators Section
+  ───────────────────────────────────────── */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  @media (max-width: 900px) {
+    .diff-grid { grid-template-columns: 1fr; }
+  }
+
+  .diff-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 30px 28px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: box-shadow 0.15s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .diff-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+  .diff-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .diff-num {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent);
+  }
+
+  .diff-icon {
+    font-size: 36px;
+    line-height: 1;
+  }
+
+  .diff-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .diff-card p {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+    max-width: none;
+  }
+
+  .diff-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .diff-tag {
+    background: #e0f2fe;
+    color: var(--accent);
+    border: 1px solid #bae6fd;
+    border-radius: 20px;
+    padding: 3px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .diff-tag.purple {
+    background: #ede9fe;
+    color: var(--accent2);
+    border-color: #c4b5fd;
+  }
+  .diff-tag.amber {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fcd34d;
+  }
+  .diff-tag.red {
+    background: #fee2e2;
+    color: var(--danger);
+    border-color: #fca5a5;
+  }
 </style>
 </head>
 <body>
@@ -639,6 +738,9 @@
     <div class="logo-mark">NUR</div>
     <div class="logo-sub">Amplifai Health</div>
   </div>
+
+  <div class="nav-section">NUR Platform</div>
+  <a href="#differentiators">Top 4 Differentiating Factors</a>
 
   <div class="nav-section">Market Landscape</div>
   <a href="#overview">Overview</a>
@@ -667,6 +769,72 @@
 <div class="hero-meta-item"><strong>March 2026</strong></div>
     </div>
   </div>
+
+  <!-- Differentiators -->
+  <section id="differentiators">
+    <div class="section-label">NUR Platform · Competitive Advantage</div>
+    <h2>Top 4 Differentiating Factors</h2>
+    <p class="section-intro">Every competitor addresses one dimension of athlete readiness. NUR Platform is architecturally distinct across four compounding dimensions — each a gap in the existing market, together forming a structural moat that cannot be replicated by adding a single feature to a single-modality platform.</p>
+
+    <div class="diff-grid">
+
+      <!-- Factor 1 -->
+      <div class="diff-card">
+        <div class="diff-num">Factor 01</div>
+        <div class="diff-icon">🔬</div>
+        <h3>Multimodal Injury Risk Modelling</h3>
+        <p>NUR is the only platform that fuses four independent signal classes — thermal imaging, physiological wearables, athlete demographics, and longitudinal health history — into a single deterministic risk score. Competitors process one or two modalities in isolation, producing scores that are blind to the interactions between tissue stress, systemic fatigue, biological profile, and prior injury load.</p>
+        <div class="diff-tags">
+          <span class="diff-tag">Thermal Imaging</span>
+          <span class="diff-tag">Physiological Wearables</span>
+          <span class="diff-tag purple">Demographics</span>
+          <span class="diff-tag amber">Health History</span>
+        </div>
+      </div>
+
+      <!-- Factor 2 -->
+      <div class="diff-card">
+        <div class="diff-num">Factor 02</div>
+        <div class="diff-icon">📐</div>
+        <h3>Personalized Thermographic Baselines</h3>
+        <p>Population-based thermal thresholds treat every athlete identically and produce high false-positive rates in naturally asymmetric individuals. NUR builds individual SD baselines from each athlete's longitudinal thermographic history, flagging deviations relative to their own normal — not a population mean. This is clinically superior for chronic monitoring and dramatically reduces alert fatigue in practice.</p>
+        <div class="diff-tags">
+          <span class="diff-tag">Individual SD Baseline</span>
+          <span class="diff-tag purple">Longitudinal Tracking</span>
+          <span class="diff-tag amber">Reduced Alert Fatigue</span>
+        </div>
+      </div>
+
+      <!-- Factor 3 -->
+      <div class="diff-card">
+        <div class="diff-num">Factor 03</div>
+        <div class="diff-icon">🧭</div>
+        <h3>Interpretable Risk Framework with Deceptive Readiness Detection</h3>
+        <p>NUR's COMPASS framework assigns athletes to one of four named clinical zones with fully traceable risk factors — every score is explainable to the clinician. The framework's highest-priority zone, <strong>Deceptive Readiness</strong>, detects the most dangerous injury state: normal systemic wearable data masking active local tissue inflammation. No competitor in any tier can detect this condition because it requires both axes simultaneously present in the scoring model.</p>
+        <div class="diff-tags">
+          <span class="diff-tag">4-Zone Classification</span>
+          <span class="diff-tag red">Deceptive Readiness</span>
+          <span class="diff-tag purple">Traceable Risk Factors</span>
+          <span class="diff-tag">Clinician Explainability</span>
+        </div>
+      </div>
+
+      <!-- Factor 4 -->
+      <div class="diff-card">
+        <div class="diff-num">Factor 04</div>
+        <div class="diff-icon">📋</div>
+        <h3>Tailored Intervention Plans &amp; Detailed Assessment</h3>
+        <p>NUR does not stop at risk classification. Each zone produces a mandatory, deterministic intervention protocol derived from the athlete's specific thermal pattern, physiological state, and injury history — not a generic recommendation template. Clinicians receive a detailed, athlete-specific action plan covering training load modifications, physiotherapy referral triggers, and return-to-play criteria, closing the loop from detection to clinical decision.</p>
+        <div class="diff-tags">
+          <span class="diff-tag">Deterministic Protocols</span>
+          <span class="diff-tag amber">Athlete-Specific Plans</span>
+          <span class="diff-tag purple">Return-to-Play Criteria</span>
+          <span class="diff-tag">Physio Referral Triggers</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- Overview -->
   <section id="overview">
@@ -1305,6 +1473,7 @@
     <h3>The Structural Moat</h3>
     <p>The <strong>Deceptive Readiness zone</strong> — where an athlete's wearable data appears normal while local tissue is inflamed — is invisible to every Tier 1 competitor. Detecting it requires both axes present in the same scoring model. This is the condition most likely to result in soft-tissue injury under full training load, and it is the highest-value clinical insight NUR produces.</p>
   </section>
+
 
 </main>
 
