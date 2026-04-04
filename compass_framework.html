@@ -603,6 +603,120 @@
   .decay-item.normal-d .decay-hl { color: var(--accent); }
   .decay-item.danger-d .decay-hl { color: var(--danger); }
 
+  /* ── Temporal Fusion Diagrams ── */
+  .tf-diagram-wrap {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px 20px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+  .tf-diagram-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+  .tf-scenario-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #00c8ff;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .tf-scenario-label span {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .tf-timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    position: relative;
+    padding-bottom: 28px;
+  }
+  .tf-timeline::after {
+    content: '▶';
+    position: absolute;
+    bottom: 4px;
+    right: 0;
+    font-size: 12px;
+    color: #e2e8f0;
+  }
+  .tf-timeline::before {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 14px;
+    height: 2px;
+    background: #e2e8f0;
+  }
+  .tf-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 72px;
+  }
+  .tf-day {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .tf-box {
+    width: 70px;
+    padding: 7px 4px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.35;
+    border: 2px solid #e2e8f0;
+    color: #e2e8f0;
+    background: transparent;
+  }
+  .tf-score {
+    border-color: #22c55e;
+    color: #22c55e;
+  }
+  .tf-obsolete {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+  }
+  .tf-absent {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+  .tf-new-scan {
+    border-color: #00c8ff;
+    color: #00c8ff;
+  }
+  .tf-cycle-reset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    padding-bottom: 28px;
+    margin: 0 2px;
+  }
+  .tf-cycle-line {
+    width: 2px;
+    flex: 1;
+    background: repeating-linear-gradient(to bottom, #3b82f6 0, #3b82f6 6px, transparent 6px, transparent 10px);
+  }
+  .tf-cycle-label {
+    font-size: 10px;
+    color: #3b82f6;
+    font-weight: 700;
+    margin-top: 6px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
   /* ── Alert row ── */
   .alert {
     border-radius: var(--radius-sm);
@@ -924,7 +1038,7 @@
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-badge">🏃 NUR Platform · Amplifai Health · Proprietary &amp; Confidential</div>
+  <div class="hero-badge">🏃 NUR Platform · Amplifai Health · Proprietary &amp; Confidential · v1.1 · Updated 2026-04-04</div>
   <h1>COMPASS<br><span>Clinical Risk Framework</span></h1>
   <p class="hero-sub">The proprietary clinical framework of the NUR Platform by Amplifai Health — merging wearable physiological signals with thermography to deliver evidence-based, zone-classified athlete risk assessments.</p>
   <div class="hero-meta">
@@ -1832,54 +1946,141 @@
   <p class="section-intro">The two data streams operate on fundamentally different timescales. The framework explicitly models this asymmetry rather than engineering around it.</p>
 
   <h3 id="thermal-decay">6.1 Thermal Data Gaps</h3>
-  <p>Thermography is a periodic assessment — athletes are not scanned daily. Between scans, the system operates with a <em>stale thermal signal</em>: the most recent scan result persists as a contextual modifier, but its clinical weight diminishes the longer it goes unrefreshed. This section defines how COMPASS handles that gap: how long a thermal reading remains usable, how its influence is progressively reduced as the gap widens, and at what point the system treats the absence of fresh data as a risk condition in its own right.</p>
-
-  <div class="alert blue" style="margin-bottom: 20px;">
-    <div class="alert-icon">📐</div>
-    <div>
-      <strong>Modeling Assumption — Not Literature-Derived</strong>
-      <p>The 7-day gap tolerance is a clinical approximation based on standard exponential decay, chosen for simplicity and auditability. No peer-reviewed study directly quantifies how long a thermographic asymmetry reading remains predictively valid after capture. This parameter should be treated as institution-adjustable: clinical leads are encouraged to revise it as longitudinal outcome data accumulates within their own cohort.</p>
-    </div>
-  </div>
+  <p>Thermography is a periodic assessment — athletes are not scanned daily. The thermal reading from the most recent scan is treated as fully valid until it is 7 days old. On day 7, it becomes immediately obsolete and scoring is suspended. No gradual weighting or partial credit is applied during the gap — the signal is either valid or it is not.</p>
 
   <div class="decay-info">
     <div class="decay-item normal-d">
-      <div class="decay-zone">Gap Tolerance</div>
+      <div class="decay-zone">Valid Window</div>
       <div class="decay-hl">7 days</div>
-      <div class="decay-sub">Modeling assumption · Adjustable by clinical leads</div>
+      <div class="decay-sub">Binary — valid through day 6, obsolete from day 7</div>
     </div>
   </div>
 
   <div class="alert orange">
     <div class="alert-icon">⏰</div>
     <div>
-      <strong>Gap Threshold: 7 Days — Scoring Suspended</strong>
-      <p>Once 7 days have elapsed since the last thermography scan, the thermal signal has degraded to 50% of its original clinical weight — below the minimum threshold for reliable zone classification. At this point the system does not attempt to extrapolate from stale data: thermal risk scoring is suspended and a scan-overdue flag is raised. Operating without a valid thermal input is itself treated as an elevated-risk state, since silent tissue stress accumulation cannot be excluded.</p>
+      <strong>Day 7+: Thermal Signal Obsolete — Scoring Suspended</strong>
+      <p>The thermal reading is treated as valid for up to 7 days from the scan date. On day 7, the signal is immediately suspended — no partial weighting is applied. Thermal risk scoring halts and a scan-overdue flag is raised. Operating without a valid thermal input is itself treated as an elevated-risk state, since silent tissue stress accumulation cannot be excluded.</p>
     </div>
   </div>
 
-  <!-- Decay Chart -->
-  <div class="chart-wrap">
-    <h4>Thermal Signal Weight Over Time — Gap Degradation Curve <span style="font-size:11px; font-weight:500; color:var(--text-dim); background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:2px 8px; margin-left:8px;">Modeling Assumption</span></h4>
-    <canvas id="decayChart"></canvas>
+  <!-- Scenario 1 Diagram -->
+  <div class="tf-diagram-wrap">
+    <div class="tf-diagram-title">Signal Validity Over Time</div>
+    <div class="tf-scenario-label">Scenario 1 <span>— 1 thermal scan per week</span></div>
+    <div class="tf-timeline">
+      <div class="tf-col">
+        <div class="tf-day">day 1</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>1</div>
+        <div class="tf-box tf-score">NUR score<br>1</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 2</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>1</div>
+        <div class="tf-box tf-score">NUR score<br>1</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 3</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box tf-obsolete">wearable<br>1 (obsolete)</div>
+        <div class="tf-box tf-absent">NUR score<br>not there</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 4</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>2</div>
+        <div class="tf-box tf-score">NUR score<br>2</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 5</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>3</div>
+        <div class="tf-box tf-score">NUR score<br>3</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 6</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>4</div>
+        <div class="tf-box tf-score">NUR score<br>4</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 7</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>5</div>
+        <div class="tf-box tf-score">NUR score<br>5</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 8</div>
+        <div class="tf-box tf-obsolete">Thermal<br>1 (obsolete)</div>
+        <div class="tf-box">wearable<br>6</div>
+        <div class="tf-box tf-absent">NUR score<br>not there</div>
+      </div>
+    </div>
   </div>
 
   <h3 id="data-gaps">6.2 Handling Wearable Data Gaps</h3>
-  <p>Spike publishes one daily summary per athlete — if a day's data is missing (device not worn, sync failure), no readiness score is available for that day. Unlike thermography (which decays gracefully), wearable data gaps require suspension — not downweighting. Yesterday's daily HRV average carries no reliable predictive weight for today's readiness.</p>
-
-  <div class="alert green">
-    <div class="alert-icon">✅</div>
-    <div>
-      <strong>Gap 0–2 Days: Flagged Assessment</strong>
-      <p>Zone classification proceeds using last known wearable values, visibly marked as "estimated — based on data from [date]." Practitioners receive a sync reminder but are not blocked from acting on the output.</p>
-    </div>
-  </div>
+  <p>Spike publishes one daily summary per athlete — if a day's data is missing (device not worn, sync failure), no readiness score is available for that day. Like the thermal signal, wearable validity is binary: wearable data is valid for the day of collection and one following day (2 days total). From day 3 onward without a new reading, the wearable signal is immediately obsolete and zone classification is suspended.</p>
 
   <div class="alert red">
     <div class="alert-icon">🚫</div>
     <div>
-      <strong>Gap &gt;2 Days: Assessment Suspended</strong>
-      <p>No readiness score generated. No zone classification issued. If a valid thermal prior is available, a thermal-only advisory is produced. The daily output reads: "Zone assessment unavailable — wearable sync required. Last confirmed zone: [zone] on [date]."</p>
+      <strong>Day 2+: Wearable Signal Obsolete — Assessment Suspended</strong>
+      <p>No readiness score generated. No zone classification issued. The daily output reads: "Zone assessment unavailable — wearable sync required. Last confirmed zone: [zone] on [date]."</p>
+    </div>
+  </div>
+
+  <!-- Scenario 2 Diagram -->
+  <div class="tf-diagram-wrap">
+    <div class="tf-scenario-label">Scenario 2 <span>— more than 1 thermal scan per week</span></div>
+    <div class="tf-timeline">
+      <div class="tf-col">
+        <div class="tf-day">day 1</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>1</div>
+        <div class="tf-box tf-score">NUR score<br>1</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 2</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>1</div>
+        <div class="tf-box tf-score">NUR score<br>1</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 3</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box tf-obsolete">wearable<br>1 (obsolete)</div>
+        <div class="tf-box tf-absent">NUR score<br>not there</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 4</div>
+        <div class="tf-box tf-new-scan">Thermal<br>2</div>
+        <div class="tf-box">wearable<br>2</div>
+        <div class="tf-box tf-score">NUR score<br>2</div>
+      </div>
+      <div class="tf-cycle-reset">
+        <div class="tf-cycle-line"></div>
+        <div class="tf-cycle-label">Cycle<br>resets</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 0</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>1</div>
+        <div class="tf-box tf-score">NUR score<br>1</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 1</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>2</div>
+        <div class="tf-box tf-score">NUR score<br>2</div>
+      </div>
+      <div class="tf-col">
+        <div class="tf-day">day 2</div>
+        <div class="tf-box">Thermal<br>1</div>
+        <div class="tf-box">wearable<br>3</div>
+        <div class="tf-box tf-score">NUR score<br>3</div>
+      </div>
     </div>
   </div>
 
@@ -3160,78 +3361,6 @@ Chart.defaults.font.size = 12;
       }
     },
     plugins: [scanPlugin]
-  });
-})();
-
-// ── Thermal Decay Chart ──
-(function() {
-  const ctx = document.getElementById('decayChart').getContext('2d');
-  const days = Array.from({length: 8}, (_, i) => i); // 0–7 days
-
-  const decay = (halfLife) => days.map(d => 100 * Math.pow(0.5, d/halfLife));
-
-  // Overdue threshold annotation line at day 7
-  const overduePlugin = {
-    id: 'overdueThreshold',
-    afterDraw(chart) {
-      const {ctx: c, chartArea: {top, bottom}, scales: {x}} = chart;
-      const xPos = x.getPixelForValue(7);
-      c.save();
-      c.strokeStyle = 'rgba(239,68,68,0.6)';
-      c.lineWidth = 2;
-      c.setLineDash([6, 3]);
-      c.beginPath(); c.moveTo(xPos, top); c.lineTo(xPos, bottom); c.stroke();
-      c.setLineDash([]);
-      c.fillStyle = 'rgba(239,68,68,0.85)';
-      c.font = '11px system-ui, sans-serif';
-      c.fillText('Scan Overdue ⟶', xPos + 6, top + 14);
-      c.restore();
-    }
-  };
-
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: days,
-      datasets: [
-        {
-          label: '📋 Thermal Prior Weight (7-day half-life, all zones)',
-          data: decay(7),
-          borderColor: '#00c8ff',
-          backgroundColor: 'rgba(0,200,255,0.12)',
-          fill: true,
-          tension: 0.4,
-          pointRadius: 4,
-          pointBackgroundColor: '#00c8ff',
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } },
-        tooltip: {
-          mode: 'index', intersect: false,
-          callbacks: {
-            label: c => ` Thermal Prior Weight: ${c.parsed.y.toFixed(1)}%`
-          }
-        }
-      },
-      scales: {
-        x: {
-          title: { display: true, text: 'Days Since Last Scan →', color: '#8b949e' },
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { callback: v => `Day ${v}` }
-        },
-        y: {
-          title: { display: true, text: 'Thermal Prior Weight (%) →', color: '#8b949e' },
-          min: 0, max: 105,
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { callback: v => v + '%' }
-        }
-      }
-    },
-    plugins: [overduePlugin]
   });
 })();
 
