@@ -622,6 +622,85 @@
     .sc-zone { max-width: 100%; }
   }
 
+  /* ── 2.1 Architecture Diagram ── */
+  .arch-diagram { margin: 28px 0; max-width: 900px; }
+  .arch-section-hdr {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-dim); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .arch-section-hdr::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .arch-clients { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .arch-infra   { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .arch-node {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px; transition: border-color 0.2s;
+  }
+  .arch-node:hover { border-color: #444d56; }
+  .arch-node-icon  { font-size: 22px; margin-bottom: 8px; display: block; }
+  .arch-node-title { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .arch-node-sub   { font-size: 11.5px; color: var(--text-dim); margin-bottom: 8px; }
+  .arch-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .arch-node-client { border-top: 2px solid rgba(0,200,255,0.5); }
+  .arch-node-api {
+    border-color: rgba(0,200,255,0.4);
+    background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(124,58,237,0.06));
+    text-align: center; padding: 20px 24px;
+  }
+  .arch-node-api .arch-node-icon  { font-size: 28px; }
+  .arch-node-api .arch-node-title { font-size: 15px; }
+  .arch-node-api .arch-tags { justify-content: center; }
+  .arch-node-db       { border-top: 2px solid rgba(34,197,94,0.5); }
+  .arch-node-firebase { border-top: 2px solid rgba(249,115,22,0.5); }
+  .arch-node-gcs      { border-top: 2px solid rgba(124,58,237,0.5); }
+  .arch-node-nurai    { border-top: 2px solid rgba(124,58,237,0.7); border-color: rgba(124,58,237,0.35); background: rgba(124,58,237,0.04); }
+  .arch-tag {
+    display: inline-flex; align-items: center;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 2px 7px; border-radius: 4px;
+  }
+  .arch-tag-jwt      { background: rgba(124,58,237,0.15); color: #c4b5fd; }
+  .arch-tag-apikey   { background: rgba(249,115,22,0.15); color: #fdba74; }
+  .arch-tag-fb       { background: rgba(245,158,11,0.15); color: #fcd34d; }
+  .arch-tag-cloudrun { background: rgba(0,200,255,0.12); color: var(--accent); }
+  .arch-tag-iam      { background: rgba(34,197,94,0.12); color: #86efac; }
+  .arch-tag-db       { background: rgba(34,197,94,0.12); color: #86efac; }
+  .arch-tag-realtime { background: rgba(249,115,22,0.12); color: #fdba74; }
+  .arch-tag-storage  { background: rgba(124,58,237,0.12); color: #c4b5fd; }
+  .arch-vconn { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
+  .arch-vconn-line  { width: 1.5px; height: 14px; background: var(--border); }
+  .arch-vconn-pill  {
+    font-size: 11px; color: var(--text-dim); background: var(--bg);
+    padding: 3px 12px; border: 1px solid var(--border); border-radius: 10px;
+    white-space: nowrap; margin: 2px 0;
+  }
+  .arch-vconn-arrow { color: var(--text-dim); font-size: 13px; margin-top: 1px; }
+  .arch-gcp {
+    border: 1px dashed rgba(0,200,255,0.2); border-radius: var(--radius);
+    padding: 24px; background: rgba(0,200,255,0.015); position: relative;
+  }
+  .arch-gcp-label {
+    position: absolute; top: -10px; left: 20px;
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent); background: var(--bg); padding: 0 10px; opacity: 0.8;
+  }
+  .arch-api-wrap { display: flex; justify-content: center; margin-bottom: 0; }
+  .arch-api-wrap .arch-node { min-width: 200px; max-width: 260px; }
+  .arch-fanout-svg { width: 100%; height: 24px; display: block; overflow: visible; }
+  .arch-services { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .arch-svc-group { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+  .arch-svc-group-bg { border-style: dashed; opacity: 0.8; }
+  .arch-svc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-dim); margin-bottom: 10px; }
+  .arch-svc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .arch-chip     { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: var(--text-muted); }
+  .arch-chip-dim { background: var(--surface2); border: 1px dashed var(--border); border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: var(--text-dim); }
+  @media (max-width: 900px) {
+    .arch-clients { grid-template-columns: 1fr; }
+    .arch-infra   { grid-template-columns: repeat(2, 1fr); }
+    .arch-services { grid-template-columns: 1fr; }
+    .arch-vconn-pill { white-space: normal; text-align: center; }
+  }
+
   /* ── Footer ── */
   footer {
     background: var(--surface);
@@ -743,38 +822,125 @@
   <p class="section-intro">The NUR platform follows a layered, cloud-native architecture hosted entirely on Google Cloud Platform. Client applications communicate exclusively over HTTPS with the Django REST API.</p>
 
   <h3>2.1 High-Level Architecture</h3>
-<pre>
-   CLIENT LAYER
-   +------------------+   +-------------------+   +-------------------+
-   |   My NUR         |   |  NUR Sensor       |   |  NUR Teams        |
-   |  Android / iOS   |   |  Android          |   |  Web Browser      |
-   |  JWT (OTP)       |   |  API Key          |   |  JWT              |
-   |                  |   |  + Firebase (mgd) |   |                   |
-   +--------+---------+   +---------+---------+   +---------+---------+
-            |           REST API    |  RTDB listener        |
-            +-------+---------------+---+       +-----------+
-                    |                   |       |
-                    |  HTTPS / REST API |       |  Signed URL (image upload)
-                    |                   |       |
-   GCP +------------+-------------------+-------+---+
-       |       Django REST Framework (Cloud Run)    |
-       +-------+----------+-----------+-------------+
-               |          |           |
-   +-----------+--+   +---+------+  +-+------------------+
-   | Cloud SQL    |   | Firebase |  |  GCS Bucket        |
-   | PostgreSQL   |   | RTDB     |  |  (Thermal Images)  |
-   +--------------+   | (session |  +--------+-----------+
-                      | signals) |           |
-                      +-----+----+  +--------+-----------+
-                            |        |  Cloud Run         |
-                    NUR Sensor       |  NURAI             |
-                    listens here     |  (AI Inference)    |
-                                     +--------------------+
+<div class="arch-diagram">
 
-   External:  FCM (push notifications)         Firebase RTDB (QR session push)
-              Wearable APIs (data ingestion)
-</pre>
-  <p style="color:var(--text-dim);font-size:13px;margin-top:12px;max-width:860px;"><strong style="color:var(--text-muted);">Background Services (no client lane):</strong> Async Baseline + RTP Thread (spawned post-scan by Backend) &middot; Alert Generator (<code>POST /internal/cron/alert-generate</code>, Cloud Scheduler + event-driven) &middot; Daily Digest (<code>POST /internal/cron/daily-digest</code>, Cloud Scheduler 06:00 org TZ)</p>
+  <!-- CLIENT LAYER -->
+  <div class="arch-section-hdr">Client Layer</div>
+  <div class="arch-clients">
+    <div class="arch-node arch-node-client">
+      <span class="arch-node-icon">📱</span>
+      <div class="arch-node-title">My NUR</div>
+      <div class="arch-node-sub">Android / iOS</div>
+      <div class="arch-tags">
+        <span class="arch-tag arch-tag-jwt">JWT (OTP)</span>
+      </div>
+    </div>
+    <div class="arch-node arch-node-client">
+      <span class="arch-node-icon">🔬</span>
+      <div class="arch-node-title">NUR Sensor</div>
+      <div class="arch-node-sub">Android</div>
+      <div class="arch-tags">
+        <span class="arch-tag arch-tag-apikey">API Key</span>
+        <span class="arch-tag arch-tag-fb">Firebase (mgd)</span>
+      </div>
+    </div>
+    <div class="arch-node arch-node-client">
+      <span class="arch-node-icon">🖥️</span>
+      <div class="arch-node-title">NUR Teams</div>
+      <div class="arch-node-sub">Web Browser</div>
+      <div class="arch-tags">
+        <span class="arch-tag arch-tag-jwt">JWT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector: clients → backend -->
+  <div class="arch-vconn">
+    <div class="arch-vconn-line"></div>
+    <div class="arch-vconn-pill">HTTPS / REST API &nbsp;·&nbsp; Signed URL (image upload)</div>
+    <div class="arch-vconn-line"></div>
+    <div class="arch-vconn-arrow">▼</div>
+  </div>
+
+  <!-- GCP LAYER -->
+  <div class="arch-gcp">
+    <div class="arch-gcp-label">GCP · Google Cloud Platform</div>
+
+    <!-- Backend API hub -->
+    <div class="arch-api-wrap">
+      <div class="arch-node arch-node-api">
+        <span class="arch-node-icon">⚙️</span>
+        <div class="arch-node-title">Backend API</div>
+        <div class="arch-node-sub">Django REST Framework</div>
+        <div class="arch-tags">
+          <span class="arch-tag arch-tag-cloudrun">Cloud Run</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fan-out connector: Backend API → infra nodes -->
+    <svg class="arch-fanout-svg" viewBox="0 0 100 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="50"   y1="0"  x2="50"   y2="10" stroke="#30363d" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <line x1="12.5" y1="10" x2="87.5" y2="10" stroke="#30363d" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <line x1="12.5" y1="10" x2="12.5" y2="20" stroke="#30363d" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <line x1="37.5" y1="10" x2="37.5" y2="20" stroke="#30363d" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <line x1="62.5" y1="10" x2="62.5" y2="20" stroke="#30363d" stroke-width="1" vector-effect="non-scaling-stroke"/>
+      <line x1="87.5" y1="10" x2="87.5" y2="20" stroke="#30363d" stroke-width="1" vector-effect="non-scaling-stroke"/>
+    </svg>
+
+    <!-- Infrastructure nodes -->
+    <div class="arch-infra">
+      <div class="arch-node arch-node-db">
+        <span class="arch-node-icon">🗄️</span>
+        <div class="arch-node-title">Cloud SQL</div>
+        <div class="arch-node-sub">PostgreSQL</div>
+        <div class="arch-tags"><span class="arch-tag arch-tag-db">Managed DB</span></div>
+      </div>
+      <div class="arch-node arch-node-firebase">
+        <span class="arch-node-icon">🔥</span>
+        <div class="arch-node-title">Firebase RTDB</div>
+        <div class="arch-node-sub">Session signals</div>
+        <div class="arch-tags"><span class="arch-tag arch-tag-realtime">Realtime</span></div>
+      </div>
+      <div class="arch-node arch-node-gcs">
+        <span class="arch-node-icon">🪣</span>
+        <div class="arch-node-title">GCS Bucket</div>
+        <div class="arch-node-sub">Thermal images</div>
+        <div class="arch-tags"><span class="arch-tag arch-tag-storage">Storage</span></div>
+      </div>
+      <div class="arch-node arch-node-nurai">
+        <span class="arch-node-icon">🤖</span>
+        <div class="arch-node-title">NURAI</div>
+        <div class="arch-node-sub">AI Inference</div>
+        <div class="arch-tags">
+          <span class="arch-tag arch-tag-cloudrun">Cloud Run</span>
+          <span class="arch-tag arch-tag-iam">IAM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services footer -->
+  <div class="arch-services">
+    <div class="arch-svc-group">
+      <div class="arch-svc-label">External Services</div>
+      <div class="arch-svc-chips">
+        <span class="arch-chip">📨 FCM Push</span>
+        <span class="arch-chip">⚡ Firebase RTDB · QR push</span>
+        <span class="arch-chip">⌚ Wearable APIs</span>
+      </div>
+    </div>
+    <div class="arch-svc-group arch-svc-group-bg">
+      <div class="arch-svc-label">Background Services (no client lane)</div>
+      <div class="arch-svc-chips">
+        <span class="arch-chip-dim">🔄 Async Baseline + RTP Thread</span>
+        <span class="arch-chip-dim">🔔 Alert Generator · Cloud Scheduler</span>
+        <span class="arch-chip-dim">📋 Daily Digest · 06:00 org TZ</span>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 </section>
 
@@ -1267,8 +1433,8 @@
     <text x="490" y="207" text-anchor="end" font-size="9" fill="#4b5563">numeric(5,2)</text>
     <text x="278" y="225" font-size="9.5" fill="#8b949e">measurements</text>
     <text x="490" y="225" text-anchor="end" font-size="9" fill="#4b5563">JSONB</text>
-    <text x="278" y="243" font-size="9.5" fill="#8b949e">baseline_mode</text>
-    <text x="490" y="243" text-anchor="end" font-size="9" fill="#4b5563">varchar</text>
+    <text x="278" y="243" font-size="9.5" fill="#8b949e">max_asymmetry</text>
+    <text x="490" y="243" text-anchor="end" font-size="9" fill="#4b5563">numeric</text>
     <text x="278" y="261" font-size="9.5" fill="#8b949e">is_valid</text>
     <text x="490" y="261" text-anchor="end" font-size="9" fill="#4b5563">boolean</text>
     <text x="278" y="279" font-size="9.5" fill="#8b949e">generated_at</text>
@@ -1564,7 +1730,9 @@
       <tr><td><code>detected_anatomical_ids</code></td><td>JSONB, nullable</td><td>List of anatomical region IDs the AI successfully detected in the thermogram.</td></tr>
       <tr><td><code>has_skin_mask</code></td><td>boolean, default false</td><td>Whether a skin segmentation mask was produced during inference.</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">Baseline &amp; Validity</td></tr>
-      <tr><td><code>baseline_mode</code></td><td>varchar(30)</td><td>Scan-level summary of per-region baseline modes. <code>individual_sd</code> — all detected regions use the individual SD formula; <code>population_fallback</code> — all regions use population threshold; <code>mixed</code> — some regions have sufficient history for individual SD while others remain on population fallback. Derived by the async thread from the per-region <code>baseline_mode</code> fields in <code>measurements</code> JSONB. Useful for quick scan-level filtering without JSONB inspection.</td></tr>
+      <tr><td><code>max_asymmetry</code></td><td>numeric(4,2), nullable</td><td>Maximum absolute temperature delta across all detected regions in <code>measurements</code>. Written synchronously by Module 1 alongside the <code>measurements</code> JSONB. <code>NULL</code> if <code>measurements</code> is NULL. Enables fast threshold filtering without JSONB inspection.</td></tr>
+      <tr><td><code>has_asymmetry</code></td><td>boolean, nullable</td><td><code>true</code> if any region in <code>measurements</code> has <code>affected_side</code> not null. Written synchronously by Module 1. <code>NULL</code> if <code>measurements</code> is NULL. Allows quick scan-level filtering for scans with any detected asymmetry.</td></tr>
+      <tr><td><code>rtp_cleared</code></td><td>boolean, nullable</td><td><code>NULL</code> until the async Baseline + RTP Thread completes. <code>true</code> if all per-region <code>rtp_clear</code> values in <code>measurements</code> are <code>"YES"</code>. <code>false</code> if any region has <code>rtp_clear = "NO"</code>. Written by the async thread alongside <code>rtp_regions_pending</code> and <code>baseline_computed_at</code>. Enables a single-column RTP clearance check without JSONB scanning.</td></tr>
       <tr><td><code>is_valid</code></td><td>boolean, default true</td><td>Set to false if the scan is retrospectively invalidated (e.g. avoidance_flags trigger disqualification). Excluded from Flow B gate and baseline batch.</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">Audit</td></tr>
       <tr><td><code>generated_at</code></td><td>timestamptz</td><td>When NURAI completed thermal inference for this scan.</td></tr>
@@ -2136,52 +2304,111 @@ GROUP BY w.workflow_id;</pre>
   <h2>AI / ML Pipeline &amp; NURAI</h2>
   <p class="section-intro">NURAI is the AI inference service deployed on Cloud Run. It is composed of three internal modules — <strong>Computer Vision &amp; Thermal ROI</strong>, <strong>Metrics Pipeline</strong>, and <strong>GenAI Reasoning</strong> — exposed via two endpoints: <code>POST /infer</code> (Flow A) and <code>POST /infer/refresh</code> (Flow B), called exclusively by the Backend, never by clients directly. It reads all inputs from the database and GCS; it does not call any upstream wearable or Spike API.</p>
 
-  <!-- ── NURAI Module Diagram ── -->
-  <svg viewBox="0 0 780 200" width="100%" style="max-width:780px;display:block;margin:28px 0 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <!-- ── Flow A Diagram ── -->
+  <svg viewBox="0 0 780 268" width="100%" style="display:block;margin:28px 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+
+    <!-- Flow A title bar -->
+    <rect x="0" y="0" width="780" height="26" rx="8" fill="rgba(249,115,22,0.10)" stroke="rgba(249,115,22,0.35)" stroke-width="1"/>
+    <rect x="0" y="13" width="780" height="13" fill="rgba(249,115,22,0.06)"/>
+    <text x="390" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#fdba74" letter-spacing="0.07em">FLOW A — FULL PIPELINE · POST /infer · TRIGGERED BY NUR SENSOR</text>
 
     <!-- Module 1 — Computer Vision & Thermal ROI -->
-    <rect x="0" y="30" width="210" height="100" rx="10" fill="#1c1812" stroke="rgba(249,115,22,0.5)" stroke-width="1.5"/>
-    <rect x="0" y="30" width="210" height="28" rx="10" fill="rgba(249,115,22,0.12)"/>
-    <rect x="0" y="46" width="210" height="12" fill="rgba(249,115,22,0.12)"/>
-    <text x="105" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#fdba74" letter-spacing="0.07em">MODULE 1</text>
-    <text x="105" y="76" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">Computer Vision</text>
-    <text x="105" y="93" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">&amp; Thermal ROI</text>
-    <text x="105" y="114" text-anchor="middle" font-size="10.5" fill="#8b949e">Thermogram fetch · ROI</text>
-    <text x="105" y="129" text-anchor="middle" font-size="10.5" fill="#8b949e">extraction · t_score</text>
+    <rect x="0" y="34" width="210" height="100" rx="10" fill="#1c1812" stroke="rgba(249,115,22,0.5)" stroke-width="1.5"/>
+    <rect x="0" y="34" width="210" height="28" rx="10" fill="rgba(249,115,22,0.12)"/>
+    <rect x="0" y="50" width="210" height="12" fill="rgba(249,115,22,0.12)"/>
+    <text x="105" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#fdba74" letter-spacing="0.07em">MODULE 1</text>
+    <text x="105" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">Computer Vision</text>
+    <text x="105" y="97" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">&amp; Thermal ROI</text>
+    <text x="105" y="118" text-anchor="middle" font-size="10.5" fill="#8b949e">Thermogram fetch · ROI</text>
+    <text x="105" y="133" text-anchor="middle" font-size="10.5" fill="#8b949e">extraction · t_score</text>
 
     <!-- Arrow 1→2 -->
-    <line x1="214" y1="80" x2="278" y2="80" stroke="#30363d" stroke-width="1.5"/>
-    <polygon points="278,75 286,80 278,85" fill="#30363d"/>
+    <line x1="214" y1="84" x2="278" y2="84" stroke="#30363d" stroke-width="1.5"/>
+    <polygon points="278,79 286,84 278,89" fill="#30363d"/>
 
     <!-- Module 2 — Metrics Pipeline -->
-    <rect x="286" y="30" width="210" height="100" rx="10" fill="#1a1528" stroke="rgba(124,58,237,0.5)" stroke-width="1.5"/>
-    <rect x="286" y="30" width="210" height="28" rx="10" fill="rgba(124,58,237,0.12)"/>
-    <rect x="286" y="46" width="210" height="12" fill="rgba(124,58,237,0.12)"/>
-    <text x="391" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">MODULE 2</text>
-    <text x="391" y="76" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">Metrics Pipeline</text>
-    <text x="391" y="114" text-anchor="middle" font-size="10.5" fill="#8b949e">COMPASS scoring · zone</text>
-    <text x="391" y="129" text-anchor="middle" font-size="10.5" fill="#8b949e">classification · fusion</text>
+    <rect x="286" y="34" width="210" height="100" rx="10" fill="#1a1528" stroke="rgba(124,58,237,0.5)" stroke-width="1.5"/>
+    <rect x="286" y="34" width="210" height="28" rx="10" fill="rgba(124,58,237,0.12)"/>
+    <rect x="286" y="50" width="210" height="12" fill="rgba(124,58,237,0.12)"/>
+    <text x="391" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">MODULE 2</text>
+    <text x="391" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">Metrics Pipeline</text>
+    <text x="391" y="118" text-anchor="middle" font-size="10.5" fill="#8b949e">COMPASS scoring · zone</text>
+    <text x="391" y="133" text-anchor="middle" font-size="10.5" fill="#8b949e">classification · fusion</text>
 
     <!-- Arrow 2→3 -->
-    <line x1="500" y1="80" x2="564" y2="80" stroke="#30363d" stroke-width="1.5"/>
-    <polygon points="564,75 572,80 564,85" fill="#30363d"/>
+    <line x1="500" y1="84" x2="564" y2="84" stroke="#30363d" stroke-width="1.5"/>
+    <polygon points="564,79 572,84 564,89" fill="#30363d"/>
 
     <!-- Module 3 — GenAI Reasoning -->
-    <rect x="572" y="30" width="208" height="100" rx="10" fill="#0e1e2a" stroke="rgba(0,200,255,0.4)" stroke-width="1.5"/>
-    <rect x="572" y="30" width="208" height="28" rx="10" fill="rgba(0,200,255,0.10)"/>
-    <rect x="572" y="46" width="208" height="12" fill="rgba(0,200,255,0.10)"/>
-    <text x="676" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#00c8ff" letter-spacing="0.07em">MODULE 3</text>
-    <text x="676" y="76" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">GenAI Reasoning</text>
-    <text x="676" y="114" text-anchor="middle" font-size="10.5" fill="#8b949e">Zone rationale · intervention</text>
-    <text x="676" y="129" text-anchor="middle" font-size="10.5" fill="#8b949e">plan · coach narrative</text>
+    <rect x="572" y="34" width="208" height="100" rx="10" fill="#0e1e2a" stroke="rgba(0,200,255,0.4)" stroke-width="1.5"/>
+    <rect x="572" y="34" width="208" height="28" rx="10" fill="rgba(0,200,255,0.10)"/>
+    <rect x="572" y="50" width="208" height="12" fill="rgba(0,200,255,0.10)"/>
+    <text x="676" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#00c8ff" letter-spacing="0.07em">MODULE 3</text>
+    <text x="676" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">GenAI Reasoning</text>
+    <text x="676" y="118" text-anchor="middle" font-size="10.5" fill="#8b949e">Zone rationale · intervention</text>
+    <text x="676" y="133" text-anchor="middle" font-size="10.5" fill="#8b949e">plan · coach narrative</text>
 
-    <!-- Flow A bracket (spans all 3 modules) -->
-    <line x1="0" y1="155" x2="780" y2="155" stroke="rgba(249,115,22,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="390" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="rgba(249,115,22,0.85)" letter-spacing="0.05em">FLOW A — runs modules 1 → 2 → 3</text>
+    <!-- Async connector from M1 bottom -->
+    <line x1="105" y1="134" x2="105" y2="150" stroke="rgba(167,139,250,0.55)" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <polygon points="101,150 105,156 109,150" fill="rgba(167,139,250,0.55)"/>
+    <rect x="118" y="141" width="200" height="16" rx="8" fill="rgba(124,58,237,0.12)" stroke="rgba(167,139,250,0.28)" stroke-width="0.8"/>
+    <text x="218" y="152" text-anchor="middle" font-size="8.5" fill="#a78bfa">spawned after M1 write · concurrent with M2 &amp; M3</text>
 
-    <!-- Flow B bracket (spans modules 2 & 3 only) -->
-    <line x1="286" y1="183" x2="780" y2="183" stroke="rgba(124,58,237,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="533" y="198" text-anchor="middle" font-size="10" font-weight="700" fill="rgba(124,58,237,0.85)" letter-spacing="0.05em">FLOW B — runs modules 2 → 3 only</text>
+    <!-- Async Baseline + RTP box (same size as modules) -->
+    <rect x="0" y="162" width="210" height="100" rx="10" fill="rgba(124,58,237,0.07)" stroke="rgba(167,139,250,0.45)" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <rect x="0" y="162" width="210" height="28" rx="10" fill="rgba(124,58,237,0.12)"/>
+    <rect x="0" y="178" width="210" height="12" fill="rgba(124,58,237,0.12)"/>
+    <text x="105" y="182" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">ASYNC</text>
+    <text x="105" y="214" text-anchor="middle" font-size="12" font-weight="700" fill="#c4b5fd">Baseline + RTP</text>
+    <text x="105" y="231" text-anchor="middle" font-size="12" font-weight="700" fill="#c4b5fd">Thread</text>
+  </svg>
+
+  <!-- ── Flow B Diagram ── -->
+  <svg viewBox="0 0 780 178" width="100%" style="display:block;margin:0 0 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+
+    <!-- Flow B title bar -->
+    <rect x="0" y="0" width="780" height="26" rx="8" fill="rgba(124,58,237,0.10)" stroke="rgba(124,58,237,0.35)" stroke-width="1"/>
+    <rect x="0" y="13" width="780" height="13" fill="rgba(124,58,237,0.06)"/>
+    <text x="390" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">FLOW B — DAILY REFRESH · POST /infer/refresh · TRIGGERED BY MY NUR OR NUR TEAMS</text>
+
+    <!-- Module 1 — SKIPPED -->
+    <rect x="0" y="34" width="210" height="100" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="105" y="78" text-anchor="middle" font-size="9" font-weight="700" fill="#3a4150" letter-spacing="0.07em">MODULE 1</text>
+    <text x="105" y="97" text-anchor="middle" font-size="12" fill="#3a4150">skipped</text>
+    <text x="105" y="119" text-anchor="middle" font-size="10" fill="#2e3540">no thermogram ·</text>
+    <text x="105" y="133" text-anchor="middle" font-size="10" fill="#2e3540">no thermal_scans write</text>
+    <line x1="18" y1="44" x2="192" y2="124" stroke="rgba(239,68,68,0.10)" stroke-width="2"/>
+    <line x1="192" y1="44" x2="18" y2="124" stroke="rgba(239,68,68,0.10)" stroke-width="2"/>
+
+    <!-- Blocked connector M1→M2 -->
+    <line x1="214" y1="84" x2="278" y2="84" stroke="#1e2530" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+    <!-- Module 2 — Metrics Pipeline (always runs) -->
+    <rect x="286" y="34" width="210" height="100" rx="10" fill="#1a1528" stroke="rgba(124,58,237,0.5)" stroke-width="1.5"/>
+    <rect x="286" y="34" width="210" height="28" rx="10" fill="rgba(124,58,237,0.12)"/>
+    <rect x="286" y="50" width="210" height="12" fill="rgba(124,58,237,0.12)"/>
+    <text x="391" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">MODULE 2</text>
+    <text x="391" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">Metrics Pipeline</text>
+    <text x="391" y="118" text-anchor="middle" font-size="10.5" fill="#8b949e">COMPASS scoring · zone</text>
+    <text x="391" y="133" text-anchor="middle" font-size="10.5" fill="#8b949e">classification · fusion</text>
+
+    <!-- Arrow 2→3 -->
+    <line x1="500" y1="84" x2="564" y2="84" stroke="#30363d" stroke-width="1.5"/>
+    <polygon points="564,79 572,84 564,89" fill="#30363d"/>
+
+    <!-- Module 3 — GenAI Reasoning (conditional) -->
+    <rect x="572" y="34" width="208" height="100" rx="10" fill="#0e1e2a" stroke="rgba(0,200,255,0.4)" stroke-width="1.5"/>
+    <rect x="572" y="34" width="208" height="28" rx="10" fill="rgba(0,200,255,0.10)"/>
+    <rect x="572" y="50" width="208" height="12" fill="rgba(0,200,255,0.10)"/>
+    <text x="676" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#00c8ff" letter-spacing="0.07em">MODULE 3</text>
+    <text x="676" y="77" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">GenAI Reasoning</text>
+    <rect x="604" y="84" width="144" height="14" rx="7" fill="rgba(245,158,11,0.14)" stroke="rgba(245,158,11,0.38)" stroke-width="0.8"/>
+    <text x="676" y="94" text-anchor="middle" font-size="8.5" fill="#f59e0b" font-weight="700">only if zone changed</text>
+    <text x="676" y="113" text-anchor="middle" font-size="10.5" fill="#8b949e">Zone rationale · intervention</text>
+    <text x="676" y="128" text-anchor="middle" font-size="10.5" fill="#8b949e">plan · coach narrative</text>
+
+    <!-- Bottom note -->
+    <text x="390" y="160" text-anchor="middle" font-size="9.5" fill="#3a4150">Baseline + RTP Thread not triggered — no new thermal scan in Flow B</text>
   </svg>
 
   <div class="alert orange">
@@ -2191,7 +2418,7 @@ GROUP BY w.workflow_id;</pre>
 
   <div id="s07-flow-a"></div>
   <h3>7.1 Flow A — Full Pipeline <span style="font-size:13px;font-weight:400;color:var(--text-muted);">triggered by NUR Sensor</span></h3>
-  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Runs when an athlete completes a physical scan at a smart mirror. Executes all three NURAI modules in sequence: <strong style="color:var(--text);">Computer Vision &amp; Thermal ROI → Metrics Pipeline → GenAI Reasoning</strong>. NUR Sensor uploads the thermogram <strong style="color:var(--text);">directly to GCS</strong> via signed URL — the binary never transits the Backend. The Backend then calls <code>POST /infer { session_id }</code> (API Key auth) to trigger NURAI. Once Module 1 completes and measurements are written to DB, the Backend immediately spawns the async <strong>Baseline + RTP Thread</strong> (§7.4) — passing the current scan's measurements as a direct input parameter alongside a <strong><code>zone_future</code></strong> (an unresolved Future/Promise). Module 2 resolves <code>zone_future</code> with the computed <code>compass_zone</code> as soon as Zone Classification finishes. The async thread's Steps 1–3 (baseline + RTP per-region) run freely without waiting; Step 4 (write-back + alert) awaits <code>zone_future</code> before the eligibility check, ensuring it always uses the current scan's zone — never the previous day's stale value from DB.</p>
+  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Runs when an athlete completes a physical scan at a smart mirror. Executes all three NURAI modules in sequence: <strong style="color:var(--text);">Computer Vision &amp; Thermal ROI → Metrics Pipeline → GenAI Reasoning</strong>. NUR Sensor uploads the thermogram <strong style="color:var(--text);">directly to GCS</strong> via signed URL — the binary never transits the Backend. The Backend then calls <code>POST /infer { session_id }</code> (API Key auth) to trigger NURAI. Once Module 1 completes and measurements are written to DB, the Backend immediately spawns the async <strong>Baseline + RTP Thread</strong> (§7.4) — passing only a <strong><code>zone_future</code></strong> (an unresolved Future/Promise). The thread reads all measurement data directly from DB. Module 2 resolves <code>zone_future</code> with the computed <code>compass_zone</code> as soon as Zone Classification finishes. The async thread's Steps 1–3 (baseline + RTP per-region) run freely without waiting; Step 4 (write-back + alert) awaits <code>zone_future</code> before the eligibility check, ensuring it always uses the current scan's zone — never the previous day's stale value from DB.</p>
 
   <div class="sc-pipeline">
     <div class="sc-stage">
@@ -2199,7 +2426,7 @@ GROUP BY w.workflow_id;</pre>
       <div class="sc-row">
         <div class="sc-block" data-track="thermal">
           <div class="sc-block-title">ROI Extraction &amp; Measurements</div>
-          <div class="sc-block-body">NURAI fetches the thermogram from <code>sessions.gcs_path</code> (GCS). Runs region-of-interest extraction to compute per-region surface temperatures and left-right deltas. Results written to <code>thermal_scans.measurements</code> (JSONB) along with <code>t_score</code>, <code>baseline_mode</code>, and <code>has_skin_mask</code>. Outputs <code>severity_level</code> per region based on bilateral delta: <code>clear</code> (&lt;0.3°C) · <code>mild</code> (0.3–0.5°C) · <code>moderate</code> (0.5–0.8°C) · <code>elevated</code> (≥0.8°C). These synchronous fields are written to <code>thermal_scans.measurements</code> immediately. Once written, the Backend spawns the async <strong>Baseline + RTP Thread</strong> (§7.4) with two inputs: the current scan's measurements (direct in-memory, no DB re-read) and an unresolved <code>zone_future</code>. Modules 2 and 3 continue synchronously. Module 2 resolves <code>zone_future</code> with <code>compass_zone</code> immediately after Zone Classification — the async thread's Steps 1–3 run freely in parallel; Step 4 awaits this future before the RTP eligibility check. Baseline and RTP fields are written back to <code>thermal_scans.measurements</code> by the async thread upon completion.</div>
+          <div class="sc-block-body">NURAI fetches the thermogram from <code>sessions.gcs_path</code> (GCS). Runs region-of-interest extraction to compute per-region surface temperatures and left-right deltas. Results written to <code>thermal_scans.measurements</code> (JSONB) along with <code>t_score</code>, <code>max_asymmetry</code>, <code>has_asymmetry</code>, and <code>has_skin_mask</code>. Outputs <code>severity_level</code> per region based on bilateral delta: <code>clear</code> (&lt;0.3°C) · <code>mild</code> (0.3–0.5°C) · <code>moderate</code> (0.5–0.8°C) · <code>elevated</code> (≥0.8°C). These synchronous fields are written to <code>thermal_scans.measurements</code> immediately. Once written, the Backend spawns the async <strong>Baseline + RTP Thread</strong> (§7.4) with an unresolved <code>zone_future</code> — the thread reads all measurement data directly from DB. Modules 2 and 3 continue synchronously. Module 2 resolves <code>zone_future</code> with <code>compass_zone</code> immediately after Zone Classification — the async thread's Steps 1–3 run freely in parallel; Step 4 awaits this future before the RTP eligibility check. Baseline and RTP fields are written back to <code>thermal_scans.measurements</code> by the async thread upon completion.</div>
         </div>
         <div class="sc-block" data-track="wearable">
           <div class="sc-block-title">Wearable Data Read</div>
@@ -2255,7 +2482,40 @@ GROUP BY w.workflow_id;</pre>
       <div class="sc-block--full" data-track="storage">
         <div class="sc-block-title">Database Writes + FCM Push</div>
         <div class="sc-block-body">
-          Writes <code>tbscan.thermal_scans</code> (t_score, measurements JSONB, baseline_mode, generated_at). Then upserts <code>tbscan.daily_assessments</code> (compass_score, compass_zone, ai_coach_response, metric_record_id, trigger_type = <code>new_thermal_scan</code> or <code>admin_scan</code>). Returns <code>200 OK</code> to the Backend, which dispatches the FCM push to the athlete. The async Baseline + RTP Thread was already spawned after Module 1 completed — baseline and RTP enrichment of the scan row occurs independently in the background and does not delay result delivery.
+          Writes <code>tbscan.thermal_scans</code> (t_score, measurements JSONB, max_asymmetry, has_asymmetry, generated_at). Then upserts <code>tbscan.daily_assessments</code> (compass_score, compass_zone, ai_coach_response, metric_record_id, trigger_type = <code>new_thermal_scan</code> or <code>admin_scan</code>). Returns <code>200 OK</code> to the Backend, which dispatches the FCM push to the athlete. The async Baseline + RTP Thread was already spawned after Module 1 completed — baseline and RTP enrichment of the scan row occurs independently in the background and does not delay result delivery.
+        </div>
+      </div>
+    </div>
+
+    <!-- async Baseline + RTP Thread -->
+    <div style="display:flex;flex-direction:column;align-items:center;margin:4px 0;">
+      <div style="width:2px;height:16px;background:linear-gradient(to bottom,rgba(124,58,237,0),rgba(124,58,237,0.5));"></div>
+      <div style="border:1px dashed rgba(167,139,250,0.45);border-radius:20px;padding:3px 16px;font-size:11px;color:#a78bfa;letter-spacing:0.05em;">spawned after Module 1 &middot; runs concurrently with Modules 2 &amp; 3</div>
+      <div style="width:2px;height:12px;background:rgba(124,58,237,0.5);"></div>
+      <div style="color:#a78bfa;font-size:16px;line-height:1;">&#9662;</div>
+    </div>
+
+    <div style="width:100%;background:rgba(124,58,237,0.07);border:1.5px solid rgba(167,139,250,0.4);border-radius:12px;padding:16px 18px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a78bfa;margin-bottom:12px;">
+        Async &mdash; Baseline + RTP Thread
+        <a href="#s07-async-rtp" style="font-size:10px;font-weight:500;color:var(--text-dim);text-transform:none;letter-spacing:0;text-decoration:none;margin-left:8px;">§7.4 &#8599;</a>
+      </div>
+      <div class="sc-row">
+        <div class="sc-block" data-track="health">
+          <div class="sc-block-title">1 — Read Last N Scans</div>
+          <div class="sc-block-body">Queries the last N valid <code>thermal_scans</code> rows from DB. Current scan already committed — single query covers new scan + full history.</div>
+        </div>
+        <div class="sc-block" data-track="health">
+          <div class="sc-block-title">2 — Compute Baselines</div>
+          <div class="sc-block-body">Rolling <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, and <code>baseline_mode</code> per region from qualifying scan history.</div>
+        </div>
+        <div class="sc-block" data-track="health">
+          <div class="sc-block-title">3 — RTP Per Region</div>
+          <div class="sc-block-body">Sets per-region <code>rtp_clear</code>: N/A (insufficient history) · YES (non-affected side) · YES (affected, mild/clear ×2) · NO (affected, elevated).</div>
+        </div>
+        <div class="sc-block" style="border-color:rgba(0,200,255,0.3);">
+          <div class="sc-block-title" style="color:var(--accent);">4 — Write Back + Alert <span style="font-size:9px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.25);color:var(--accent);padding:1px 6px;border-radius:4px;margin-left:4px;text-transform:none;letter-spacing:0;font-weight:600;">awaits zone_future</span></div>
+          <div class="sc-block-body">Patches <code>measurements</code> JSONB with baseline + RTP fields per region. Sets <code>rtp_regions_pending</code>, <code>rtp_cleared</code>, <code>baseline_computed_at</code>. Fires <code>rtp_milestone</code> alert if eligible.</div>
         </div>
       </div>
     </div>
@@ -2372,36 +2632,6 @@ GROUP BY w.workflow_id;</pre>
   <div id="s07-flow-b"></div>
   <h3 style="margin-top:40px;">7.2 Flow B — Daily Refresh <span style="font-size:13px;font-weight:400;color:var(--text-muted);">triggered by My NUR or NUR Teams</span></h3>
   <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Runs on days without a new thermal scan. Always executes <strong style="color:var(--text);">Module 2 (Metrics Pipeline)</strong> to recompute zone and score from fresh wearable data. <strong style="color:var(--text);">Module 3 (GenAI Reasoning)</strong> is executed only if the resulting <code>compass_zone</code> differs from the most recent <code>daily_assessments</code> record — if the zone is unchanged, Module 3 is skipped and the existing <code>ai_coach_response</code> is reused, reducing LLM API calls for wearable fluctuations that do not shift clinical zone. Module 1 (Computer Vision &amp; Thermal ROI) is always skipped: no thermogram fetch, no ROI extraction, no writes to <code>thermal_scans</code>. Triggered by <code>POST /compass/refresh</code> (JWT auth). The Backend always returns the latest <code>daily_assessments</code> record — the gates below only determine whether NURAI is invoked, never whether data is returned.</p>
-
-  <!-- ── Flow B Module Diagram ── -->
-  <svg viewBox="0 0 500 160" width="100%" style="max-width:500px;display:block;margin:20px 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
-
-    <!-- Module 2 — Metrics Pipeline -->
-    <rect x="0" y="16" width="210" height="100" rx="10" fill="#1a1528" stroke="rgba(124,58,237,0.5)" stroke-width="1.5"/>
-    <rect x="0" y="16" width="210" height="28" rx="10" fill="rgba(124,58,237,0.12)"/>
-    <rect x="0" y="32" width="210" height="12" fill="rgba(124,58,237,0.12)"/>
-    <text x="105" y="36" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">MODULE 2</text>
-    <text x="105" y="62" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">Metrics Pipeline</text>
-    <text x="105" y="98" text-anchor="middle" font-size="10.5" fill="#8b949e">COMPASS scoring · zone</text>
-    <text x="105" y="113" text-anchor="middle" font-size="10.5" fill="#8b949e">classification · fusion</text>
-
-    <!-- Arrow 2→3 -->
-    <line x1="214" y1="66" x2="278" y2="66" stroke="#30363d" stroke-width="1.5"/>
-    <polygon points="278,61 286,66 278,71" fill="#30363d"/>
-
-    <!-- Module 3 — GenAI Reasoning -->
-    <rect x="286" y="16" width="214" height="100" rx="10" fill="#0e1e2a" stroke="rgba(0,200,255,0.4)" stroke-width="1.5"/>
-    <rect x="286" y="16" width="214" height="28" rx="10" fill="rgba(0,200,255,0.10)"/>
-    <rect x="286" y="32" width="214" height="12" fill="rgba(0,200,255,0.10)"/>
-    <text x="393" y="36" text-anchor="middle" font-size="9" font-weight="700" fill="#00c8ff" letter-spacing="0.07em">MODULE 3</text>
-    <text x="393" y="62" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e6edf3">GenAI Reasoning</text>
-    <text x="393" y="98" text-anchor="middle" font-size="10.5" fill="#8b949e">Zone rationale · intervention</text>
-    <text x="393" y="113" text-anchor="middle" font-size="10.5" fill="#8b949e">plan · coach narrative</text>
-
-    <!-- Flow B bracket -->
-    <line x1="0" y1="138" x2="500" y2="138" stroke="rgba(124,58,237,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="250" y="153" text-anchor="middle" font-size="10" font-weight="700" fill="rgba(124,58,237,0.85)" letter-spacing="0.05em">FLOW B — module 2 always · module 3 only if zone changed</text>
-  </svg>
 
   <h4>Backend Gate Checks</h4>
 
@@ -2527,7 +2757,7 @@ GROUP BY w.workflow_id;</pre>
       <tr><td><strong>1 — Filter</strong></td><td>Collect sessions per user passing all three qualifying gates</td><td>No active RTP injury window + all deltas &lt; 1.0°C + <code>status='completed'</code></td></tr>
       <tr><td><strong>2 — Extract</strong></td><td>Pull left-right delta per region from <code>tbscan.thermal_scans.measurements</code> JSONB (delta field)</td><td>Per-region delta list across qualifying sessions</td></tr>
       <tr><td><strong>3 — Compute</strong></td><td>Arithmetic mean + sample SD per region from its own qualifying scan history</td><td>Per-region result — each region is computed independently regardless of other regions' counts</td></tr>
-      <tr><td><strong>4 — Patch</strong></td><td>Patch <code>thermal_scans.measurements</code> JSONB for the current scan row — write <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, <code>baseline_mode</code> per region key. Update top-level <code>thermal_scans.baseline_mode</code> summary: <code>individual_sd</code> if all regions qualify, <code>population_fallback</code> if none qualify, <code>mixed</code> if some regions qualify and others do not.</td><td>No separate table write. Each region carries its own mode; Module 2 reads it directly from the JSONB at inference time.</td></tr>
+      <tr><td><strong>4 — Patch</strong></td><td>Patch <code>thermal_scans.measurements</code> JSONB for the current scan row — write <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, <code>baseline_mode</code> per region key. Set top-level <code>rtp_cleared</code> (<code>true</code> if all per-region <code>rtp_clear = "YES"</code>).</td><td>No separate table write. Each region carries its own mode; Module 2 reads it directly from the JSONB at inference time.</td></tr>
     </tbody>
   </table>
 
@@ -2539,18 +2769,18 @@ GROUP BY w.workflow_id;</pre>
 
   <div class="alert blue">
     <span class="alert-icon">&#8505;</span>
-    <div><strong>Per-Region Population Fallback</strong><p>Each body region accumulates its own baseline independently. Regions with sufficient eligible scan history use the individual SD formula; regions below the threshold use the population formula (<code>T = min(100, TAI°C / 1.0 × 100)</code> — COMPASS §05A). Both modes resolve to the same T = 50 zone boundary. The per-region <code>baseline_mode</code> field in the measurements JSONB records which formula was applied; the scan-level <code>thermal_scans.baseline_mode</code> summarises as <code>individual_sd</code>, <code>population_fallback</code>, or <code>mixed</code>. Regions transition automatically as their <code>eligible_scan_count</code> grows — no manual intervention or global scan counter required.</p></div>
+    <div><strong>Per-Region Population Fallback</strong><p>Each body region accumulates its own baseline independently. Regions with sufficient eligible scan history use the individual SD formula; regions below the threshold use the population formula (<code>T = min(100, TAI°C / 1.0 × 100)</code> — COMPASS §05A). Both modes resolve to the same T = 50 zone boundary. The per-region <code>baseline_mode</code> field in the measurements JSONB records which formula was applied. Regions transition automatically as their <code>eligible_scan_count</code> grows — no manual intervention or global scan counter required.</p></div>
   </div>
 
   <h3 id="s07-async-rtp">7.4 Async Baseline + RTP Thread <span class="badge badge-beta" style="margin-left:8px;vertical-align:middle;">BETA</span></h3>
-  <p>Triggered by the Backend immediately after Module 1 completes and the current scan's measurements are written to DB — not after the full Flow A pipeline. Runs as an asynchronous background thread concurrent with Modules 2 and 3. Does not block scan result delivery to the athlete or operator. Receives the current scan's measurements as a direct in-memory input from Module 1; historical scans are fetched separately from DB.</p>
+  <p>Triggered by the Backend immediately after Module 1 completes and the current scan's measurements are written to DB — not after the full Flow A pipeline. Runs as an asynchronous background thread concurrent with Modules 2 and 3. Does not block scan result delivery to the athlete or operator. Reads the last N measurements directly from DB — the current scan row is already committed before the thread starts, so a single query covers both the new scan and its history.</p>
 
   <div class="sc-pipeline" style="max-width:760px;">
     <div class="sc-stage">
       <div class="sc-row">
         <div class="sc-block" data-track="thermal">
-          <div class="sc-block-title">1 — Receive Current Measurements + Read Historical Scans</div>
-          <div class="sc-block-body">Accepts the current scan's <code>measurements</code> JSONB as a direct input from Module 1 (already in memory — no DB read for the current scan). Separately queries all prior valid <code>thermal_scans.measurements</code> rows for the athlete from DB, ordered by <code>generated_at ASC</code>. Combines both into a complete per-region delta history including the current scan.</div>
+          <div class="sc-block-title">1 — Read Last N Scans from DB</div>
+          <div class="sc-block-body">Queries the last N valid <code>thermal_scans</code> rows for the athlete from DB, ordered by <code>generated_at DESC</code>. Because Module 1 has already committed the current scan row before this thread starts, the query naturally includes the new scan alongside its history — no separate in-memory input required. Builds a per-region delta history array from the result set.</div>
         </div>
       </div>
     </div>
@@ -2582,13 +2812,13 @@ GROUP BY w.workflow_id;</pre>
       <div class="sc-row">
         <div class="sc-block" data-track="storage">
           <div class="sc-block-title">4 — Write Back + Alert</div>
-          <div class="sc-block-body">Awaits <code>zone_future</code> (resolved by Module 2 immediately after Zone Classification — see §7.1). This guarantees the eligibility check uses the <em>current</em> scan's zone, not a stale value from DB. Once the zone is available: patches <code>measurements</code> JSONB with baseline + RTP fields per region · sets <code>rtp_regions_pending</code> (count of regions where <code>rtp_clear = "NO"</code>) · sets <code>baseline_computed_at = NOW()</code>. If <code>rtp_regions_pending = 0</code> AND <code>compass_zone = 'safe'</code>, fires an <code>rtp_milestone</code> alert with <code>event: "eligible_for_clearance"</code> via the Alert Generator (§10) — notifying staff the athlete is ready to be reviewed. Clearance is never applied automatically; it requires explicit staff approval via <code>POST /teams/rtp/{id}/clear</code>.</div>
+          <div class="sc-block-body">Awaits <code>zone_future</code> (resolved by Module 2 immediately after Zone Classification — see §7.1). This guarantees the eligibility check uses the <em>current</em> scan's zone, not a stale value from DB. Once the zone is available: patches <code>measurements</code> JSONB with baseline + RTP fields per region · sets <code>rtp_regions_pending</code> (count of regions where <code>rtp_clear = "NO"</code>) · sets <code>rtp_cleared</code> (<code>true</code> if all per-region <code>rtp_clear = "YES"</code>) · sets <code>baseline_computed_at = NOW()</code>. If <code>rtp_regions_pending = 0</code> AND <code>compass_zone = 'safe'</code>, fires an <code>rtp_milestone</code> alert with <code>event: "eligible_for_clearance"</code> via the Alert Generator (§10) — notifying staff the athlete is ready to be reviewed. Clearance is never applied automatically; it requires explicit staff approval via <code>POST /teams/rtp/{id}/clear</code>.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="alert blue" style="margin-top:16px;"><div class="alert-icon">ℹ️</div><div><strong>Concurrency Model</strong><p>The async Baseline + RTP Thread runs concurrently with Modules 2 and 3. Steps 1–3 (baseline computation + per-region RTP) have no dependency on Module 2 and run freely. Step 4 (write-back + alert) awaits <code>zone_future</code>, which Module 2 resolves immediately after Zone Classification — typically within milliseconds, well before the async thread's Steps 1–3 complete. This eliminates the race condition where Step 4 might otherwise read the <em>previous</em> day's <code>compass_zone</code> from <code>daily_assessments</code> before Module 2 has written the new one. Module 2 also reads the baseline from the <em>previous</em> scan's <code>measurements</code> JSONB (written by the previous async thread, already settled) — the baseline write and the scoring read operate on different scan rows, so they never race.</p></div></div>
+  <div class="alert blue" style="margin-top:16px;"><div class="alert-icon">ℹ️</div><div><strong>Concurrency Model</strong><p>The async Baseline + RTP Thread runs concurrently with Modules 2 and 3. Steps 1–3 (baseline computation + per-region RTP) have no dependency on Module 2 and run freely — the DB read in Step 1 only needs the committed scan row, which is already present. Step 4 (write-back + alert) awaits <code>zone_future</code>, which Module 2 resolves immediately after Zone Classification — typically within milliseconds, well before the async thread's Steps 1–3 complete. This eliminates the race condition where Step 4 might otherwise read the <em>previous</em> day's <code>compass_zone</code> from <code>daily_assessments</code> before Module 2 has written the new one. Module 2 reads the baseline from the <em>previous</em> scan's <code>measurements</code> JSONB (written by the previous async thread, already settled) — the baseline write and the scoring read operate on different scan rows, so they never race.</p></div></div>
 
 </section>
 
@@ -3165,7 +3395,7 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
     </thead>
     <tbody>
       <tr><td><code>GET</code></td><td><code>/results/latest</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR</td><td>Return the athlete's most recent <code>daily_assessments</code> record: COMPASS zone, score, AI coach response, trigger_type, and thermal scan date (so the app can display "based on scan from N days ago" when reusing).</td></tr>
-      <tr><td><code>GET</code></td><td><code>/results/{session_id}</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR, NUR Teams</td><td>Full result for a specific session: reads <code>thermal_scans WHERE session_id = X</code> (per-region measurements, t_score, baseline_mode) joined to the corresponding <code>daily_assessments</code> row (COMPASS score, zone, AI coach output).</td></tr>
+      <tr><td><code>GET</code></td><td><code>/results/{session_id}</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR, NUR Teams</td><td>Full result for a specific session: reads <code>thermal_scans WHERE session_id = X</code> (per-region measurements, t_score, max_asymmetry, has_asymmetry, rtp_cleared) joined to the corresponding <code>daily_assessments</code> row (COMPASS score, zone, AI coach output).</td></tr>
       <tr><td><code>GET</code></td><td><code>/results/history</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR, NUR Teams</td><td>Paginated list from <code>daily_assessments ORDER BY date DESC</code>. Each item includes <code>trigger_type</code>, <code>compass_zone</code>, <code>compass_score</code>, and <code>thermal_scan_generated_at</code> (so history clearly shows which days had a new scan vs. a wearable refresh). Query params: <code>limit</code>, <code>offset</code>, <code>from_date</code>, <code>to_date</code>.</td></tr>
     </tbody>
   </table>

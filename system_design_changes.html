@@ -278,7 +278,7 @@
     <tbody>
       <tr><td><strong>NUR Teams scope</strong></td><td><span class="diff-changed">Changed</span></td><td>Promoted from GA to BETA release. Admin-only access. NURAI Coach Assistant deferred to post-BETA.</td></tr>
       <tr><td><strong>thermal_baselines table</strong></td><td><span class="diff-removed">Removed</span></td><td>Retired. Baseline stats merged into <code>thermal_scans.measurements</code> JSONB per region.</td></tr>
-      <tr><td><strong>thermal_scans table</strong></td><td><span class="diff-changed">Modified</span></td><td><code>measurements</code> JSONB extended with severity, baseline, and RTP fields. Two new columns: <code>rtp_regions_pending</code>, <code>baseline_computed_at</code>.</td></tr>
+      <tr><td><strong>thermal_scans table</strong></td><td><span class="diff-changed">Modified</span></td><td><code>measurements</code> JSONB extended with severity, baseline, and RTP fields. Five new columns: <code>max_asymmetry</code>, <code>has_asymmetry</code>, <code>rtp_cleared</code>, <code>rtp_regions_pending</code>, <code>baseline_computed_at</code>.</td></tr>
       <tr><td><strong>org_settings table</strong></td><td><span class="diff-changed">Modified</span></td><td>4 new columns for NUR Teams configuration.</td></tr>
       <tr><td><strong>org_members table</strong></td><td><span class="diff-changed">Modified</span></td><td>3 new columns: <code>job_title</code>, <code>my_nur_status</code>, <code>invite_code</code>.</td></tr>
       <tr><td><strong>tbscan.alerts</strong></td><td><span class="diff-added">New</span></td><td>New table for NUR Teams alert events.</td></tr>
@@ -299,7 +299,7 @@
 <section id="ch-thermal-scans">
   <div class="change-label">Schema Change · tbscan.thermal_scans</div>
   <h2>thermal_scans — Modified</h2>
-  <p class="section-intro">The <code>measurements</code> JSONB column is extended to carry three new groups of per-region fields. Two new top-level columns are added.</p>
+  <p class="section-intro">The <code>measurements</code> JSONB column is extended to carry three new groups of per-region fields. Five new top-level columns are added.</p>
 
   <h3>Extended <code>measurements</code> JSONB — Per-Region Schema</h3>
   <p>Fields are split into two write phases. Module 1 writes synchronous fields immediately. The new async Baseline + RTP thread writes the remaining fields after scan delivery.</p>
@@ -346,6 +346,9 @@
   <table class="data-table" style="max-width:760px;">
     <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
+      <tr class="row-new"><td><code>max_asymmetry</code> <span class="diff-added">new</span></td><td>numeric(4,2), nullable</td><td>Maximum absolute temperature delta across all detected regions in <code>measurements</code>. Written synchronously by Module 1. <code>NULL</code> if <code>measurements</code> is NULL. Enables fast threshold filtering without JSONB inspection.</td></tr>
+      <tr class="row-new"><td><code>has_asymmetry</code> <span class="diff-added">new</span></td><td>boolean, nullable</td><td><code>true</code> if any region in <code>measurements</code> has <code>affected_side</code> not null. Written synchronously by Module 1. <code>NULL</code> if <code>measurements</code> is NULL.</td></tr>
+      <tr class="row-new"><td><code>rtp_cleared</code> <span class="diff-added">new</span></td><td>boolean, nullable</td><td><code>NULL</code> until the async Baseline + RTP Thread completes. <code>true</code> if all per-region <code>rtp_clear</code> values in <code>measurements</code> are <code>"YES"</code>. <code>false</code> if any region has <code>rtp_clear = "NO"</code>. Written by the async thread alongside <code>rtp_regions_pending</code>.</td></tr>
       <tr class="row-new"><td><code>rtp_regions_pending</code> <span class="diff-added">new</span></td><td>smallint, nullable</td><td><code>NULL</code> = async thread not yet complete. <code>0</code> = all regions clear. <code>&gt;0</code> = count of regions where <code>rtp_clear = "NO"</code>. Enables fast RTP Hub queries without JSONB scanning.</td></tr>
       <tr class="row-new"><td><code>baseline_computed_at</code> <span class="diff-added">new</span></td><td>timestamptz, nullable</td><td>Timestamp when the async Baseline + RTP thread last updated this scan row. <code>NULL</code> = computation pending.</td></tr>
     </tbody>
@@ -516,14 +519,14 @@ AND ts.rtp_regions_pending > 0;</pre>
 <section id="ch-async">
   <div class="change-label">New Section · §7.4 Async Baseline + RTP Thread</div>
   <h2>§7.4 Async Baseline + RTP Thread — New <span class="badge badge-new" style="margin-left:10px;vertical-align:middle;">New</span></h2>
-  <p class="section-intro">Triggered by the Backend immediately after Flow A completes and the scan row is written. Runs as an asynchronous background thread — does not block scan result delivery to the athlete or operator.</p>
+  <p class="section-intro">Triggered by the Backend immediately after Module 1 completes and the scan row is written to DB. Runs as an asynchronous background thread concurrent with Modules 2 and 3 — does not block scan result delivery to the athlete or operator. Reads the last N measurements directly from DB; no in-memory inputs from Module 1.</p>
 
   <div class="sc-pipeline">
     <div class="sc-stage">
       <div class="sc-row">
         <div class="sc-block" data-track="thermal">
-          <div class="sc-block-title">1 — Read Historical Scans</div>
-          <div class="sc-block-body">Reads all prior valid <code>thermal_scans.measurements</code> rows for the athlete, ordered by <code>generated_at ASC</code>. Builds a per-region delta history array.</div>
+          <div class="sc-block-title">1 — Read Last N Scans from DB</div>
+          <div class="sc-block-body">Queries the last N valid <code>thermal_scans</code> rows for the athlete from DB, ordered by <code>generated_at DESC</code>. The current scan row is already committed before this thread starts, so a single query covers both the new scan and its history. Builds a per-region delta history array from the result set.</div>
         </div>
       </div>
     </div>
