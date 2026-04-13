@@ -1619,7 +1619,7 @@
     <text x="20" y="749"><tspan font-size="8" fill="#60a5fa" font-weight="700">FK</tspan><tspan font-size="9.5" fill="#c9d1d9" dx="5">user_id</tspan></text>
     <text x="270" y="749" text-anchor="end" font-size="9" fill="#4b5563">auth_user</text>
     <text x="28" y="767" font-size="9.5" fill="#8b949e">alert_type</text>
-    <text x="270" y="767" text-anchor="end" font-size="9" fill="#4b5563">varchar(30)</text>
+    <text x="270" y="767" text-anchor="end" font-size="9" fill="#4b5563">enum</text>
     <text x="28" y="785" font-size="9.5" fill="#8b949e">metadata</text>
     <text x="270" y="785" text-anchor="end" font-size="9" fill="#4b5563">JSONB</text>
     <text x="28" y="803" font-size="9.5" fill="#8b949e">is_read</text>
@@ -2153,7 +2153,7 @@
       <tr><td><code>alert_id</code></td><td>UUID PK</td><td>Primary key.</td></tr>
       <tr><td><code>org_id</code></td><td>FK → orgs NOT NULL</td><td>Organisation this alert belongs to.</td></tr>
       <tr><td><code>athlete_id</code></td><td>FK → auth_user, nullable</td><td><code>NULL</code> for org-wide alerts (e.g. <code>daily_digest</code>).</td></tr>
-      <tr><td><code>alert_type</code></td><td>varchar(30) NOT NULL</td><td><code>zone_change</code> · <code>scan_overdue</code> · <code>wearable_sync</code> · <code>rtp_milestone</code> · <code>daily_digest</code><br><br><code>rtp_milestone</code> events: <code>workflow_initiated</code> · <code>injury_documented</code> · <code>eligible_for_clearance</code> (system-generated: Safe zone + 0 pending regions — staff review required) · <code>cleared</code> (staff-approved).</td></tr>
+      <tr><td><code>alert_type</code></td><td>alert_type_enum NOT NULL</td><td>PostgreSQL string enum. <code>CREATE TYPE alert_type_enum AS ENUM ('zone_change', 'scan_overdue', 'wearable_sync', 'rtp_milestone', 'daily_digest')</code>.<br><br>Valid values: <code>zone_change</code> · <code>scan_overdue</code> · <code>wearable_sync</code> · <code>rtp_milestone</code> · <code>daily_digest</code><br><br><code>rtp_milestone</code> events: <code>workflow_initiated</code> · <code>injury_documented</code> · <code>eligible_for_clearance</code> (system-generated: Safe zone + 0 pending regions — staff review required) · <code>cleared</code> (staff-approved).</td></tr>
       <tr><td><code>severity</code></td><td>varchar(10) NOT NULL</td><td><code>info</code> · <code>warning</code> · <code>critical</code></td></tr>
       <tr><td><code>message</code></td><td>text NOT NULL</td><td>Human-readable alert message.</td></tr>
       <tr><td><code>metadata</code></td><td>JSONB, nullable</td><td>Alert-type-specific data. For <code>zone_change</code>: <code>{"from_zone":"recovery","to_zone":"deceptive"}</code>. For <code>rtp_milestone</code>:<br>
