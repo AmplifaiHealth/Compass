@@ -1338,7 +1338,7 @@
       </div>
       <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:14px;">
         <code style="color:var(--danger);font-size:12px;text-decoration:line-through;">tbscan.thermal_measurements</code>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:8px;line-height:1.5;">Relational per-region measurement rows (one row per region per scan). Collapsed into <strong style="color:var(--text);">thermal_scans.measurements</strong> JSONB. Baseline stats (<code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, <code>baseline_mode</code>) are stored inline per region in the same JSONB, making each scan row self-contained and auditable without a separate lookup.</p>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:8px;line-height:1.5;">Relational per-region measurement rows (one row per region per scan). Collapsed into <strong style="color:var(--text);">thermal_scans.measurements</strong> JSONB. Baseline stats (<code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>qualifying_scan_count</code>, <code>baseline_mode</code>) are stored inline per region in the same JSONB, making each scan row self-contained and auditable without a separate lookup.</p>
       </div>
       <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:14px;">
         <code style="color:var(--danger);font-size:12px;text-decoration:line-through;">tbscan.pain_entries</code>
@@ -1720,14 +1720,14 @@
       <tr><td><code>user_id</code></td><td>FK &rarr; auth_user</td><td>Denormalized from sessions for efficient gate queries (Flow B freshness check).</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">Thermal Inference Outputs</td></tr>
       <tr><td><code>t_score</code></td><td>numeric(5,2), nullable</td><td>Normalised Thermal Asymmetry Score (0–100). NULL if inference failed.</td></tr>
-      <tr><td><code>measurements</code></td><td>JSONB, nullable</td><td>Per-region thermal measurements. Each key is a granular_region_id string.<br><br>
-        <strong>Synchronous fields</strong> (written by NURAI Module 1): temp_left, temp_right, delta, affected_side, severity_level.<br><br>
-        <strong>Async fields</strong> (written by Baseline + RTP thread): baseline_mean_delta, baseline_sd, eligible_scan_count, baseline_mode, rtp_clear.<br><br>
-        <code>eligible_scan_count</code> — number of qualifying historical scans used to compute this region's baseline. Each region accumulates its own count independently; a region with ≥ 6 eligible scans uses individual SD mode automatically while regions below that threshold remain on population fallback — no global switch, no manual intervention.<br><br>
-        <code>baseline_mode</code> (per-region) — <code>individual_sd</code> when eligible_scan_count ≥ 6 for this region; <code>population_fallback</code> otherwise. Stored inline so Module 2 reads the mode directly from the JSONB without re-evaluating the count at inference time.<br><br>
-        severity_level thresholds (bilateral delta °C): clear &lt; 0.3 · mild 0.3–0.5 · moderate 0.5–0.8 · elevated ≥ 0.8<br><br>
-        rtp_clear values: "N/A" (eligible_scan_count &lt; 2) · "YES" (region side ≠ affected_side — healthy contralateral, auto-clears) · "YES" (region side = affected_side AND severity_level was mild or clear for last 2 consecutive scans) · "NO" (affected side with ≥1 moderate/elevated reading in last 2 scans)<br><br>
-        Example: <code>{"12": {"temp_left": 36.2, "temp_right": 35.8, "delta": 0.4, "affected_side": "left", "severity_level": "mild", "baseline_mean_delta": 0.31, "baseline_sd": 0.08, "eligible_scan_count": 8, "baseline_mode": "individual_sd", "rtp_clear": "NO"}}</code></td></tr>
+      <tr><td><code>measurements</code></td><td>JSONB, nullable</td><td>Per-region thermal measurements. Each key is the region's <strong>string region_id</strong> from the NURAI <code>BodyPart</code> enum (e.g. <code>"Front_Left_Quad"</code>) — 89 concrete regions, not integer IDs.<br><br>
+        <strong>Synchronous fields</strong> (written by NURAI Module 1): temp_left, temp_right, delta, condition (per side), abnormal, severity_level.<br><br>
+        <strong>Async fields</strong> (written by Baseline + RTP thread): baseline_mean_delta, baseline_sd, qualifying_scan_count, baseline_mode, rtp_clear.<br><br>
+        <code>qualifying_scan_count</code> — number of qualifying historical scans for this region. Each region accumulates its own count independently. There is <strong>no ≥6-scan switch</strong>: the personal baseline is blended toward the population via shrinkage (prior strength n0 = 5), so personal weight n/(n+5) grows continuously.<br><br>
+        <code>baseline_mode</code> (per-region) — a <em>label only</em>: <code>individual_sd</code> when <code>qualifying_scan_count &gt; 0</code> and <code>baseline_sd &gt; 0</code>; <code>population_fallback</code> otherwise. It records whether personal stats existed; it does not change the scoring formula (a single shrinkage path runs in both cases).<br><br>
+        severity_level — capitalised z-category against the shrunk reference: <code>Clear</code> (z ≤ 1.0) · <code>Mild</code> (1.0–2.0) · <code>Moderate</code> (2.0–3.0) · <code>Elevated</code> (&gt; 3.0). In population mode (no history, σ_pop = 0.40°C) these correspond to deltas &lt; 0.40 · 0.40–0.80 · 0.80–1.20 · &gt; 1.20°C.<br><br>
+        rtp_clear values: "N/A" (qualifying_scan_count &lt; 2) · "YES" (this side not affected — healthy contralateral, auto-clears) · "YES" (this side affected AND severity_level was Mild or Clear across the last 2 scans) · "NO" (this side affected with ≥1 Moderate/Elevated reading in the last 2 scans)<br><br>
+        Example: <code>{"Front_Left_Quad": {"temp_left": 36.2, "temp_right": 35.8, "delta": 0.4, "condition": "hyperthermia", "abnormal": true, "severity_level": "Mild", "baseline_mean_delta": 0.10, "baseline_sd": 0.12, "qualifying_scan_count": 8, "baseline_mode": "individual_sd", "rtp_clear": "NO"}}</code></td></tr>
       <tr><td><code>detected_anatomical_ids</code></td><td>JSONB, nullable</td><td>List of anatomical region IDs the AI successfully detected in the thermogram.</td></tr>
       <tr><td><code>has_skin_mask</code></td><td>boolean, default false</td><td>Whether a skin segmentation mask was produced during inference.</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">Baseline &amp; Validity</td></tr>
@@ -1770,7 +1770,7 @@
   }
   <span style="color:#6e7681;">/* ... one entry per detected region */</span>
 }</pre>
-    <p style="font-size:11.5px;color:var(--text-dim);margin-top:8px;">The async Baseline + RTP Thread (§7.4) patches this JSONB after each Flow A scan with <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, <code>baseline_mode</code>, and <code>rtp_clear</code> per region — each region computed independently from its own eligible scan history. The <code>affected_side</code> field is computed by NURAI during inference (hotter side = affected).</p>
+    <p style="font-size:11.5px;color:var(--text-dim);margin-top:8px;">The async Baseline + RTP Thread (§7.4) patches this JSONB after each Flow A scan with <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>qualifying_scan_count</code>, <code>baseline_mode</code>, and <code>rtp_clear</code> per region — each region computed independently from its own eligible scan history. The <code>affected_side</code> field is computed by NURAI during inference (hotter side = affected).</p>
   </div>
 
   <p style="margin:20px 0 8px;;display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;"><code style="font-size:15px;font-weight:700;color:var(--text);background:rgba(0,200,255,0.08);padding:4px 12px;border-radius:6px;border:1px solid rgba(0,200,255,0.22);font-family:'SF Mono','Fira Code',monospace;letter-spacing:0.01em;">tbscan.daily_assessments</code><span style="font-size:13px;color:var(--text-muted);"> — Layer 3: one authoritative COMPASS computation record per athlete per calendar date. Ties together the thermal scan used, the wearable record used, and the COMPASS outputs.</span></p>
@@ -2121,7 +2121,7 @@
       <tr><td><code>id</code></td><td>PK</td><td>Primary key.</td></tr>
       <tr><td><code>org_id</code></td><td>FK &rarr; orgs, UNIQUE</td><td>The organisation these settings apply to. One-to-one with <code>tbscan.orgs</code>.</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">Analysis</td></tr>
-      <tr><td><code>thermal_baseline_method</code></td><td>varchar</td><td><code>auto</code> — platform selects method based on available data; <code>population_based</code> — use platform-wide reference norms; <code>individual_sd</code> — derive baseline from the athlete's own historical distribution (preferred for longitudinal monitoring).</td></tr>
+      <tr><td><code>thermal_baseline_method</code></td><td>varchar</td><td>Org-level preference flag. Note: the live NURAI pipeline uses a <strong>single unified shrinkage path</strong> regardless of this value — each region's personal baseline is blended toward the population automatically (prior strength n0 = 5), so there is no hard population-vs-individual mode switch. The per-region <code>baseline_mode</code> label in <code>thermal_scans.measurements</code> records only whether personal stats existed.</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">Reporting &amp; Branding</td></tr>
       <tr><td><code>report_branding</code></td><td>JSONB, nullable</td><td>Report customisation: <code>{"logo_url": "gs://...", "color_scheme": "...", "org_name": "..."}</code>. NULL uses NUR platform branding.</td></tr>
       <tr><td colspan="3" style="background:var(--surface);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);padding:6px 12px;">NUR HUB Configuration</td></tr>
@@ -2341,7 +2341,7 @@ GROUP BY w.workflow_id;</pre>
 <section id="s07">
   <div class="section-label">Section 07</div>
   <h2>AI / ML Pipeline &amp; NURAI</h2>
-  <p class="section-intro">NURAI is the AI inference service deployed on Cloud Run. It is composed of three internal modules — <strong>Computer Vision &amp; Thermal ROI</strong>, <strong>Metrics Pipeline</strong>, and <strong>GenAI Reasoning</strong> — exposed via two endpoints: <code>POST /infer</code> (Flow A) and <code>POST /infer/refresh</code> (Flow B), called exclusively by the Backend, never by clients directly. It reads all inputs from the database and GCS; it does not call any upstream wearable or Spike API.</p>
+  <p class="section-intro">NURAI is the AI inference service deployed on Cloud Run. It is composed of three internal modules — <strong>Computer Vision &amp; Thermal ROI</strong>, <strong>Metrics Pipeline</strong>, and <strong>GenAI Reasoning</strong> — exposed via two endpoints: <code>POST /infer</code> (Flow A) and <code>POST /refresh</code> (Flow B), called exclusively by the Backend, never by clients directly. It reads all inputs from the database and GCS; it does not call any upstream wearable or Spike API.</p>
 
   <!-- ── Flow A Diagram ── -->
   <svg viewBox="0 0 780 268" width="100%" style="display:block;margin:28px 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
@@ -2408,7 +2408,7 @@ GROUP BY w.workflow_id;</pre>
     <!-- Flow B title bar -->
     <rect x="0" y="0" width="780" height="26" rx="8" fill="rgba(124,58,237,0.10)" stroke="rgba(124,58,237,0.35)" stroke-width="1"/>
     <rect x="0" y="13" width="780" height="13" fill="rgba(124,58,237,0.06)"/>
-    <text x="390" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">FLOW B — EVENT-DRIVEN REFRESH · POST /infer/refresh · AUTO-TRIGGERED OR MANUAL</text>
+    <text x="390" y="17" text-anchor="middle" font-size="9" font-weight="700" fill="#a78bfa" letter-spacing="0.07em">FLOW B — EVENT-DRIVEN REFRESH · POST /refresh · AUTO-TRIGGERED OR MANUAL</text>
 
     <!-- Module 1 — SKIPPED -->
     <rect x="0" y="34" width="210" height="100" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.07)" stroke-width="1" stroke-dasharray="4,3"/>
@@ -2465,7 +2465,7 @@ GROUP BY w.workflow_id;</pre>
       <div class="sc-row">
         <div class="sc-block" data-track="thermal">
           <div class="sc-block-title">ROI Extraction &amp; Measurements</div>
-          <div class="sc-block-body">NURAI fetches the thermogram from <code>sessions.gcs_path</code> (GCS). Runs region-of-interest extraction to compute per-region surface temperatures and left-right deltas. Results written to <code>thermal_scans.measurements</code> (JSONB) along with <code>t_score</code>, <code>max_asymmetry</code>, <code>has_asymmetry</code>, and <code>has_skin_mask</code>. Outputs <code>severity_level</code> per region based on bilateral delta: <code>clear</code> (&lt;0.3°C) · <code>mild</code> (0.3–0.5°C) · <code>moderate</code> (0.5–0.8°C) · <code>elevated</code> (≥0.8°C). These synchronous fields are written to <code>thermal_scans.measurements</code> immediately. Once written, the Backend spawns the async <strong>Baseline + RTP Thread</strong> (§7.4) with an unresolved <code>zone_future</code> — the thread reads all measurement data directly from DB. Modules 2 and 3 continue synchronously. Module 2 resolves <code>zone_future</code> with <code>compass_zone</code> immediately after Zone Classification — the async thread's Steps 1–3 run freely in parallel; Step 4 awaits this future before the RTP eligibility check. Baseline and RTP fields are written back to <code>thermal_scans.measurements</code> by the async thread upon completion.</div>
+          <div class="sc-block-body">NURAI fetches the thermogram from <code>sessions.gcs_path</code> (GCS). Runs region-of-interest extraction to compute per-region surface temperatures and left-right deltas. Results written to <code>thermal_scans.measurements</code> (JSONB) along with <code>t_score</code>, <code>max_asymmetry</code>, <code>has_asymmetry</code>, and <code>has_skin_mask</code>. Outputs <code>severity_level</code> per region — the z-category against each region's shrunk reference: <code>Clear</code> (z ≤ 1.0) · <code>Mild</code> (1.0–2.0) · <code>Moderate</code> (2.0–3.0) · <code>Elevated</code> (&gt; 3.0); in population mode these are deltas &lt; 0.40 / 0.40–0.80 / 0.80–1.20 / &gt; 1.20°C. These synchronous fields are written to <code>thermal_scans.measurements</code> immediately. Once written, the Backend spawns the async <strong>Baseline + RTP Thread</strong> (§7.4) with an unresolved <code>zone_future</code> — the thread reads all measurement data directly from DB. Modules 2 and 3 continue synchronously. Module 2 resolves <code>zone_future</code> with <code>compass_zone</code> immediately after Zone Classification — the async thread's Steps 1–3 run freely in parallel; Step 4 awaits this future before the RTP eligibility check. Baseline and RTP fields are written back to <code>thermal_scans.measurements</code> by the async thread upon completion.</div>
         </div>
         <div class="sc-block" data-track="wearable">
           <div class="sc-block-title">Wearable Data Read</div>
@@ -2494,11 +2494,10 @@ GROUP BY w.workflow_id;</pre>
         <div class="sc-block" data-track="fusion">
           <div class="sc-block-title">Score Fusion Formula</div>
           <div class="sc-block-body">
-            <strong>Safe / Recovery (equal weight):</strong><br>
-            <code>Score = floor + 24 &times; (0.5&times;R_dist + 0.5&times;T_dist)</code><br><br>
-            <strong>Deceptive / Danger (thermal-weighted):</strong><br>
-            <code>Score = floor + 24 &times; (0.3&times;R_dist + 0.7&times;T_dist)</code><br><br>
-            Zone floors: Safe 76, Recovery 51, Deceptive 26, Danger 1. When thermal asymmetry is elevated, the score is pulled down even when R is high — an athlete in Deceptive Readiness cannot score above the midpoint of that band.
+            <strong>Single equal-weight plane (all zones):</strong><br>
+            <code>r = (R−50)/50 &nbsp; t = (50−T)/50</code><br>
+            <code>Score = clamp(50 + 50 × (0.5·r + 0.5·t), 0, 100)</code><br><br>
+            With <code>READINESS_THERMAL_WEIGHT = 0.5</code> this simplifies to <code>Score = clamp(50 + 0.5×(R−T), 0, 100)</code>. No per-zone floors or weights — the surface is continuous; zone identity comes independently from the 2×2 quadrant. Safe spans 50–100, Danger 0–50, the two mixed zones 25–75.
           </div>
         </div>
       </div>
@@ -2546,7 +2545,7 @@ GROUP BY w.workflow_id;</pre>
         </div>
         <div class="sc-block" data-track="health">
           <div class="sc-block-title">2 — Compute Baselines</div>
-          <div class="sc-block-body">Rolling <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, and <code>baseline_mode</code> per region from qualifying scan history.</div>
+          <div class="sc-block-body">Rolling <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>qualifying_scan_count</code>, and <code>baseline_mode</code> per region from qualifying scan history.</div>
         </div>
         <div class="sc-block" data-track="health">
           <div class="sc-block-title">3 — RTP Per Region</div>
@@ -2564,7 +2563,7 @@ GROUP BY w.workflow_id;</pre>
   <div id="s07-score-examples"></div>
   <h3 style="margin-top:40px;">7.1.1 Score Fusion — Worked Examples</h3>
   <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">
-    Four concrete walkthroughs — one per COMPASS zone — showing how raw R and T scores map to a final COMPASS score via the two-weight regime. Weights are <strong style="color:var(--text);">equal (0.5 / 0.5)</strong> for Safe and Recovery, <strong style="color:var(--text);">thermal-heavy (0.3 / 0.7)</strong> for Deceptive Readiness and Danger.
+    Four concrete walkthroughs — one per COMPASS zone — showing how raw R and T scores map to a final COMPASS score on the <strong style="color:var(--text);">single equal-weight plane</strong> (w_R = w_T = 0.5). The same formula applies in every zone; zone identity is set independently by the 2×2 quadrant.
   </p>
 
   <!-- Example grid -->
@@ -2574,21 +2573,21 @@ GROUP BY w.workflow_id;</pre>
     <div style="background:#0f1a14;border:1px solid rgba(16,185,129,0.35);border-radius:10px;padding:18px 20px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <span style="background:rgba(16,185,129,0.15);color:#10b981;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:20px;text-transform:uppercase;">Safe</span>
-        <span style="font-size:12px;color:var(--text-muted);">Zone floor 76 · equal weights</span>
+        <span style="font-size:12px;color:var(--text-muted);">equal-weight plane</span>
       </div>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;align-items:start;">
         <span style="color:var(--text-muted);">Inputs</span>
         <span style="color:var(--text);font-family:monospace;">R = 82, T = 18</span>
-        <span style="color:var(--text-muted);">Condition</span>
-        <span style="color:var(--text);font-family:monospace;">R ≥ 50 &amp; T &lt; 50 ✓</span>
-        <span style="color:var(--text-muted);">R_dist</span>
+        <span style="color:var(--text-muted);">Zone</span>
+        <span style="color:var(--text);font-family:monospace;">R ≥ 50 &amp; T &lt; 50 → Safe ✓</span>
+        <span style="color:var(--text-muted);">r</span>
         <span style="color:var(--text);font-family:monospace;">(82 − 50) / 50 = <strong style="color:#10b981;">0.64</strong></span>
-        <span style="color:var(--text-muted);">T_dist</span>
+        <span style="color:var(--text-muted);">t</span>
         <span style="color:var(--text);font-family:monospace;">(50 − 18) / 50 = <strong style="color:#10b981;">0.64</strong></span>
         <span style="color:var(--text-muted);">Weighted</span>
         <span style="color:var(--text);font-family:monospace;">0.5×0.64 + 0.5×0.64 = <strong style="color:#10b981;">0.64</strong></span>
         <span style="color:var(--text-muted);">Score</span>
-        <span style="color:var(--text);font-family:monospace;">76 + 24 × 0.64 = <strong style="color:#10b981;font-size:15px;">91</strong></span>
+        <span style="color:var(--text);font-family:monospace;">50 + 50 × 0.64 = <strong style="color:#10b981;font-size:15px;">82</strong></span>
       </div>
     </div>
 
@@ -2596,21 +2595,21 @@ GROUP BY w.workflow_id;</pre>
     <div style="background:#1a1505;border:1px solid rgba(245,158,11,0.35);border-radius:10px;padding:18px 20px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <span style="background:rgba(245,158,11,0.15);color:#f59e0b;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:20px;text-transform:uppercase;">Recovery</span>
-        <span style="font-size:12px;color:var(--text-muted);">Zone floor 51 · equal weights</span>
+        <span style="font-size:12px;color:var(--text-muted);">equal-weight plane</span>
       </div>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;align-items:start;">
         <span style="color:var(--text-muted);">Inputs</span>
         <span style="color:var(--text);font-family:monospace;">R = 31, T = 22</span>
-        <span style="color:var(--text-muted);">Condition</span>
-        <span style="color:var(--text);font-family:monospace;">R &lt; 50 &amp; T &lt; 50 ✓</span>
-        <span style="color:var(--text-muted);">R_dist</span>
-        <span style="color:var(--text);font-family:monospace;">31 / 50 = <strong style="color:#f59e0b;">0.62</strong></span>
-        <span style="color:var(--text-muted);">T_dist</span>
+        <span style="color:var(--text-muted);">Zone</span>
+        <span style="color:var(--text);font-family:monospace;">R &lt; 50 &amp; T &lt; 50 → Recovery ✓</span>
+        <span style="color:var(--text-muted);">r</span>
+        <span style="color:var(--text);font-family:monospace;">(31 − 50) / 50 = <strong style="color:#f59e0b;">−0.38</strong></span>
+        <span style="color:var(--text-muted);">t</span>
         <span style="color:var(--text);font-family:monospace;">(50 − 22) / 50 = <strong style="color:#f59e0b;">0.56</strong></span>
         <span style="color:var(--text-muted);">Weighted</span>
-        <span style="color:var(--text);font-family:monospace;">0.5×0.62 + 0.5×0.56 = <strong style="color:#f59e0b;">0.59</strong></span>
+        <span style="color:var(--text);font-family:monospace;">0.5×−0.38 + 0.5×0.56 = <strong style="color:#f59e0b;">0.09</strong></span>
         <span style="color:var(--text-muted);">Score</span>
-        <span style="color:var(--text);font-family:monospace;">51 + 24 × 0.59 = <strong style="color:#f59e0b;font-size:15px;">65</strong></span>
+        <span style="color:var(--text);font-family:monospace;">50 + 50 × 0.09 = <strong style="color:#f59e0b;font-size:15px;">54.5</strong></span>
       </div>
     </div>
 
@@ -2618,24 +2617,24 @@ GROUP BY w.workflow_id;</pre>
     <div style="background:#1a0f05;border:1px solid rgba(249,115,22,0.35);border-radius:10px;padding:18px 20px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <span style="background:rgba(249,115,22,0.15);color:#f97316;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:20px;text-transform:uppercase;">Deceptive Readiness</span>
-        <span style="font-size:12px;color:var(--text-muted);">Floor 26 · thermal-heavy</span>
+        <span style="font-size:12px;color:var(--text-muted);">equal-weight plane</span>
       </div>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;align-items:start;">
         <span style="color:var(--text-muted);">Inputs</span>
         <span style="color:var(--text);font-family:monospace;">R = 80, T = 68</span>
-        <span style="color:var(--text-muted);">Condition</span>
-        <span style="color:var(--text);font-family:monospace;">R ≥ 50 &amp; T ≥ 50 ✓</span>
-        <span style="color:var(--text-muted);">R_dist</span>
+        <span style="color:var(--text-muted);">Zone</span>
+        <span style="color:var(--text);font-family:monospace;">R ≥ 50 &amp; T ≥ 50 → Deceptive ✓</span>
+        <span style="color:var(--text-muted);">r</span>
         <span style="color:var(--text);font-family:monospace;">(80 − 50) / 50 = <strong style="color:#f97316;">0.60</strong></span>
-        <span style="color:var(--text-muted);">T_dist</span>
-        <span style="color:var(--text);font-family:monospace;">(100 − 68) / 50 = <strong style="color:#f97316;">0.64</strong></span>
+        <span style="color:var(--text-muted);">t</span>
+        <span style="color:var(--text);font-family:monospace;">(50 − 68) / 50 = <strong style="color:#f97316;">−0.36</strong></span>
         <span style="color:var(--text-muted);">Weighted</span>
-        <span style="color:var(--text);font-family:monospace;">0.3×0.60 + 0.7×0.64 = <strong style="color:#f97316;">0.628</strong></span>
+        <span style="color:var(--text);font-family:monospace;">0.5×0.60 + 0.5×−0.36 = <strong style="color:#f97316;">0.12</strong></span>
         <span style="color:var(--text-muted);">Score</span>
-        <span style="color:var(--text);font-family:monospace;">26 + 24 × 0.628 = <strong style="color:#f97316;font-size:15px;">41</strong></span>
+        <span style="color:var(--text);font-family:monospace;">50 + 50 × 0.12 = <strong style="color:#f97316;font-size:15px;">56</strong></span>
       </div>
       <p style="margin:12px 0 0;font-size:12px;color:#f97316;background:rgba(249,115,22,0.08);border-radius:6px;padding:8px 10px;">
-        Athlete's R = 80 signals high systemic readiness, yet the thermal-heavy weighting drags the score to 41 — below what equal weighting would produce (≈ 49). This suppression is intentional: hidden tissue stress is the highest-priority injury signal.
+        Athlete's R = 80 signals high systemic readiness, yet the elevated thermal signal (T = 68) holds the score at 56 — squarely mid-band. The zone label "Deceptive Readiness" (from the quadrant) is the operative warning: hidden tissue stress is the highest-priority injury signal even when readiness looks good.
       </p>
     </div>
 
@@ -2643,21 +2642,21 @@ GROUP BY w.workflow_id;</pre>
     <div style="background:#1a0505;border:1px solid rgba(239,68,68,0.35);border-radius:10px;padding:18px 20px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <span style="background:rgba(239,68,68,0.15);color:#ef4444;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:20px;text-transform:uppercase;">Danger</span>
-        <span style="font-size:12px;color:var(--text-muted);">Zone floor 1 · thermal-heavy</span>
+        <span style="font-size:12px;color:var(--text-muted);">equal-weight plane</span>
       </div>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;align-items:start;">
         <span style="color:var(--text-muted);">Inputs</span>
         <span style="color:var(--text);font-family:monospace;">R = 22, T = 86</span>
-        <span style="color:var(--text-muted);">Condition</span>
-        <span style="color:var(--text);font-family:monospace;">R &lt; 50 &amp; T ≥ 50 ✓</span>
-        <span style="color:var(--text-muted);">R_dist</span>
-        <span style="color:var(--text);font-family:monospace;">22 / 50 = <strong style="color:#ef4444;">0.44</strong></span>
-        <span style="color:var(--text-muted);">T_dist</span>
-        <span style="color:var(--text);font-family:monospace;">(100 − 86) / 50 = <strong style="color:#ef4444;">0.28</strong></span>
+        <span style="color:var(--text-muted);">Zone</span>
+        <span style="color:var(--text);font-family:monospace;">R &lt; 50 &amp; T ≥ 50 → Danger ✓</span>
+        <span style="color:var(--text-muted);">r</span>
+        <span style="color:var(--text);font-family:monospace;">(22 − 50) / 50 = <strong style="color:#ef4444;">−0.56</strong></span>
+        <span style="color:var(--text-muted);">t</span>
+        <span style="color:var(--text);font-family:monospace;">(50 − 86) / 50 = <strong style="color:#ef4444;">−0.72</strong></span>
         <span style="color:var(--text-muted);">Weighted</span>
-        <span style="color:var(--text);font-family:monospace;">0.3×0.44 + 0.7×0.28 = <strong style="color:#ef4444;">0.328</strong></span>
+        <span style="color:var(--text);font-family:monospace;">0.5×−0.56 + 0.5×−0.72 = <strong style="color:#ef4444;">−0.64</strong></span>
         <span style="color:var(--text-muted);">Score</span>
-        <span style="color:var(--text);font-family:monospace;">1 + 24 × 0.328 = <strong style="color:#ef4444;font-size:15px;">9</strong></span>
+        <span style="color:var(--text);font-family:monospace;">50 + 50 × −0.64 = <strong style="color:#ef4444;font-size:15px;">18</strong></span>
       </div>
     </div>
 
@@ -2678,7 +2677,7 @@ GROUP BY w.workflow_id;</pre>
 
     <!-- Entry -->
     <rect x="210" y="8" width="300" height="38" rx="8" fill="#1e2630" stroke="#30363d" stroke-width="1.5"/>
-    <text x="360" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#e6edf3">POST /compass/refresh · POST /infer/refresh</text>
+    <text x="360" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#e6edf3">POST /compass/refresh · POST /refresh</text>
 
     <!-- Entry → Gate 1 -->
     <line x1="360" y1="46" x2="360" y2="74" stroke="#30363d" stroke-width="1.5"/>
@@ -2820,19 +2819,20 @@ GROUP BY w.workflow_id;</pre>
       <tr><td><strong>1 — Filter</strong></td><td>Collect sessions per user passing all three qualifying gates</td><td>No active RTP injury window + all deltas &lt; 1.0°C + <code>status='completed'</code></td></tr>
       <tr><td><strong>2 — Extract</strong></td><td>Pull left-right delta per region from <code>tbscan.thermal_scans.measurements</code> JSONB (delta field)</td><td>Per-region delta list across qualifying sessions</td></tr>
       <tr><td><strong>3 — Compute</strong></td><td>Arithmetic mean + sample SD per region from its own qualifying scan history</td><td>Per-region result — each region is computed independently regardless of other regions' counts</td></tr>
-      <tr><td><strong>4 — Patch</strong></td><td>Patch <code>thermal_scans.measurements</code> JSONB for the current scan row — write <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>eligible_scan_count</code>, <code>baseline_mode</code> per region key. Set top-level <code>rtp_cleared</code> (<code>true</code> if all per-region <code>rtp_clear = "YES"</code>).</td><td>No separate table write. Each region carries its own mode; Module 2 reads it directly from the JSONB at inference time.</td></tr>
+      <tr><td><strong>4 — Patch</strong></td><td>Patch <code>thermal_scans.measurements</code> JSONB for the current scan row — write <code>baseline_mean_delta</code>, <code>baseline_sd</code>, <code>qualifying_scan_count</code>, <code>baseline_mode</code> per region key. Set top-level <code>rtp_cleared</code> (<code>true</code> if all per-region <code>rtp_clear = "YES"</code>).</td><td>No separate table write. Each region carries its own mode; Module 2 reads it directly from the JSONB at inference time.</td></tr>
     </tbody>
   </table>
 
   <h4>At-Inference Lookup</h4>
-  <p style="font-size:14px;color:var(--text-muted);max-width:720px;">Module 2 reads the previous scan's <code>thermal_scans.measurements</code> JSONB to retrieve pre-computed baseline stats (written by the previous scan's async thread). For each region, the formula applied is determined by the region's own <code>baseline_mode</code> field stored in the JSONB — no threshold re-evaluation at inference time:<br><br>
-  <code>individual_sd</code> → <code>region_TAI_SD = (current_delta − baseline_mean_delta) / baseline_sd</code><br>
-  <code>population_fallback</code> → <code>region_TAI_SD = current_delta_°C / 0.27</code><br><br>
-  Regions on different modes within the same scan are handled independently. Then <code>TAI = max(all region_TAI_SD)</code> → <code>T = min(100, TAI / 3.0 × 100)</code>. Both formulas share the same T = 50 zone boundary (≈ 1.5 SD ≈ 0.4°C). Baseline stats are always current because they are recomputed event-driven on every new scan.</p>
+  <p style="font-size:14px;color:var(--text-muted);max-width:720px;">Module 2 reads the previous scan's <code>thermal_scans.measurements</code> JSONB to retrieve pre-computed baseline stats (baseline_mean_delta <code>μ_i</code>, baseline_sd <code>σ_i</code>, qualifying_scan_count <code>n</code>). A <strong>single unified path</strong> runs for every region — there is no per-region formula switch:<br><br>
+  <code>σ_eff = √((n·σ_i² + 5·0.40²) / (n + 5))</code> &nbsp; <code>μ_eff = (n·μ_i) / (n + 5)</code><br>
+  <code>z = |current_delta − μ_eff| / σ_eff</code><br>
+  <code>region_T = clamp((z − 1.0) / (3.0 − 1.0) × 100, 0, 100)</code><br><br>
+  Constants: <code>μ_pop = 0</code>, <code>σ_pop = 0.40°C</code>, prior strength <code>n0 = 5</code>. With no personal history (<code>n = 0</code>) the reference is purely population (<code>σ_eff = 0.40°C</code>). Then <code>scan T = max(all region_T)</code> — the worst region drives the scan T. Baseline stats are always current because they are recomputed event-driven on every new scan.</p>
 
   <div class="alert blue">
     <span class="alert-icon">&#8505;</span>
-    <div><strong>Per-Region Population Fallback</strong><p>Each body region accumulates its own baseline independently. Regions with sufficient eligible scan history use the individual SD formula; regions below the threshold use the population formula (<code>T = min(100, TAI°C / 1.0 × 100)</code> — COMPASS §05A). Both modes resolve to the same T = 50 zone boundary. The per-region <code>baseline_mode</code> field in the measurements JSONB records which formula was applied. Regions transition automatically as their <code>eligible_scan_count</code> grows — no manual intervention or global scan counter required.</p></div>
+    <div><strong>Per-Region Shrinkage — No Mode Switch in the Math</strong><p>Each body region accumulates its own baseline independently and blends it toward the population via empirical-Bayes shrinkage (prior strength <code>n0 = 5</code>). The per-region <code>baseline_mode</code> field is a <em>label only</em>: <code>individual_sd</code> when the region has personal stats (<code>qualifying_scan_count &gt; 0</code> and <code>baseline_sd &gt; 0</code>), <code>population_fallback</code> otherwise. It records whether personal data existed — it does <strong>not</strong> select a different formula. The personal weight <code>n/(n+5)</code> rises continuously; there is no ≥6-scan threshold and no global scan counter.</p></div>
   </div>
 
   <h3 id="s07-async-rtp">7.4 Async Baseline + RTP Thread <span class="badge badge-beta" style="margin-left:8px;vertical-align:middle;">BETA</span></h3>
@@ -2852,7 +2852,7 @@ GROUP BY w.workflow_id;</pre>
       <div class="sc-row">
         <div class="sc-block" data-track="thermal">
           <div class="sc-block-title">2 — Compute Baselines Per Region</div>
-          <div class="sc-block-body">For each region independently: compute rolling <code>baseline_mean_delta</code>, <code>baseline_sd</code>, and <code>eligible_scan_count</code> from that region's qualifying scan history (gates: §7.3). Assign per-region <code>baseline_mode</code>: <code>individual_sd</code> when the region has sufficient eligible scans, <code>population_fallback</code> otherwise. Regions on different modes within the same scan are handled independently — there is no global scan count threshold.</div>
+          <div class="sc-block-body">For each region independently: compute rolling <code>baseline_mean_delta</code>, <code>baseline_sd</code>, and <code>qualifying_scan_count</code> from that region's qualifying scan history (gates: §7.3). Assign per-region <code>baseline_mode</code> as a label: <code>individual_sd</code> when the region has personal stats (<code>qualifying_scan_count &gt; 0</code> and <code>baseline_sd &gt; 0</code>), <code>population_fallback</code> otherwise. The label does not change the scoring formula — shrinkage blends personal toward population continuously. There is no global scan count threshold.</div>
         </div>
       </div>
     </div>
@@ -2861,11 +2861,11 @@ GROUP BY w.workflow_id;</pre>
       <div class="sc-row">
         <div class="sc-block" data-track="thermal">
           <div class="sc-block-title">3 — Compute RTP Clearance Per Region</div>
-          <div class="sc-block-body">For each region, sets <code>rtp_clear</code>:
-            <br>• <strong>N/A</strong> — <code>eligible_scan_count &lt; 2</code> (insufficient history)
-            <br>• <strong>YES</strong> — region side ≠ <code>affected_side</code> (healthy contralateral — auto-clears)
-            <br>• <strong>YES</strong> — region side = <code>affected_side</code> AND <code>severity_level</code> was <code>mild</code> or <code>clear</code> for the last 2 consecutive scans
-            <br>• <strong>NO</strong> — affected side with ≥ 1 <code>moderate</code> or <code>elevated</code> reading in the last 2 scans
+          <div class="sc-block-body">For each region side, sets <code>rtp_clear</code>:
+            <br>• <strong>N/A</strong> — <code>qualifying_scan_count &lt; 2</code> (insufficient history)
+            <br>• <strong>YES</strong> — this side was not affected (healthy contralateral — auto-clears)
+            <br>• <strong>YES</strong> — this side affected AND <code>severity_level</code> was <code>Mild</code> or <code>Clear</code> across the last 2 scans
+            <br>• <strong>NO</strong> — this side affected with ≥ 1 <code>Moderate</code> or <code>Elevated</code> reading in the last 2 scans
           </div>
         </div>
       </div>
@@ -2889,7 +2889,7 @@ GROUP BY w.workflow_id;</pre>
 <section id="s07-flow-b-triggers" style="margin-top:48px;">
   <div id="s07-flow-b-triggers-anchor"></div>
   <h3 style="margin-top:0;">7.5 Flow B — Event-Driven Triggers</h3>
-  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Flow B (§7.2) fires automatically from two data-write paths. The triggering endpoint or job spawns a background thread and calls NURAI <code>POST /infer/refresh</code> directly — no gate checks run at the trigger site. All gate logic (thermal scan validity, wearable freshness, cached status) lives inside the Flow B pipeline in NURAI (§7.2), identical to how <code>POST /compass/refresh</code> behaves today. <code>POST /compass/refresh</code> is preserved for manual refresh and remains the natural recovery path if a background trigger fails.</p>
+  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Flow B (§7.2) fires automatically from two data-write paths. The triggering endpoint or job spawns a background thread and calls NURAI <code>POST /refresh</code> directly — no gate checks run at the trigger site. All gate logic (thermal scan validity, wearable freshness, cached status) lives inside the Flow B pipeline in NURAI (§7.2), identical to how <code>POST /compass/refresh</code> behaves today. <code>POST /compass/refresh</code> is preserved for manual refresh and remains the natural recovery path if a background trigger fails.</p>
 
   <h4>Trigger Sources</h4>
 
@@ -2925,7 +2925,7 @@ GROUP BY w.workflow_id;</pre>
   <ul class="step-list">
     <li><div class="step-num">1</div><p>The triggering endpoint or job completes its own DB write (e.g. upserts <code>daily_metrics</code>, inserts <code>user_profile_history</code> version, writes to <code>rtp_workflows</code>).</p></li>
     <li><div class="step-num">2</div><p>A background thread is spawned. The endpoint returns its normal response to the caller immediately — the caller is not blocked by NURAI execution.</p></li>
-    <li><div class="step-num">3</div><p>The background thread calls NURAI <code>POST /infer/refresh</code> with <code>{ user_id, trigger_type: "auto_wearable" | "auto_health" }</code>. NURAI runs the full §7.2 gate sequence and, if gates pass, executes Modules 2 + 3.</p></li>
+    <li><div class="step-num">3</div><p>The background thread calls NURAI <code>POST /refresh</code> with <code>{ user_id, trigger_type: "auto_wearable" | "auto_health" }</code>. NURAI runs the full §7.2 gate sequence and, if gates pass, executes Modules 2 + 3.</p></li>
     <li><div class="step-num">4</div><p>On success, NURAI upserts <code>daily_assessments</code> with the new score, zone, AI coach response, and <code>trigger_type</code>. If the zone changed, the existing Alert Generator (§10) fires a <code>zone_change</code> alert to staff.</p></li>
     <li><div class="step-num">5</div><p>On failure, the <code>daily_assessments</code> row is unchanged. The client's next <code>POST /compass/refresh</code> or <code>GET /results/latest</code> call serves as the natural recovery path — no retry or dead-letter mechanism is needed.</p></li>
   </ul>
@@ -3269,7 +3269,7 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
     <li><div class="step-num">3</div><p>For each queued user, Backend calls the Spike Daily Statistics API using the stored JWT (<code>wearable_connections.encrypted_access_token</code>), scoping the request to the <code>data_start</code> / <code>data_end</code> window from the webhook payload where available.</p></li>
     <li><div class="step-num">4</div><p>Returned metrics are upserted into <code>tbscan.daily_metrics</code> (<code>metric_type = 'raw'</code>, <code>source_platform = 'spike'</code>). <code>activity_load</code> (ACWR) is computed from the 7-day / 28-day history and written alongside the raw fields.</p></li>
     <li><div class="step-num">5</div><p><code>wearable_connections.last_synced_at</code> is updated to <code>NOW()</code> on success. The processed row in <code>spike_pull_queue</code> is marked <code>status = 'done'</code> (or deleted). On API error the row is marked <code>status = 'error'</code> and <code>wearable_connections.status</code> is set to <code>error</code> if auth-related.</p></li>
-    <li><div class="step-num">6</div><p><strong>Flow B trigger (§7.5):</strong> If Step 4 wrote new data for this user, a background thread is spawned to call NURAI <code>POST /infer/refresh { user_id, trigger_type: "auto_wearable" }</code>. Users where no new <code>daily_metrics</code> row was written are skipped. The cron job continues to the next queued user without waiting for NURAI to complete. Each user's background thread runs independently.</p></li>
+    <li><div class="step-num">6</div><p><strong>Flow B trigger (§7.5):</strong> If Step 4 wrote new data for this user, a background thread is spawned to call NURAI <code>POST /refresh { user_id, trigger_type: "auto_wearable" }</code>. Users where no new <code>daily_metrics</code> row was written are skipped. The cron job continues to the next queued user without waiting for NURAI to complete. Each user's background thread runs independently.</p></li>
   </ul>
 
   <div id="s08-6"></div>
@@ -3295,13 +3295,13 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
     <li><div class="step-num">1</div><p>Client calls <code>POST /wearables/sync-now</code> with JWT. Backend resolves athlete from JWT (or from <code>user_id</code> body field for admin callers). Verifies <code>wearable_connections.status = 'active'</code> and <code>sync_enabled = true</code> — returns <code>409</code> if the connection is not active.</p></li>
     <li><div class="step-num">2</div><p>Rate-limit check: if <code>NOW() - last_synced_at &lt; 1 hour</code>, return <code>429</code> with <code>Retry-After: &lt;seconds&gt;</code>.</p></li>
     <li><div class="step-num">3</div><p>Backend calls the Spike Daily Statistics API using <code>wearable_connections.encrypted_access_token</code>, requesting today's date window. Same pull logic and upsert semantics as the daily cron job (§8.5 Steps 3–4) — idempotent on <code>(user_id, source_platform, metric_date, metric_type)</code>.</p></li>
-    <li><div class="step-num">4</div><p>On success: update <code>wearable_connections.last_synced_at = NOW()</code>. Write a row to <code>wearable_sync_logs</code> with <code>sync_type = 'on_demand'</code>. If <code>new_data_available = true</code>, spawn a background thread to call NURAI <code>POST /infer/refresh { user_id, trigger_type: "auto_wearable" }</code> (see §7.5). Return <code>200</code> with <code>{ last_synced_at, new_data_available, ready_for_compass_refresh }</code>.</p></li>
+    <li><div class="step-num">4</div><p>On success: update <code>wearable_connections.last_synced_at = NOW()</code>. Write a row to <code>wearable_sync_logs</code> with <code>sync_type = 'on_demand'</code>. If <code>new_data_available = true</code>, spawn a background thread to call NURAI <code>POST /refresh { user_id, trigger_type: "auto_wearable" }</code> (see §7.5). Return <code>200</code> with <code>{ last_synced_at, new_data_available, ready_for_compass_refresh }</code>.</p></li>
     <li><div class="step-num">5</div><p>On Spike API error: return <code>502 Bad Gateway</code> with <code>{ error: "spike_pull_failed", detail: "&lt;spike_error&gt;" }</code>. <code>last_synced_at</code> is not updated — the rate-limit window is not consumed on failure, so the athlete can retry immediately.</p></li>
   </ul>
 
   <div class="alert blue">
     <span class="alert-icon">ℹ️</span>
-    <div><strong>Automatic Flow B trigger on new data</strong><p>When <code>new_data_available = true</code>, the on-demand pull spawns a background thread that calls NURAI <code>POST /infer/refresh</code> automatically (§7.5). The client still receives <code>ready_for_compass_refresh</code> in the response and may also call <code>POST /compass/refresh</code> manually — NURAI's gate logic will return <code>cached</code> if the background trigger already completed, preventing duplicate computation.</p></div>
+    <div><strong>Automatic Flow B trigger on new data</strong><p>When <code>new_data_available = true</code>, the on-demand pull spawns a background thread that calls NURAI <code>POST /refresh</code> automatically (§7.5). The client still receives <code>ready_for_compass_refresh</code> in the response and may also call <code>POST /compass/refresh</code> manually — NURAI's gate logic will return <code>cached</code> if the background trigger already completed, preventing duplicate computation.</p></div>
   </div>
 
   <h4>Data Flow Diagram</h4>
@@ -3499,7 +3499,7 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
       <tr><th>Method</th><th>Path</th><th>Auth</th><th>Consumer</th><th>Description</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>POST</code></td><td><code>/compass/refresh</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR, NUR HUB</td><td>Flow B event-driven refresh (manual path). Backend invokes NURAI <code>/infer/refresh</code>. Gates control whether Module 2 (score recomputation) runs; Module 3 (GenAI) always runs. <strong>Always returns latest <code>daily_assessments</code></strong> with a <code>refresh_status</code> field: <code>no_scan</code> / <code>stale_scan</code> / <code>cached</code> / <code>computed</code> / <code>inference_failed</code>. Body: <code>{ "user_id": "&lt;uuid&gt;", "force": false }</code>.</td></tr>
+      <tr><td><code>POST</code></td><td><code>/compass/refresh</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR, NUR HUB</td><td>Flow B event-driven refresh (manual path). Backend invokes NURAI <code>/refresh</code>. Gates control whether Module 2 (score recomputation) runs; Module 3 (GenAI) always runs. <strong>Always returns latest <code>daily_assessments</code></strong> with a <code>refresh_status</code> field: <code>no_scan</code> / <code>stale_scan</code> / <code>cached</code> / <code>computed</code> / <code>inference_failed</code>. Body: <code>{ "user_id": "&lt;uuid&gt;", "force": false }</code>.</td></tr>
       <tr><td><code>GET</code></td><td><code>/compass/status</code></td><td><span class="badge badge-jwt">JWT</span></td><td>My NUR, NUR HUB</td><td>Lightweight eligibility check before calling <code>/compass/refresh</code>. Returns: <code>{ "latest_scan_age_days", "scan_eligible", "new_wearable_data", "today_computed", "last_daily_assessments" }</code>. No NURAI call made.</td></tr>
     </tbody>
   </table>
@@ -3569,7 +3569,7 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
     <tbody>
       <tr><td><strong>GET</strong></td><td><code>/teams/athletes/{id}/compass/history</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>Last 30 days of COMPASS score and zone. Returns <code>[{date, compass_score, compass_zone, trigger_type}]</code>. Query: §6.6.1.</td></tr>
       <tr><td><strong>GET</strong></td><td><code>/teams/athletes/{id}/thermal/contralateral</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>Contralateral bilateral delta history. Returns <code>{pairs: [{label, dates[], left_deltas[], right_deltas[], bilateral_diffs[]}]}</code>. Query: §6.6.2.</td></tr>
-      <tr><td><strong>GET</strong></td><td><code>/teams/athletes/{id}/rtp</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>RTP status from latest scan. Returns <code>{rtp_regions_pending, baseline_computed_at, region_eligibility: [{region_id, label, delta, rtp_clear, eligible_scan_count}]}</code>. Reads <code>thermal_scans.measurements</code> directly — no separate computation at query time.</td></tr>
+      <tr><td><strong>GET</strong></td><td><code>/teams/athletes/{id}/rtp</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>RTP status from latest scan. Returns <code>{rtp_regions_pending, baseline_computed_at, region_eligibility: [{region_id, label, delta, rtp_clear, qualifying_scan_count}]}</code>. Reads <code>thermal_scans.measurements</code> directly — no separate computation at query time.</td></tr>
       <tr><td><strong>POST</strong></td><td><code>/teams/athletes/{id}/notes</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>Create clinical note. Body: <code>{content, note_type: "soap"|"observation"|"assessment"|"general"}</code>. Writes to <code>tbscan.clinical_notes</code>.</td></tr>
       <tr><td><strong>GET</strong></td><td><code>/teams/athletes/{id}/notes</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>List clinical notes newest-first. Returns <code>[{note_id, author_name, note_type, content, created_at}]</code>.</td></tr>
       <tr><td><strong>PUT</strong></td><td><code>/teams/athletes/{id}/activity</code></td><td><span class="badge badge-jwt">JWT admin</span></td><td>Staff-side activity level update. Body: <code>{activity_level: "rest"|"light"|"moderate"|"high"|"max"}</code>. Creates new <code>user_profile_history</code> version row.</td></tr>
@@ -3655,7 +3655,7 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
     </thead>
     <tbody>
       <tr><td><strong>Readiness Dashboard</strong></td><td>Displays today's COMPASS zone and score (0&ndash;100), colour-coded by Safe / Recovery / Deceptive Readiness / Danger.</td><td>COMPASS score from Backend API (<code>/results/</code>)</td></tr>
-      <tr><td><strong>Scan History</strong></td><td>Timeline of past thermal scans with per-session TAI values and zone assignments.</td><td><code>tbscan.sessions</code> + <code>tbscan.daily_metrics</code></td></tr>
+      <tr><td><strong>Scan History</strong></td><td>Timeline of past thermal scans with per-session T-score values and zone assignments.</td><td><code>tbscan.sessions</code> + <code>tbscan.daily_metrics</code></td></tr>
       <tr><td><strong>Wearables Connection</strong></td><td>Spike SDK connection flow. My NUR requests health permissions via the Spike SDK, which triggers native OS permission dialogs (HealthKit on iOS, Health Connect on Android). No OAuth redirect. Backend generates HMAC signature for Spike initialisation.</td><td><code>POST /wearables/connect</code> &rarr; Spike SDK init; see &sect;08</td></tr>
       <tr><td><strong>Health Data Entry</strong></td><td>Pre-scan questionnaire: pain region/intensity, chronic conditions. Feeds the AI Coach output only &mdash; not the R or T score.</td><td><code>pain_entries</code>, <code>users.health_history</code></td></tr>
       <tr><td><strong>AI Coach Recommendations</strong></td><td>Personalised corrective guidance generated by NURAI based on the athlete's COMPASS zone and health context.</td><td>NURAI inference output; see &sect;07</td></tr>
@@ -3702,49 +3702,51 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
   <p>For both scan entry paths (individual QR and admin member-selection), see <a href="#s05-2" style="color:var(--accent);">&sect;5.2 Admin / Team Scan Flow</a>.</p>
 
   <h3 id="s14-3">14.3 Anatomical Region Map</h3>
-  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">The NUR Scanner maps its thermogram ROI extraction to 34 fixed anatomical regions. Each region has a stable integer ID used in <code>thermal_scans.measurements</code> JSONB, RTP workflow region tracking, and the body map UI in My NUR and NUR HUB. Bilateral regions are paired by name convention (Right / Left prefix); unpaired regions (Head, Neck) are singular.</p>
+  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">NURAI maps its thermogram ROI extraction to the <code>BodyPart</code> enum — <strong>89 concrete regions</strong> across 36 muscle sets, split between the front view (45 regions) and back view (44 regions). Each region is keyed in <code>thermal_scans.measurements</code> JSONB by its <strong>string <code>region_id</code></strong> (e.g. <code>Front_Left_Quad</code>, <code>Back_Right_Achilles</code>) — not an integer ID. Most muscle sets resolve to left/right pairs; three regions are median/unpaired (front Head, back Head, Sacrum).</p>
   <table class="data-table">
     <thead>
-      <tr><th>ID</th><th>Region Name</th><th>Pair</th><th>Body Segment</th></tr>
+      <tr><th>Body Segment</th><th>Muscle Set</th><th>Front view</th><th>Back view</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>1</code></td><td>Head</td><td>—</td><td>Head &amp; Neck</td></tr>
-      <tr><td><code>34</code></td><td>Neck</td><td>—</td><td>Head &amp; Neck</td></tr>
-      <tr><td><code>10</code></td><td>Right Chest</td><td rowspan="2" style="vertical-align:middle;">↔ 10/11</td><td rowspan="2" style="vertical-align:middle;">Torso</td></tr>
-      <tr><td><code>11</code></td><td>Left Chest</td></tr>
-      <tr><td><code>3</code></td><td>Right Upper Abdomen</td><td rowspan="2" style="vertical-align:middle;">↔ 3/7</td><td rowspan="2" style="vertical-align:middle;">Torso</td></tr>
-      <tr><td><code>7</code></td><td>Left Upper Abdomen</td></tr>
-      <tr><td><code>2</code></td><td>Right Lower Abdomen</td><td rowspan="2" style="vertical-align:middle;">↔ 2/6</td><td rowspan="2" style="vertical-align:middle;">Torso</td></tr>
-      <tr><td><code>6</code></td><td>Left Lower Abdomen</td></tr>
-      <tr><td><code>4</code></td><td>Right Pelvis</td><td rowspan="2" style="vertical-align:middle;">↔ 4/5</td><td rowspan="2" style="vertical-align:middle;">Pelvis &amp; Hip</td></tr>
-      <tr><td><code>5</code></td><td>Left Pelvis</td></tr>
-      <tr><td><code>8</code></td><td>Right Hip</td><td rowspan="2" style="vertical-align:middle;">↔ 8/9</td><td rowspan="2" style="vertical-align:middle;">Pelvis &amp; Hip</td></tr>
-      <tr><td><code>9</code></td><td>Left Hip</td></tr>
-      <tr><td><code>14</code></td><td>Right Shoulder</td><td rowspan="2" style="vertical-align:middle;">↔ 14/15</td><td rowspan="2" style="vertical-align:middle;">Upper Limb</td></tr>
-      <tr><td><code>15</code></td><td>Left Shoulder</td></tr>
-      <tr><td><code>12</code></td><td>Right Upper Arm</td><td rowspan="2" style="vertical-align:middle;">↔ 12/13</td><td rowspan="2" style="vertical-align:middle;">Upper Limb</td></tr>
-      <tr><td><code>13</code></td><td>Left Upper Arm</td></tr>
-      <tr><td><code>16</code></td><td>Right Elbow</td><td rowspan="2" style="vertical-align:middle;">↔ 16/17</td><td rowspan="2" style="vertical-align:middle;">Upper Limb</td></tr>
-      <tr><td><code>17</code></td><td>Left Elbow</td></tr>
-      <tr><td><code>18</code></td><td>Right Lower Arm</td><td rowspan="2" style="vertical-align:middle;">↔ 18/19</td><td rowspan="2" style="vertical-align:middle;">Upper Limb</td></tr>
-      <tr><td><code>19</code></td><td>Left Lower Arm</td></tr>
-      <tr><td><code>20</code></td><td>Right Hands</td><td rowspan="2" style="vertical-align:middle;">↔ 20/21</td><td rowspan="2" style="vertical-align:middle;">Upper Limb</td></tr>
-      <tr><td><code>21</code></td><td>Left Hands</td></tr>
-      <tr><td><code>28</code></td><td>Right Thigh</td><td rowspan="2" style="vertical-align:middle;">↔ 28/29</td><td rowspan="2" style="vertical-align:middle;">Lower Limb</td></tr>
-      <tr><td><code>29</code></td><td>Left Thigh</td></tr>
-      <tr><td><code>30</code></td><td>Right Inner Thigh</td><td rowspan="2" style="vertical-align:middle;">↔ 30/31</td><td rowspan="2" style="vertical-align:middle;">Lower Limb</td></tr>
-      <tr><td><code>31</code></td><td>Left Inner Thigh</td></tr>
-      <tr><td><code>32</code></td><td>Right Outer Thigh</td><td rowspan="2" style="vertical-align:middle;">↔ 32/33</td><td rowspan="2" style="vertical-align:middle;">Lower Limb</td></tr>
-      <tr><td><code>33</code></td><td>Left Outer Thigh</td></tr>
-      <tr><td><code>26</code></td><td>Right Knee</td><td rowspan="2" style="vertical-align:middle;">↔ 26/27</td><td rowspan="2" style="vertical-align:middle;">Lower Limb</td></tr>
-      <tr><td><code>27</code></td><td>Left Knee</td></tr>
-      <tr><td><code>24</code></td><td>Right Lower Leg</td><td rowspan="2" style="vertical-align:middle;">↔ 24/25</td><td rowspan="2" style="vertical-align:middle;">Lower Limb</td></tr>
-      <tr><td><code>25</code></td><td>Left Lower Leg</td></tr>
-      <tr><td><code>22</code></td><td>Right Foot</td><td rowspan="2" style="vertical-align:middle;">↔ 22/23</td><td rowspan="2" style="vertical-align:middle;">Lower Limb</td></tr>
-      <tr><td><code>23</code></td><td>Left Foot</td></tr>
+      <tr><td rowspan="2" style="vertical-align:middle;">Head &amp; Neck</td><td>Head</td><td>Centre</td><td>Centre</td></tr>
+      <tr><td>Neck</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td rowspan="5" style="vertical-align:middle;">Torso (anterior)</td><td>Chest</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Upper Abdomen</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Lower Abdomen</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Pelvis</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Hip</td><td>L · R</td><td>—</td></tr>
+      <tr><td rowspan="5" style="vertical-align:middle;">Torso (posterior)</td><td>Traps</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Lats</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Lower Back</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Glute</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Sacrum</td><td>—</td><td>Centre</td></tr>
+      <tr><td rowspan="8" style="vertical-align:middle;">Upper Limb</td><td>Shoulder</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td>Outer Upper Arm</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td>Inner Upper Arm</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td>Elbow</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td>Outer Forearm</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td>Inner Forearm</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td>Wrist</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Hand</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td rowspan="8" style="vertical-align:middle;">Lower Limb (anterior)</td><td>Quad</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Inner Thigh</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Outer Thigh</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Knee</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Inner Shin</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Outer Shin</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Ankle</td><td>L · R</td><td>—</td></tr>
+      <tr><td>Foot</td><td>L · R</td><td>L · R</td></tr>
+      <tr><td rowspan="8" style="vertical-align:middle;">Lower Limb (posterior)</td><td>Inner Hamstring</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Middle Hamstring</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Outer Hamstring</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Popliteus</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Inner Calf</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Outer Calf</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Achilles</td><td>—</td><td>L · R</td></tr>
+      <tr><td>Heel</td><td>—</td><td>L · R</td></tr>
     </tbody>
   </table>
-  <p style="font-size:13px;color:var(--text-dim);margin-top:8px;">32 bilateral regions (16 pairs) + 2 singular regions = 34 total. The ID values match the <code>region_id</code> keys in <code>thermal_scans.measurements.regions[]</code> and the <code>region_id</code> column in <code>rtp_workflows.injuries[]</code> JSONB.</p>
+  <p style="font-size:13px;color:var(--text-dim);margin-top:8px;">89 regions = 43 contralateral pairs + 3 median, across 45 front-view + 44 back-view. The string <code>region_id</code> values are the keys in <code>thermal_scans.measurements</code> and the references in <code>rtp_workflows.injuries[]</code> JSONB.</p>
 </section>
 
 <!-- ══ 15: NUR HUB ══ -->
@@ -3794,7 +3796,7 @@ if not verify_spike_webhook(request.body, request.headers["X-Body-Signature"], S
       </tr>
       <tr>
         <td><strong>RTP Workflow</strong></td>
-        <td>Dedicated per-athlete workflow management page (<code>/rtp/{id}</code>). Four sequential steps: (1) Injury Documentation — body avatar with 34 regions, injury type/severity/date/notes; (2) Interventions — therapeutic session log with type, date, provider, duration, notes; (3) Timeline — milestone visualisation (Initiated → Injury Documented → each Intervention → Clearance); (4) Clearance Decision — shows "Ready to Clear" button (enabled) when athlete is in Safe zone with <code>rtp_regions_pending = 0</code>, or "Override Clear" button (always available to admins) for early clearance. Both paths require explicit staff approval — the workflow is never closed automatically.</td>
+        <td>Dedicated per-athlete workflow management page (<code>/rtp/{id}</code>). Four sequential steps: (1) Injury Documentation — body avatar with the measured regions, injury type/severity/date/notes; (2) Interventions — therapeutic session log with type, date, provider, duration, notes; (3) Timeline — milestone visualisation (Initiated → Injury Documented → each Intervention → Clearance); (4) Clearance Decision — shows "Ready to Clear" button (enabled) when athlete is in Safe zone with <code>rtp_regions_pending = 0</code>, or "Override Clear" button (always available to admins) for early clearance. Both paths require explicit staff approval — the workflow is never closed automatically.</td>
         <td><code>GET /teams/rtp/{id}/workflow</code><br><code>PUT .../injuries</code><br><code>POST .../interventions</code><br><code>DELETE .../interventions/{interventionId}</code><br><code>POST .../clear</code></td>
       </tr>
       <tr>

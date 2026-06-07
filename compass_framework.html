@@ -1068,7 +1068,7 @@
       <div style="font-size:10px; color:#f97316; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">Use Case 02</div>
       <div style="font-size:22px; margin-bottom:10px;">🔄</div>
       <h3 style="font-size:15px; margin:0 0 10px; color:var(--text);">Return to Play — Thermal Eligibility</h3>
-      <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin:0;">For athletes in Deceptive Readiness or Danger zone, COMPASS monitors all 34 body regions simultaneously. Each region is declared RTP-eligible when bilateral asymmetry normalises on two consecutive scans — providing anatomy-specific clearance evidence rather than a single composite score.</p>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin:0;">For athletes in Deceptive Readiness or Danger zone, COMPASS monitors all 89 measured body regions simultaneously. Each region side is declared RTP-eligible when its asymmetry severity stays below the concern band on two consecutive qualifying scans — providing anatomy-specific clearance evidence rather than a single composite score.</p>
     </div>
 
     <div style="background:rgba(168,85,247,0.06); border:1px solid rgba(168,85,247,0.2); border-radius:12px; padding:20px 22px;">
@@ -1142,7 +1142,7 @@
     <div class="zone-card safe">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
         <div class="zone-badge" style="margin-bottom:0;">✅ Safe Zone</div>
-        <div style="background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">76–100</div>
+        <div style="background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">50–100</div>
       </div>
       <h4>Both Signals Are Clear</h4>
       <p>The athlete's wearable data shows good recovery, and thermography shows no significant regional asymmetry. This is the optimal training state. Full training load is appropriate; no clinical intervention is indicated.</p>
@@ -1158,7 +1158,7 @@
     <div class="zone-card recovery">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
         <div class="zone-badge" style="margin-bottom:0;">⏸️ Recovery Zone</div>
-        <div style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">51–75</div>
+        <div style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">25–75</div>
       </div>
       <h4>Tired Body, Fine Tissue</h4>
       <p>Wearable readiness is suppressed — HRV is down, sleep quality was poor, or load has been accumulating — but thermography shows no localised tissue stress. Clinical response: load management. No region-specific physiotherapy concern.</p>
@@ -1174,7 +1174,7 @@
     <div class="zone-card deceptive">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
         <div class="zone-badge" style="margin-bottom:0;">⚠️ Deceptive Readiness Zone</div>
-        <div style="background:rgba(249,115,22,0.18); color:#f97316; border:1px solid rgba(249,115,22,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">26–50</div>
+        <div style="background:rgba(249,115,22,0.18); color:#f97316; border:1px solid rgba(249,115,22,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">25–75</div>
       </div>
       <h4>The Most Important Zone</h4>
       <p>Systemic readiness is good — the athlete feels excellent and is motivated to train hard. But thermography flags elevated asymmetry in a specific region, indicating that local tissue stress is building. No wearable-only system can detect this.</p>
@@ -1190,7 +1190,7 @@
     <div class="zone-card danger">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
         <div class="zone-badge" style="margin-bottom:0;">🛑 Danger Zone</div>
-        <div style="background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">0–25</div>
+        <div style="background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">0–50</div>
       </div>
       <h4>Both Signals Alarming</h4>
       <p>Systemic readiness is low and thermal asymmetry is elevated simultaneously. The body is both globally fatigued and locally stressed. Mandatory clinical intervention: load reduction is non-negotiable; physiotherapy assessment required.</p>
@@ -1209,40 +1209,41 @@
   </div>
 
   <div class="insight">
-    <p style="margin-bottom:16px;"><strong>The COMPASS score: a continuous variable, not just a zone label.</strong> Every athlete receives a score from 0–100. Zone boundaries are clinical thresholds within that scale — where an athlete sits <em>inside</em> their zone carries independent meaning, and score trends within a zone signal risk before any zone transition occurs.</p>
+    <p style="margin-bottom:16px;"><strong>The COMPASS score: a continuous variable, paired with a zone label.</strong> Every athlete receives a score from 0–100 from the equal-weight fusion plane <em>and</em>, independently, a zone from the 2×2 quadrant (R and T each thresholded at 50). The score is <em>not</em> partitioned into clean per-zone bands — because zone identity is categorical while the score is continuous, the two mixed zones overlap on the 0–100 axis. Where an athlete sits inside the range carries independent meaning, and score trends signal risk before any zone transition occurs.</p>
 
     <div style="margin:0 0 6px;">
-      <div style="display:flex; height:36px; border-radius:8px; overflow:hidden;">
-        <div style="width:25%; background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;">
-          <span style="font-size:10px; font-weight:800; color:#ef4444; letter-spacing:0.03em;">DANGER</span>
-          <span style="font-size:10px; color:rgba(239,68,68,0.75);">0–25</span>
+      <div style="font-size:10px; color:rgba(255,255,255,0.4); font-weight:700; letter-spacing:0.05em; margin-bottom:8px; text-transform:uppercase;">Score range per zone (overlapping)</div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <!-- Danger 0–50 -->
+        <div style="position:relative; height:22px; background:rgba(255,255,255,0.04); border-radius:5px;">
+          <div style="position:absolute; left:0%; width:50%; top:0; bottom:0; background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.45); border-radius:5px; display:flex; align-items:center; padding-left:8px;"><span style="font-size:10px; font-weight:800; color:#ef4444;">DANGER · 0–50</span></div>
         </div>
-        <div style="width:25%; background:rgba(249,115,22,0.18); border:1px solid rgba(249,115,22,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;">
-          <span style="font-size:10px; font-weight:800; color:#f97316; letter-spacing:0.03em;">DECEPTIVE</span>
-          <span style="font-size:10px; color:rgba(249,115,22,0.75);">26–50</span>
+        <!-- Recovery 25–75 -->
+        <div style="position:relative; height:22px; background:rgba(255,255,255,0.04); border-radius:5px;">
+          <div style="position:absolute; left:25%; width:50%; top:0; bottom:0; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); border-radius:5px; display:flex; align-items:center; padding-left:8px;"><span style="font-size:10px; font-weight:800; color:#f59e0b;">RECOVERY · 25–75</span></div>
         </div>
-        <div style="width:25%; background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;">
-          <span style="font-size:10px; font-weight:800; color:#f59e0b; letter-spacing:0.03em;">RECOVERY</span>
-          <span style="font-size:10px; color:rgba(245,158,11,0.75);">51–75</span>
+        <!-- Deceptive 25–75 -->
+        <div style="position:relative; height:22px; background:rgba(255,255,255,0.04); border-radius:5px;">
+          <div style="position:absolute; left:25%; width:50%; top:0; bottom:0; background:rgba(249,115,22,0.18); border:1px solid rgba(249,115,22,0.4); border-radius:5px; display:flex; align-items:center; padding-left:8px;"><span style="font-size:10px; font-weight:800; color:#f97316;">DECEPTIVE · 25–75</span></div>
         </div>
-        <div style="width:25%; background:rgba(34,197,94,0.18); border:1px solid rgba(34,197,94,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;">
-          <span style="font-size:10px; font-weight:800; color:#22c55e; letter-spacing:0.03em;">SAFE</span>
-          <span style="font-size:10px; color:rgba(34,197,94,0.75);">76–100</span>
+        <!-- Safe 50–100 -->
+        <div style="position:relative; height:22px; background:rgba(255,255,255,0.04); border-radius:5px;">
+          <div style="position:absolute; left:50%; width:50%; top:0; bottom:0; background:rgba(34,197,94,0.18); border:1px solid rgba(34,197,94,0.4); border-radius:5px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px;"><span style="font-size:10px; font-weight:800; color:#22c55e;">SAFE · 50–100</span></div>
         </div>
       </div>
       <div style="display:flex; justify-content:space-between; font-size:10px; color:rgba(255,255,255,0.35); margin-top:5px; padding:0 1px;">
-        <span>0</span><span>26</span><span>51</span><span>76</span><span>100</span>
+        <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
       </div>
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
       <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:11px 13px;">
         <div style="font-size:10px; color:var(--accent); font-weight:800; letter-spacing:0.06em; margin-bottom:6px;">POSITION WITHIN ZONE</div>
-        <div style="font-size:13px; color:var(--text); line-height:1.5;">Score 72 (Recovery ceiling) is near-safe. Score 52 (Recovery floor) borders Danger. Same zone label — very different clinical risk.</div>
+        <div style="font-size:13px; color:var(--text); line-height:1.5;">Within Recovery (25–75), a score of 72 (good readiness, clear tissue) is near-Safe, while a score of 28 (deep fatigue) borders the Danger range. Same zone label — very different clinical risk.</div>
       </div>
       <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:11px 13px;">
         <div style="font-size:10px; color:var(--accent); font-weight:800; letter-spacing:0.06em; margin-bottom:6px;">TREND DETECTION</div>
-        <div style="font-size:13px; color:var(--text); line-height:1.5;">A score drifting 45 → 30 within the Deceptive zone signals accelerating risk before any zone transition occurs.</div>
+        <div style="font-size:13px; color:var(--text); line-height:1.5;">A score drifting 60 → 30 within the Deceptive zone signals accelerating thermal risk before any zone transition occurs.</div>
       </div>
     </div>
   </div>
@@ -1290,7 +1291,7 @@
           </div>
           <div class="sc-block sc-thermal">
             <div class="sc-block-title">T Score (0–100)</div>
-            <div class="sc-block-body">TAI converted to a normalised thermal risk score. Higher T = more asymmetry = greater tissue stress. Two conversion methods available — see <a href="#scoring-equations" style="color:var(--accent);">§ 3.1</a>.</div>
+            <div class="sc-block-body">Per-region bilateral asymmetry standardised to a z deviation, then mapped to a 0–100 thermal-risk score; the worst region drives the scan. Higher T = more asymmetry = greater tissue stress. A single unified path — see <a href="#scoring-equations" style="color:var(--accent);">§ 3.1</a>.</div>
           </div>
         </div>
       </div>
@@ -1393,12 +1394,12 @@
 
       <!-- Eq 1: T Score -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--accent);font-weight:700;margin-bottom:12px;">① T Score — TAI → Thermal Risk (0–100)</div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--accent);font-weight:700;margin-bottom:12px;">① T Score — Bilateral Asymmetry → Thermal Risk (0–100)</div>
         <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text-muted);">
-          <div><span style="color:var(--text);font-weight:600;min-width:180px;display:inline-block;">Population method</span><code>T = min(100, TAI / 1.0 × 100)</code></div>
-          <div><span style="color:var(--text);font-weight:600;min-width:180px;display:inline-block;">SD baseline method</span><code>T = min(100, TAI_SD / 3.0 × 100)</code></div>
+          <div><span style="color:var(--text);font-weight:600;min-width:180px;display:inline-block;">Standardised deviation</span><code>z = |Δ − μ_eff| / σ_eff</code></div>
+          <div><span style="color:var(--text);font-weight:600;min-width:180px;display:inline-block;">Severity score</span><code>T = clamp( (z − 1.0) / (3.0 − 1.0) × 100, 0, 100 )</code></div>
         </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--text-dim);">Where <code>TAI = max(region deltas)</code> — the largest left/right temperature difference across all scanned zones. <code>TAI_SD = TAI ÷ athlete's personal baseline SD</code>. The SD baseline method is preferred for longitudinal monitoring.</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-dim);">A <strong>single unified path</strong> — no separate population/SD methods. For each bilateral region, <code>Δ</code> is the left/right temperature delta and <code>(μ_eff, σ_eff)</code> is that region's effective reference: the athlete's personal mean/SD <em>shrunk toward the population</em> (see Section 04). With no personal history the reference is purely the population (<code>μ_pop = 0</code>, <code>σ_pop = 0.40 °C</code>). The <code>z</code>-anchors are <code>Z_ANCHOR_LOW = 1.0</code> (T = 0) and <code>Z_ANCHOR_HIGH = 3.0</code> (T = 100), so T = 50 at z = 2. The <strong>scan T Score is the worst single-region T</strong> (maximum across all scanned regions — no averaging).</div>
       </div>
 
       <!-- Eq 2: Zone Classification -->
@@ -1414,28 +1415,26 @@
 
       <!-- Eq 3: COMPASS Score -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--accent);font-weight:700;margin-bottom:12px;">③ COMPASS Score Formula</div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--accent);font-weight:700;margin-bottom:12px;">③ COMPASS Score Formula — Single Equal-Weight Plane</div>
         <div style="margin-bottom:14px;font-size:13px;color:var(--text-muted);">
-          <strong style="color:var(--text);">Abstract form</strong> — <code>R_dist</code> and <code>T_dist</code> are each signal's normalised distance from the zone boundary (0–1):<br>
-          <div style="margin-top:6px;"><code>Safe / Recovery: &nbsp;&nbsp;Score = floor + 24 × (0.5 × R_dist + 0.5 × T_dist)</code></div>
-          <div style="margin-top:4px;"><code>Deceptive / Danger: Score = floor + 24 × (0.3 × R_dist + 0.7 × T_dist)</code></div>
+          <strong style="color:var(--text);">Continuous form</strong> — <code>r</code> and <code>t</code> are each signal's signed clearance from the 50 boundary (+1 fully clear, −1 fully not):<br>
+          <div style="margin-top:6px;"><code>r = (R − 50) / 50 &nbsp;·&nbsp; t = (50 − T) / 50</code></div>
+          <div style="margin-top:4px;"><code>Score = clamp( 50 + 50 × (w_R · r + w_T · t), 0, 100 )</code></div>
         </div>
-        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Per-zone expanded form:</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;">Equal weighting (shipped default):</div>
         <div style="display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--text-muted);">
-          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:#22c55e;font-weight:600;min-width:152px;">Safe (76–100)</span><code>76 + 24 × avg( (R−50)/50 , (50−T)/50 )</code></div>
-          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:#f59e0b;font-weight:600;min-width:152px;">Recovery (51–75)</span><code>51 + 24 × avg( R/50 , (50−T)/50 )</code></div>
-          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:#f97316;font-weight:600;min-width:152px;">Deceptive (26–50)</span><code>26 + 24 × ( 0.3×(R−50)/50 + 0.7×(100−T)/50 )</code></div>
-          <div style="display:flex;align-items:baseline;gap:12px;"><span style="color:#ef4444;font-weight:600;min-width:152px;">Danger (0–25)</span><code>25 × ( 0.3×R/50 + 0.7×(100−T)/50 )</code></div>
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:var(--text);font-weight:600;min-width:152px;">w_R = w_T = 0.5</span><code>READINESS_THERMAL_WEIGHT = 0.5</code></div>
+          <div style="display:flex;align-items:baseline;gap:12px;"><span style="color:var(--text);font-weight:600;min-width:152px;">Simplifies to</span><code>Score = clamp( 50 + 0.5 × (R − T), 0, 100 )</code></div>
         </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;">Zone floors: Safe 76 · Recovery 51 · Deceptive 26 · Danger 1. Each zone spans 25 points.</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;">The surface is <strong>continuous across every zone boundary</strong> — there are no per-zone floors or fixed 25-point bands. Score ranges: Safe 50–100 · Danger 0–50 · the two mixed zones (Recovery, Deceptive) each span 25–75. A mild Deceptive reading can legitimately outrank a deep Recovery reading; zone identity and score are reported together, not forced into an ordered ladder.</div>
       </div>
     </div><!-- /scoring-equations -->
 
     <div class="alert blue" style="margin-top:24px;">
       <div class="alert-icon">⚖️</div>
       <div>
-        <strong>Why Thermal Is Weighted 70% in Risk Zones</strong>
-        <p>In the Deceptive and Danger zones, the thermal signal carries 70% of the within-zone score, versus 30% for readiness. This reflects the clinical asymmetry at the heart of the framework: when tissue stress is elevated, how the athlete <em>feels</em> is an unreliable guide. The score is deliberately pulled down by thermal risk even when readiness is high — ensuring an athlete who feels great but has significant asymmetry cannot score in the upper half of the Deceptive band.</p>
+        <strong>Equal Weighting of Readiness and Thermal Signals</strong>
+        <p>The shipped framework combines the readiness (R) and thermal (T) clearances on a single equal-weight plane — each contributes 50% to the score (<code>READINESS_THERMAL_WEIGHT = 0.5</code>). The thermal weight is one tunable constant: raising it would make tissue asymmetry pull the score down more aggressively relative to perceived readiness, but the default treats the two axes symmetrically. Crucially, <em>zone identity</em> is set independently by the 2×2 quadrant — so an athlete who feels ready (R high) but carries significant asymmetry (T ≥ 50) still lands in Deceptive regardless of the weighting, and the continuous score reflects exactly how far each signal sits from its boundary.</p>
       </div>
     </div>
 
@@ -1447,7 +1446,7 @@
         <div class="sc-step-num">1</div>
         <div class="sc-step-body">
           <h4>Collect raw signals</h4>
-          <p>Spike collects continuous sensor data and publishes one daily summary per athlete. Each day's output includes <span class="sig-tag w">avg HRV</span> <span class="sig-tag w">resting HR</span> <span class="sig-tag w">sleep quality</span> <span class="sig-tag w">ACWR</span> — these daily statistics are forwarded to the Spike API to generate the readiness score. The thermography camera captures a bilateral IR scan and returns <span class="sig-tag t">TAI</span> — the maximum contralateral delta across all scanned regions.</p>
+          <p>Spike collects continuous sensor data and publishes one daily summary per athlete. Each day's output includes <span class="sig-tag w">avg HRV</span> <span class="sig-tag w">resting HR</span> <span class="sig-tag w">sleep quality</span> <span class="sig-tag w">ACWR</span> — these daily statistics are forwarded to the Spike API to generate the readiness score. The thermography camera captures a bilateral IR scan and returns the <span class="sig-tag t">per-region left/right deltas</span> across all scanned regions.</p>
         </div>
       </div>
 
@@ -1455,7 +1454,7 @@
         <div class="sc-step-num">2</div>
         <div class="sc-step-body">
           <h4>Compute R and T scores</h4>
-          <p>The wearable API delivers a pre-normalised <span class="sig-tag w">R score (0–100)</span> — COMPASS does not perform any readiness modelling itself. The platform converts TAI to a <span class="sig-tag t">T score (0–100)</span> using either the population threshold method or the individual SD baseline method (preferred).</p>
+          <p>The wearable API delivers a pre-normalised <span class="sig-tag w">R score (0–100)</span> — COMPASS does not perform any readiness modelling itself. For the <span class="sig-tag t">T score (0–100)</span>, every bilateral region's delta is standardised against its effective reference (personal baseline shrunk toward the population) into a <code>z</code> deviation, mapped to 0–100 via the severity anchors, and the <strong>worst region</strong> drives the scan T — a single unified path, no method switch.</p>
         </div>
       </div>
 
@@ -1470,8 +1469,8 @@
       <div class="sc-step">
         <div class="sc-step-num">4</div>
         <div class="sc-step-body">
-          <h4>Apply zone-specific weighting</h4>
-          <p>In Safe and Recovery zones the R and T contributions are equal (50/50). In Deceptive and Danger zones the thermal signal carries 70% of the within-zone score — reflecting the clinical reality that tissue stress is a more reliable injury predictor than perceived readiness when both signals conflict.</p>
+          <h4>Combine on the equal-weight plane</h4>
+          <p>R and T are converted to signed clearances from their 50 boundary and combined with equal weight (0.5 / 0.5) into one continuous value. There is no zone-specific weighting and no per-zone band: the same plane applies everywhere, so the score moves smoothly as either signal changes.</p>
         </div>
       </div>
 
@@ -1479,7 +1478,7 @@
         <div class="sc-step-num">5</div>
         <div class="sc-step-body">
           <h4>Calculate final COMPASS score</h4>
-          <p>Each zone spans 25 points (floor to floor + 24). The weighted distances of R and T from their respective zone boundaries determine where within that 25-point band the athlete sits. The result is a single integer from 0–100 that encodes both zone identity and within-zone severity.</p>
+          <p>The combined clearance is scaled and clamped to a single value in 0–100. The result encodes both axes: Safe readings land 50–100, Danger 0–50, and the two mixed zones each span 25–75. Zone identity (from Step 3) and the continuous score are reported together.</p>
         </div>
       </div>
 
@@ -1504,44 +1503,49 @@
 
         <div class="we-row">
           <div class="we-label">Thermal scan</div>
-          <div class="we-val">Hamstring delta <code>0.70 °C</code> · Athlete's personal SD = <code>0.27 °C</code> · TAI_SD = <code>0.70 / 0.27 = 2.59 SD</code></div>
+          <div class="we-val">Hamstring delta <code>Δ = 0.95 °C</code> · Personal baseline (8 scans): <code>μ_i = 0.10 °C</code>, <code>σ_i = 0.30 °C</code></div>
         </div>
 
         <div class="we-row">
-          <div class="we-label">T Score</div>
-          <div class="we-val"><code>T = min(100, 2.59 / 3.0 × 100) = min(100, 86.3) = <strong>86</strong></code> (above 50 → significant thermal asymmetry)</div>
+          <div class="we-label">Shrunk reference</div>
+          <div class="we-val">Blend toward population (<code>n = 8</code>, <code>n0 = 5</code>, <code>σ_pop = 0.40</code>, <code>μ_pop = 0</code>):<br><code>σ_eff = √((8·0.30² + 5·0.40²) / 13) = 0.342 °C</code> · <code>μ_eff = (8·0.10) / 13 = 0.062 °C</code></div>
+        </div>
+
+        <div class="we-row">
+          <div class="we-label">Deviation → T</div>
+          <div class="we-val"><code>z = |0.95 − 0.062| / 0.342 = 2.60</code> (Moderate)<br><code>T = clamp((2.60 − 1.0) / 2.0 × 100) = <strong>80</strong></code> (above 50 → significant thermal asymmetry)</div>
         </div>
 
         <div class="we-row">
           <div class="we-label">Zone</div>
-          <div class="we-val"><code>R = 45 &lt; 50</code> AND <code>T = 86 ≥ 50</code> → <strong>Danger Zone</strong> · Floor = 1 · Band width = 24</div>
+          <div class="we-val"><code>R = 45 &lt; 50</code> AND <code>T = 80 ≥ 50</code> → <strong>Danger Zone</strong></div>
         </div>
 
         <div class="we-row">
-          <div class="we-label">Distances</div>
+          <div class="we-label">Clearances</div>
           <div class="we-val">
-            R distance from boundary: <code>(50 − 45) / 50 = 0.10</code><br>
-            T distance from boundary: <code>(86 − 50) / 50 = 0.72</code>
+            R clearance: <code>r = (45 − 50) / 50 = −0.10</code><br>
+            T clearance: <code>t = (50 − 80) / 50 = −0.60</code>
           </div>
         </div>
 
         <div class="we-row">
           <div class="we-label">Formula</div>
           <div class="we-val">
-            <code>Score = 1 + 24 × (0.3 × 0.10 + 0.7 × 0.72)</code><br>
-            <code>= 1 + 24 × (0.030 + 0.504)</code><br>
-            <code>= 1 + 24 × 0.534</code><br>
-            <code>= 1 + 12.82 ≈ <strong>13</strong></code>
+            <code>Score = clamp( 50 + 50 × (0.5 × −0.10 + 0.5 × −0.60) )</code><br>
+            <code>= clamp( 50 + 50 × −0.35 )</code><br>
+            <code>= clamp( 50 − 17.5 )</code><br>
+            <code>= <strong>32.5</strong></code>
           </div>
         </div>
 
       </div>
 
       <div class="we-result">
-        <div class="we-result-score">13</div>
+        <div class="we-result-score">33</div>
         <div class="we-result-detail">
-          <strong>Danger Zone</strong> — Score 13 / 100<br>
-          Systemic fatigue confirmed by wearable (R = 45). Hamstring asymmetry at 2.59 SD above personal baseline pulls the score deep into the Danger band. <strong>Mandatory clinical intervention required.</strong>
+          <strong>Danger Zone</strong> — Score 32.5 / 100<br>
+          Systemic fatigue confirmed by wearable (R = 45). Hamstring asymmetry at 2.60 SD against the shrunk personal reference drives the worst-region T to 80, pulling the score into the lower half of the Danger band. <strong>Mandatory clinical intervention required.</strong>
         </div>
       </div>
 
@@ -1564,34 +1568,34 @@
   </div>
 
   <h3>Thermal Baseline Establishment</h3>
-  <p>Thermography baselines must be built within COMPASS because they are institution- and equipment-specific. A meaningful personal thermal baseline requires a minimum series of scans captured under consistent conditions — see <a href="#scan-protocol">Section 08 (Standardised Scan Protocol)</a> for the full specification.</p>
+  <p>Thermography baselines are built per region within COMPASS because they are institution- and equipment-specific. There is <strong>no minimum-scan gate</strong>: every scan produces a classification. With no personal history the reference is purely the population (μ_pop = 0, σ_pop = 0.40°C); as scans accumulate, each region's personal mean/SD is blended in via empirical-Bayes shrinkage, so personalisation strengthens <em>continuously</em> rather than switching on at a fixed scan count. Capture conditions are specified in <a href="#scan-protocol">Section 08 (Standardised Scan Protocol)</a>.</p>
 
   <div class="stat-row">
     <div class="stat-box">
-      <div class="stat-val">4–6</div>
-      <div class="stat-label">Thermography Sessions<br>to Establish Baseline</div>
+      <div class="stat-val">n0 = 5</div>
+      <div class="stat-label">Population Prior Strength<br>(personal = population weight at 5 scans)</div>
     </div>
     <div class="stat-box">
-      <div class="stat-val">1.5 SD</div>
-      <div class="stat-label">Thermal Asymmetry Alert<br>Threshold (vs. personal mean)</div>
+      <div class="stat-val">z ≥ 2.0</div>
+      <div class="stat-label">Asymmetry Concern Threshold<br>(Moderate+ · drives T ≥ 50)</div>
     </div>
     <div class="stat-box">
-      <div class="stat-val">~3 wks</div>
-      <div class="stat-label">Typical Onboarding Window<br>(weekly scanning cadence)</div>
+      <div class="stat-val">σ_pop 0.40°C</div>
+      <div class="stat-label">Population Reference SD<br>(used with no personal history)</div>
     </div>
   </div>
 
   <div class="alert orange">
     <div class="alert-icon">👥</div>
     <div>
-      <strong>Population Baseline Active Until Personal Baseline Is Established</strong>
-      <p>Before 6 thermal scans are completed, COMPASS falls back to population-derived asymmetry thresholds rather than withholding a classification entirely. All outputs during this window are visibly flagged as <em>"Population baseline — personal threshold not yet established."</em> Once the 6th scan is processed, thresholds switch automatically to the athlete's personal values and the flag is removed.</p>
+      <strong>Population Reference Blends Smoothly Into the Personal Baseline</strong>
+      <p>COMPASS never withholds a classification. With no personal history the population reference is used directly; as each region's scan history grows, the personal mean/SD is shrunk toward the population with prior strength n0 = 5 — so the personal contribution carries weight <code>n/(n + 5)</code> and reaches parity with the population at the 5th scan. There is <strong>no hard switch-over scan</strong>. (Return-to-Play clearance is the one feature that does require a minimum of 2 qualifying scans per region — see the RTP module.)</p>
     </div>
   </div>
 
   <!-- Personalisation chart -->
   <div class="chart-wrap">
-    <h4>Thermal Baseline Confidence — Scan Accumulation Model</h4>
+    <h4>Thermal Baseline — Shrinkage Weight as Scans Accumulate</h4>
     <canvas id="baselineChart"></canvas>
   </div>
 </section>
@@ -1599,25 +1603,25 @@
 <!-- ══ 5A. Population-Based Asymmetry Framework ══ -->
 <section id="asymmetry-pop">
   <div class="section-label">Section 05A</div>
-  <h2>Population-Based Asymmetry Classification</h2>
-  <p class="section-intro">Applied when no individual thermal baseline has been established (fewer than 6 thermal scans). Thresholds are anchored to normative datasets of healthy athletes, using absolute temperature differences (°C) between contralateral body regions.</p>
+  <h2>Asymmetry Classification — Population Reference (No Personal History)</h2>
+  <p class="section-intro">The <code>n = 0</code> end of the unified scoring path. When a region has no personal history, its reference is purely the population (μ_pop = 0, σ_pop = 0.40°C), so the standardised deviation <code>z = |Δ| / 0.40</code> reduces the severity bands to fixed absolute deltas (°C) between contralateral regions. This is not a separate method — it is the same z-based severity model with the population reference.</p>
 
   <div class="alert blue">
     <div class="alert-icon">👥</div>
     <div>
-      <strong>When This Framework Applies</strong>
-      <p>Use population thresholds during the athlete onboarding window — before 6 thermal scans have been completed. All outputs are flagged as <em>"Population baseline active."</em> Once 6 scans are accumulated, the system transitions automatically to the SD-based individual model (Section 05B).</p>
+      <strong>How the °C Bands Arise</strong>
+      <p>The severity anchors are <code>z = 1.0</code> (T 0), <code>z = 2.0</code> (T 50) and <code>z = 3.0</code> (T 100). With the population SD of 0.40°C, these map to <strong>0.40 / 0.80 / 1.20°C</strong>. As a region accumulates scans, its personal mean/SD is shrunk in and the same bands track the athlete's own variability (Section 05B) — there is no flag flip or onboarding cut-over.</p>
     </div>
   </div>
 
   <div class="zone-grid">
     <div class="zone-card safe">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">✅ No Finding</div>
-        <div style="background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">&lt; 0.3°C</div>
+        <div class="zone-badge" style="margin-bottom:0;">✅ Clear</div>
+        <div style="background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">&lt; 0.40°C</div>
       </div>
       <h4>Within Normative Range</h4>
-      <p>Bilateral thermal homeostasis maintained. No physiological imbalance detected. Consistent with the population mean of 0.004 ± 0.66°C across 950 healthy athletes (ThermoHuman 2022).</p>
+      <p>Bilateral thermal homeostasis maintained (z ≤ 1.0 → T = 0). No physiological imbalance detected. Sits within the population spread reported across large healthy-athlete normative datasets (ThermoHuman 2022).</p>
       <div class="zone-signals">
         <span class="signal-tag">Full Training</span>
         <span class="signal-tag">Weekly Scan</span>
@@ -1627,11 +1631,11 @@
 
     <div class="zone-card recovery">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">🟡 Moderate</div>
-        <div style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">0.30–0.49°C</div>
+        <div class="zone-badge" style="margin-bottom:0;">🟡 Mild</div>
+        <div style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">0.40–0.80°C</div>
       </div>
       <h4>Elevated Above Normative Threshold</h4>
-      <p>Above the 0.3°C monitoring boundary. A developing imbalance may be present. Below the prevention threshold but warrants contextualisation with training load and ACWR (Marins et al. 2014).</p>
+      <p>Crosses the first severity anchor (1.0 &lt; z ≤ 2.0 → 0 &lt; T ≤ 50). A developing imbalance may be present. Below the concern boundary but warrants contextualisation with training load and ACWR (literature: Marins et al. 2014).</p>
       <div class="zone-signals">
         <span class="signal-tag">Monitor Closely</span>
         <span class="signal-tag">Contextualise ACWR</span>
@@ -1641,11 +1645,11 @@
 
     <div class="zone-card deceptive">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">🟠 High</div>
-        <div style="background:rgba(249,115,22,0.18); color:#f97316; border:1px solid rgba(249,115,22,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">0.50–0.99°C</div>
+        <div class="zone-badge" style="margin-bottom:0;">🟠 Moderate</div>
+        <div style="background:rgba(249,115,22,0.18); color:#f97316; border:1px solid rgba(249,115,22,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">0.80–1.20°C</div>
       </div>
       <h4>Clinically Significant — Prevention Protocol</h4>
-      <p>Exceeds the threshold at which Gómez-Carmona et al. (2020) identified 83% of subsequent soft tissue injuries before symptom onset — an average 8.2 days early. Athlete may be fully asymptomatic.</p>
+      <p>Crosses the concern boundary (2.0 &lt; z ≤ 3.0 → 50 &lt; T ≤ 100; this is the band that flags Return-to-Play). The literature supports early-warning value at this magnitude — Gómez-Carmona et al. (2020) detected most subsequent soft tissue injuries an average 8.2 days before symptom onset. Athlete may be fully asymptomatic.</p>
       <div class="zone-signals">
         <span class="signal-tag">Prevention Protocol</span>
         <span class="signal-tag">Modified Load</span>
@@ -1656,11 +1660,11 @@
 
     <div class="zone-card danger">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">🔴 Severe</div>
-        <div style="background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">≥ 1.0°C</div>
+        <div class="zone-badge" style="margin-bottom:0;">🔴 Elevated</div>
+        <div style="background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">&gt; 1.20°C</div>
       </div>
       <h4>High Injury Risk — Mandatory Clinical Review</h4>
-      <p>Marked physiological disruption in the affected region. Probability of subclinical or active tissue injury is high. Clinical attention required regardless of subjective symptoms or wearable readiness scores.</p>
+      <p>Beyond the top severity anchor (z &gt; 3.0 → T = 100). Marked physiological disruption in the affected region. Probability of subclinical or active tissue injury is high. Clinical attention required regardless of subjective symptoms or wearable readiness scores.</p>
       <div class="zone-signals">
         <span class="signal-tag">Clinical Review</span>
         <span class="signal-tag">Load Reduction</span>
@@ -1683,30 +1687,30 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--safe)"></span><strong style="color:var(--safe)">No Finding</strong></span></td>
-        <td><strong>&lt; 0.3°C</strong></td>
-        <td>ThermoHuman (2022): 950-athlete normative dataset; population mean 0.004 ± 0.66°C confirms bilateral thermal homeostasis. Stable muscle regions fall below 0.3°C in absence of injury or influence factors. Uematsu et al. (1988): asymptomatic ceiling ≤ 0.38°C from 90 controls. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.7, 1.8]</span></td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--safe)"></span><strong style="color:var(--safe)">Clear</strong></span></td>
+        <td><strong>&lt; 0.40°C</strong> (z ≤ 1.0)</td>
+        <td>ThermoHuman (2022): large normative dataset confirming bilateral thermal homeostasis in healthy athletes; stable muscle regions show low resting asymmetry. Uematsu et al. (1988): low asymptomatic asymmetry from 90 controls. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.7, 1.8]</span></td>
         <td>Bilateral symmetry maintained. No physiological imbalance detected.</td>
         <td>No intervention. Continue weekly scan cadence.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--recovery)"></span><strong style="color:var(--recovery)">Moderate</strong></span></td>
-        <td><strong>0.30–0.49°C</strong></td>
-        <td>ThermoHuman (2022): 0.3°C is the lower alert boundary of the asymmetry classification system. Marins et al. (2014): asymmetry ≥ 0.3°C warrants clinical attention; values approaching 0.4°C indicate elevated risk in major muscle groups. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.9]</span></td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--recovery)"></span><strong style="color:var(--recovery)">Mild</strong></span></td>
+        <td><strong>0.40–0.80°C</strong> (1.0 &lt; z ≤ 2.0)</td>
+        <td>ThermoHuman (2022) and Marins et al. (2014) describe a lower-alert region where asymmetry begins to warrant attention and contextualisation with load — background support for monitoring above the population SD. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.9]</span></td>
         <td>Elevated above normative threshold. Developing imbalance possible. Context-dependent — training load and history are critical co-factors.</td>
         <td>Increase monitoring frequency. Contextualise with ACWR and recent training load. Flag for physiotherapy review at next scan.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--deceptive)"></span><strong style="color:var(--deceptive)">High</strong></span></td>
-        <td><strong>0.50–0.99°C</strong></td>
-        <td>Gómez-Carmona et al. (2020): &gt;0.5°C identified 83% of subsequent soft tissue injuries before symptoms, avg. 8.2 days early (n=24 professional players). Arnaiz-Lastras et al. (2019): prevention protocol at ≥ 0.4°C reduced injuries 64% (11→4). ThermoHuman: ≥ 0.6°C flags for complementary treatment. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.2, 1.6]</span></td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--deceptive)"></span><strong style="color:var(--deceptive)">Moderate</strong></span></td>
+        <td><strong>0.80–1.20°C</strong> (2.0 &lt; z ≤ 3.0)</td>
+        <td>The concern band (drives T ≥ 50 and flags RTP). Literature supporting early-warning value of meaningful asymmetry: Gómez-Carmona et al. (2020) detected most soft-tissue injuries ~8.2 days pre-symptom; Arnaiz-Lastras et al. (2019) prevention protocol reduced injuries 64%. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.2, 1.6]</span></td>
         <td>Clinically significant. Strong predictive signal for imminent soft tissue injury. Athlete likely fully asymptomatic — this is the Deceptive Readiness risk.</td>
         <td>Prevention protocol active. Modify training load for affected region. Physiotherapist soft tissue assessment. Increase scan frequency to every 3–4 days.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--danger)"></span><strong style="color:var(--danger)">Severe</strong></span></td>
-        <td><strong>≥ 1.0°C</strong></td>
-        <td>Schiavon et al. (2021): meta-analysis sensitivity 0.81, specificity 0.74, AUC 0.83. Costa et al. (2019): hamstring/knee asymmetry significantly elevated pre-injury vs. controls (p &lt; 0.01, Cohen's d = 0.87). IRT clinical consensus: &gt;0.7°C = abnormal; 1.0–1.5°C = high risk zone. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.2]</span></td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--danger)"></span><strong style="color:var(--danger)">Elevated</strong></span></td>
+        <td><strong>&gt; 1.20°C</strong> (z &gt; 3.0)</td>
+        <td>Schiavon et al. (2021): meta-analysis sensitivity 0.81, specificity 0.74, AUC 0.83. Costa et al. (2019): hamstring/knee asymmetry significantly elevated pre-injury vs. controls (p &lt; 0.01, Cohen's d = 0.87). Background support for treating large asymmetry as high-risk. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.2]</span></td>
         <td>High injury risk. Marked physiological disruption. Mandatory clinical attention regardless of subjective symptoms or wearable readiness.</td>
         <td>Mandatory clinical review. Significant load reduction or rest. Targeted physiotherapy and medical assessment of flagged region. Re-scan within 3 days.</td>
       </tr>
@@ -1721,25 +1725,25 @@
 <!-- ══ 5B. SD-Based Asymmetry Framework ══ -->
 <section id="asymmetry-sd">
   <div class="section-label">Section 05B</div>
-  <h2>Individual Baseline SD Classification</h2>
-  <p class="section-intro">Applied once an athlete's personal thermal baseline is established (6 or more scans under <a href="#scan-protocol">standardised conditions (Section 08)</a>). Each body region acquires a personal mean and SD from scan history. Subsequent readings are classified relative to this individual norm — a materially more sensitive and specific reference frame than population thresholds alone.</p>
+  <h2>Asymmetry Classification — Personal Baseline (Shrinkage)</h2>
+  <p class="section-intro">The <code>n &gt; 0</code> end of the same unified path. As each region accumulates scans, its personal mean (μ_i) and SD (σ_i) are blended toward the population via shrinkage and the identical z-anchors apply — so the severity bands progressively reflect what is elevated <em>for this athlete</em>. The same severity categories (Clear / Mild / Moderate / Elevated at z = 1.0 / 2.0 / 3.0) are used throughout; only the reference (μ_eff, σ_eff) changes as history grows.</p>
 
   <div class="alert blue">
     <div class="alert-icon">🎯</div>
     <div>
-      <strong>Why Individual SD Outperforms Population °C Thresholds</strong>
-      <p>Individual-referenced models outperform population norms across all sports monitoring biomarkers (Saw et al. 2016). Machine learning models trained on personal baselines achieve AUC 0.84 vs. 0.61 for group-norm models (Claudino et al. 2024). The COMPASS 1.5 SD alert threshold corresponds to approximately 0.4°C for major muscle groups — directly aligning with the Arnaiz-Lastras (2019) prevention protocol threshold, confirming both frameworks draw the boundary at the same underlying physiological signal.</p>
+      <strong>Why a Personal Reference Sharpens the Signal</strong>
+      <p>Individual-referenced models outperform population norms across sports-monitoring biomarkers (Saw et al. 2016); ML models trained on personal baselines reach AUC 0.84 vs. 0.61 for group-norm models (Claudino et al. 2024). COMPASS does not hard-code any single literature threshold to a fixed °C value — the live boundaries are the configurable z-anchors (1.0 / 3.0 SD) and the population reference (σ_pop = 0.40°C) defined in code. The cited studies are background evidence for choosing that range, not exact numeric equivalences.</p>
     </div>
   </div>
 
   <div class="zone-grid">
     <div class="zone-card safe">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">✅ No Finding</div>
-        <div style="background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">&lt; 1.0 SD</div>
+        <div class="zone-badge" style="margin-bottom:0;">✅ Clear</div>
+        <div style="background:rgba(34,197,94,0.18); color:#22c55e; border:1px solid rgba(34,197,94,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">z ≤ 1.0</div>
       </div>
       <h4>Within Individual Normal Range</h4>
-      <p>Asymmetry reflects normal day-to-day biological variation. No clinically meaningful departure from the athlete's personal thermal norm. Equivalent to approximately &lt; 0.27°C for major muscle groups.</p>
+      <p>Asymmetry reflects normal day-to-day biological variation (T = 0). No clinically meaningful departure from the athlete's personal thermal norm. Both sides are reported as Normal.</p>
       <div class="zone-signals">
         <span class="signal-tag">Full Training</span>
         <span class="signal-tag">Weekly Scan</span>
@@ -1749,11 +1753,11 @@
 
     <div class="zone-card recovery">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">🟡 Moderate</div>
-        <div style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">1.0–1.49 SD</div>
+        <div class="zone-badge" style="margin-bottom:0;">🟡 Mild</div>
+        <div style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">1.0 &lt; z ≤ 2.0</div>
       </div>
       <h4>Meaningful Departure From Personal Baseline</h4>
-      <p>The athlete's thermal pattern has shifted beyond normal daily variability. Not yet a prevention trigger in isolation, but flags a change in tissue state requiring contextualisation. ≈ 0.27–0.40°C.</p>
+      <p>The athlete's thermal pattern has shifted beyond normal daily variability (0 &lt; T ≤ 50). Not yet a concern trigger in isolation, but flags a change in tissue state requiring contextualisation.</p>
       <div class="zone-signals">
         <span class="signal-tag">Monitor Closely</span>
         <span class="signal-tag">Contextualise ACWR</span>
@@ -1763,11 +1767,11 @@
 
     <div class="zone-card deceptive">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">🟠 High</div>
-        <div style="background:rgba(249,115,22,0.18); color:#f97316; border:1px solid rgba(249,115,22,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">1.5–1.99 SD</div>
+        <div class="zone-badge" style="margin-bottom:0;">🟠 Moderate</div>
+        <div style="background:rgba(249,115,22,0.18); color:#f97316; border:1px solid rgba(249,115,22,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">2.0 &lt; z ≤ 3.0</div>
       </div>
-      <h4>COMPASS Alert Threshold</h4>
-      <p>The framework's primary prevention trigger. Clinically important departure from personal norm. Local tissue stress building — athlete likely fully asymptomatic. ≈ 0.41–0.54°C. Maps directly to COMPASS T ≥ 50.</p>
+      <h4>COMPASS Concern Threshold</h4>
+      <p>The framework's concern band — it drives <strong>T ≥ 50</strong> and is the level that flags Return-to-Play. Clinically important departure from personal norm; local tissue stress building while the athlete is likely fully asymptomatic.</p>
       <div class="zone-signals">
         <span class="signal-tag">Prevention Protocol</span>
         <span class="signal-tag">Modified Load</span>
@@ -1778,11 +1782,11 @@
 
     <div class="zone-card danger">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-        <div class="zone-badge" style="margin-bottom:0;">🔴 Severe</div>
-        <div style="background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">≥ 2.0 SD</div>
+        <div class="zone-badge" style="margin-bottom:0;">🔴 Elevated</div>
+        <div style="background:rgba(239,68,68,0.18); color:#ef4444; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:3px 10px; font-size:12px; font-weight:800;">z &gt; 3.0</div>
       </div>
       <h4>Extreme Deviation — High-Confidence Injury Signal</h4>
-      <p>The athlete's thermal pattern has departed dramatically from personal norm. PPV reaches 94.7% for pathology at high SD thresholds (Uematsu 1988). ≈ ≥ 0.55°C. Maps to COMPASS Danger Zone.</p>
+      <p>The athlete's thermal pattern has departed dramatically from personal norm (T = 100, the saturated top of the thermal axis). High likelihood of subclinical or active pathology (high-SD PPV support: Uematsu 1988).</p>
       <div class="zone-signals">
         <span class="signal-tag">Clinical Review</span>
         <span class="signal-tag">Load Reduction</span>
@@ -1805,31 +1809,31 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--safe)"></span><strong style="color:var(--safe)">No Finding</strong></span></td>
-        <td><strong>&lt; 1.0 SD</strong></td>
-        <td>&lt; 0.27°C</td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--safe)"></span><strong style="color:var(--safe)">Clear</strong></span></td>
+        <td><strong>z ≤ 1.0</strong></td>
+        <td>&lt; 0.40°C †</td>
         <td>Uematsu et al. (1988): below 1 SD from the normal mean of homologous regions, PPV for pathology remained low. Saw et al. (2016): variability below 1 SD represents normal training-related fluctuation across HRV, sleep, and wellness biomarkers. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.5, 1.8]</span></td>
-        <td>No intervention. Continue weekly scan cadence.</td>
+        <td>No intervention. Continue routine scan cadence.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--recovery)"></span><strong style="color:var(--recovery)">Moderate</strong></span></td>
-        <td><strong>1.0–1.49 SD</strong></td>
-        <td>0.27–0.40°C</td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--recovery)"></span><strong style="color:var(--recovery)">Mild</strong></span></td>
+        <td><strong>1.0 &lt; z ≤ 2.0</strong></td>
+        <td>0.40–0.80°C †</td>
         <td>Uematsu et al. (1988): exceeding 1 SD from the mean begins to differentiate pathological from normal states. Plews et al. (2013) HRV consensus: 1.0 SD departure = established "meaningful change" marker across sports monitoring biomarkers. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.1, 1.8]</span></td>
         <td>Increase monitoring vigilance. Contextualise with ACWR. Precautionary increase in scan frequency. No immediate load restriction in isolation.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--deceptive)"></span><strong style="color:var(--deceptive)">High</strong></span></td>
-        <td><strong>1.5–1.99 SD</strong></td>
-        <td>0.41–0.54°C</td>
-        <td>COMPASS Framework: 1.5 SD = primary alert trigger for physiotherapy assessment (combined with ACWR &gt; 1.3). Sports monitoring consensus: 1.5 SD = "clinically important departure." Aligns with Arnaiz-Lastras (2019) ≥ 0.4°C threshold which reduced injuries 64%. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.5, 1.6]</span></td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--deceptive)"></span><strong style="color:var(--deceptive)">Moderate</strong></span></td>
+        <td><strong>2.0 &lt; z ≤ 3.0</strong></td>
+        <td>0.80–1.20°C †</td>
+        <td>COMPASS concern band: z &gt; 2.0 drives T ≥ 50 and is the level that flags Return-to-Play and physiotherapy assessment (contextualised with ACWR &gt; 1.3). Background: sports-monitoring consensus treats large SD departures as clinically important; Arnaiz-Lastras (2019) reduced injuries 64% with a prevention protocol. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.5, 1.6]</span></td>
         <td>Prevention protocol active. Modified load for affected region. Soft tissue physiotherapy assessment. Scan frequency → every 3–4 days.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--danger)"></span><strong style="color:var(--danger)">Severe</strong></span></td>
-        <td><strong>≥ 2.0 SD</strong></td>
-        <td>≥ 0.55°C</td>
-        <td>Uematsu et al. (1988) Pt. 2: exceeding 1 SD from population mean → PPV 94.7%, specificity 87.5% — a personal 2.0 SD threshold is an even higher-confidence signal. Schiavon (2021): AUC 0.83. Claudino (2024): individual baseline models AUC 0.84 vs 0.61 for group norms. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.2, 1.5, 1.8]</span></td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--danger)"></span><strong style="color:var(--danger)">Elevated</strong></span></td>
+        <td><strong>z &gt; 3.0</strong></td>
+        <td>&gt; 1.20°C †</td>
+        <td>Uematsu et al. (1988) Pt. 2: exceeding 1 SD from population mean → PPV 94.7%, specificity 87.5% — a deviation beyond 3 SD is an even higher-confidence signal. Schiavon (2021): AUC 0.83. Claudino (2024): individual baseline models AUC 0.84 vs 0.61 for group norms. <span style="font-size:10px; color:var(--accent);">[↗ Appendix 1.2, 1.5, 1.8]</span></td>
         <td>Mandatory clinical review. Significant load reduction or rest. Targeted physiotherapy and medical assessment. Re-scan within 3 days.</td>
       </tr>
     </tbody>
@@ -1839,102 +1843,104 @@
     <div class="alert-icon">📐</div>
     <div>
       <strong>† Approximate °C Equivalents</strong>
-      <p>Calculated using the typical SD for major stable muscle regions (≈ 0.27°C, consistent with ThermoHuman normative data: vastus medialis 0.003 ± 0.27°C, chest 0.008 ± 0.24°C). Each athlete's personal SD may differ — those with higher individual variability will have correspondingly higher °C values at each SD tier. The SD classification is always the authoritative reference; °C equivalents are provided as a guide only.</p>
+      <p>The °C column is the population-reference case: z × σ_pop with σ_pop = 0.40°C (the no-history anchor in code). Each athlete's <em>personal</em> shrunk SD differs — those with higher individual variability will have correspondingly higher °C values at each z tier. The z-based category is always the authoritative reference; °C equivalents are a guide only.</p>
     </div>
   </div>
 
-  <h3>Framework Alignment — How the Two Scales Correspond</h3>
-  <p>At the 6-scan transition point, population and SD classifications should broadly agree. The two frameworks are calibrated to produce consistent clinical decisions.</p>
+  <h3>Framework Alignment — One Scale, Two Reference Points</h3>
+  <p>Population and personal references are the two ends of a single continuum, not two methods that must be reconciled. The same z-anchors apply throughout; the population column below is simply the n = 0 special case (σ_pop = 0.40°C), and the personal case tracks the athlete's own shrunk SD.</p>
 
   <table class="data-table">
     <thead>
       <tr>
-        <th>Tier</th>
-        <th>Population (°C)</th>
-        <th>Individual SD</th>
-        <th>Calibration Note</th>
+        <th>Category</th>
+        <th>z band</th>
+        <th>Population °C (σ_pop = 0.40)</th>
         <th>COMPASS T Score</th>
+        <th>Effect</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--safe)"></span><strong style="color:var(--safe)">No Finding</strong></span></td>
-        <td>&lt; 0.3°C</td>
-        <td>&lt; 1.0 SD</td>
-        <td>0.3°C ≈ 1.1 SD at population level. Strong agreement between frameworks at the lower boundary. <span style="font-size:10px; color:var(--accent);">[↗ Uematsu 1988; ThermoHuman 2022]</span></td>
-        <td>T &lt; 50 (Low Asymmetry)</td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--safe)"></span><strong style="color:var(--safe)">Clear</strong></span></td>
+        <td>z ≤ 1.0</td>
+        <td>&lt; 0.40°C</td>
+        <td>T = 0</td>
+        <td>Both sides Normal; no concern.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--recovery)"></span><strong style="color:var(--recovery)">Moderate</strong></span></td>
-        <td>0.30–0.49°C</td>
-        <td>1.0–1.49 SD</td>
-        <td>0.4°C ≈ 1.5 SD — the Arnaiz-Lastras 0.4°C prevention threshold maps directly to the COMPASS 1.5 SD alert. Both frameworks converge at this critical prevention boundary. <span style="font-size:10px; color:var(--accent);">[↗ Arnaiz-Lastras 2019]</span></td>
-        <td>T approaching 50</td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--recovery)"></span><strong style="color:var(--recovery)">Mild</strong></span></td>
+        <td>1.0 &lt; z ≤ 2.0</td>
+        <td>0.40–0.80°C</td>
+        <td>0 &lt; T ≤ 50</td>
+        <td>Hotter side flagged; monitor, not yet a concern trigger.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--deceptive)"></span><strong style="color:var(--deceptive)">High</strong></span></td>
-        <td>0.50–0.99°C</td>
-        <td>1.5–1.99 SD</td>
-        <td>0.5°C ≈ 1.85 SD. Gómez-Carmona's 0.5°C threshold falls squarely in the High/Alert SD band. Both frameworks trigger prevention protocol at this level. <span style="font-size:10px; color:var(--accent);">[↗ Gómez-Carmona 2020]</span></td>
-        <td>T ≥ 50 (Elevated)</td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--deceptive)"></span><strong style="color:var(--deceptive)">Moderate</strong></span></td>
+        <td>2.0 &lt; z ≤ 3.0</td>
+        <td>0.80–1.20°C</td>
+        <td>50 &lt; T ≤ 100</td>
+        <td>Concern band — drives T ≥ 50 and flags Return-to-Play.</td>
       </tr>
       <tr>
-        <td><span class="zone-dot"><span class="dot" style="background:var(--danger)"></span><strong style="color:var(--danger)">Severe</strong></span></td>
-        <td>≥ 1.0°C</td>
-        <td>≥ 2.0 SD</td>
-        <td>1.0°C ≈ 3.7 SD — well beyond any population or individual norm. Both frameworks demand mandatory clinical review at this level. <span style="font-size:10px; color:var(--accent);">[↗ Schiavon 2021]</span></td>
-        <td>T ≥ 50 (Elevated, Critical)</td>
+        <td><span class="zone-dot"><span class="dot" style="background:var(--danger)"></span><strong style="color:var(--danger)">Elevated</strong></span></td>
+        <td>z &gt; 3.0</td>
+        <td>&gt; 1.20°C</td>
+        <td>T = 100</td>
+        <td>Saturated thermal axis; mandatory clinical review.</td>
       </tr>
     </tbody>
   </table>
 
   <div class="insight">
-    <p><strong>The Key Calibration Insight:</strong> The COMPASS 1.5 SD alert threshold corresponds to approximately 0.4°C in population terms — precisely the threshold at which Arnaiz-Lastras et al. (2019) triggered prevention protocols that reduced muscle injuries by 64%. This is not coincidental: both frameworks draw the prevention boundary at the same underlying physiological signal.</p>
+    <p><strong>The Key Design Point:</strong> there is no calibration to reconcile between two scales. A single z-based severity model runs from the first scan; the reference simply migrates from the population SD (0.40°C) toward the athlete's own SD via shrinkage. The literature (Arnaiz-Lastras 2019, Gómez-Carmona 2020, Uematsu 1988) is background evidence that meaningful asymmetry in this neighbourhood predicts injury — it informs the chosen z-anchors but is not hard-coded as an exact °C threshold.</p>
   </div>
 
   <h3>04B.1 — Thermal Risk Score (T Score) Calculation</h3>
-  <p>The Thermal Asymmetry Index (TAI) is converted to a normalised T Score (0–100) before entering the COMPASS fusion formula. This score represents the thermal risk axis of the two-axis matrix.</p>
+  <p>Each bilateral region's left/right temperature delta is converted to a normalised T Score (0–100) before entering the COMPASS fusion formula. This score represents the thermal risk axis of the two-axis matrix. A <strong>single unified path</strong> is used for every region and every athlete — there is no separate population/SD method and no switch-over scan.</p>
 
   <div class="alert blue" style="margin-bottom:20px;">
     <div class="alert-icon">📐</div>
     <div>
-      <strong>TAI Definition</strong>
-      <p>The Thermal Asymmetry Index is the <em>maximum contralateral left-right temperature delta</em> across all scanned body regions — i.e., the single worst-performing region drives the score. No averaging is applied; the highest asymmetry value is used as the input.</p>
+      <strong>Worst-Region Aggregation</strong>
+      <p>Each region produces its own T value; the <em>scan</em> T Score is the <em>maximum single-region T</em> across all scanned regions — the single worst-performing region drives the score. No averaging is applied.</p>
     </div>
   </div>
 
   <table class="data-table">
     <thead>
       <tr>
-        <th>Phase</th>
-        <th>Condition</th>
-        <th>Formula</th>
-        <th>Zone Crossing at T = 50</th>
+        <th>Step</th>
+        <th>Computation</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><strong>Population Baseline</strong></td>
-        <td>&lt; 6 scans completed</td>
-        <td><code>T = min(100, (TAI°C / 1.0) × 100)</code></td>
-        <td>0.5°C → T 50 · 1.0°C → T 100</td>
+        <td><strong>1 · Shrunk reference</strong></td>
+        <td><code>σ_eff = √((n·σ_i² + n0·σ_pop²)/(n+n0))</code><br><code>μ_eff = (n·μ_i + n0·μ_pop)/(n+n0)</code></td>
+        <td>Personal (μ_i, σ_i) over n scans blended toward population (μ_pop = 0, σ_pop = 0.40°C) with prior strength n0 = 5.</td>
       </tr>
       <tr>
-        <td><strong>Individual SD Baseline</strong></td>
-        <td>≥ 6 scans completed</td>
-        <td><code>T = min(100, (TAI<sub>SD</sub> / 3.0) × 100)</code></td>
-        <td>1.5 SD → T 50 · 3.0 SD → T 100</td>
+        <td><strong>2 · Standardise</strong></td>
+        <td><code>z = |Δ − μ_eff| / σ_eff</code></td>
+        <td>Standardised bilateral asymmetry against the shrunk reference.</td>
+      </tr>
+      <tr>
+        <td><strong>3 · Severity score</strong></td>
+        <td><code>T = clamp((z − 1.0)/(3.0 − 1.0) × 100, 0, 100)</code></td>
+        <td>Anchors: z = 1.0 → T 0 · z = 2.0 → T 50 · z = 3.0 → T 100.</td>
       </tr>
     </tbody>
   </table>
 
-  <p>Both formulas produce T = 50 at the Framework Alignment table's zone-crossing point (0.5°C / 1.5 SD). The transition at scan 6 is seamless: there is no step-change in classification because both scales are calibrated to the same physiological boundary. From scan 6 onward, the individual SD baseline takes precedence; the population formula is retired for that athlete.</p>
+  <p>With <strong>no personal history</strong> (n = 0) the reference is purely the population, so the population mode maps absolute deltas directly: <code>0.40°C → T 0 · 0.80°C → T 50 · 1.20°C → T 100</code>. As scans accumulate, the personal mean/SD progressively replace the population reference via the shrinkage weight <code>n/(n + n0)</code> — at n = 5 the personal and population terms carry equal weight. The change is <strong>continuous, not a step at any fixed scan number</strong>.</p>
 
   <div class="alert blue">
     <div class="alert-icon">🔄</div>
     <div>
-      <strong>Transition Behaviour at Scan 6</strong>
-      <p>At exactly scan 6, both methods are computed in parallel and the individual SD result takes precedence. For athletes whose personal SD closely matches the population average (~0.27°C), the switch produces no perceptible change in zone assignment. For athletes with atypically high or low thermal variability, the individual baseline will produce a more accurate — and typically lower — T Score.</p>
+      <strong>Continuous Personalisation — No Switch-Over Scan</strong>
+      <p>There is no parallel computation or hard cut-over at any scan count. From the very first scan the same formula runs; the only thing that changes over time is how much weight the athlete's own history carries relative to the population prior. For athletes with atypically high or low thermal variability, the accumulating personal baseline yields a progressively more accurate — and often lower — T Score, without any discontinuity in zone assignment.</p>
     </div>
   </div>
 </section>
@@ -2021,7 +2027,7 @@
   </div>
 
   <h3 id="data-gaps">6.2 Handling Wearable Data Gaps</h3>
-  <p>Spike publishes one daily summary per athlete — if a day's data is missing (device not worn, sync failure), no readiness score is available for that day. Like the thermal signal, wearable validity is binary: wearable data is valid for the day of collection and one following day (2 days total). From day 3 onward without a new reading, the wearable signal is immediately obsolete and zone classification is suspended.</p>
+  <p>Spike publishes one daily summary per athlete — if a day's data is missing (device not worn, sync failure), no readiness score is available for that day. Wearable validity is binary and enforced by a freshness gate (<code>_FRESHNESS_GATE_DAYS = 2</code>): the most recent reading is valid while it is at most 2 days old. Once it is more than 2 days old, the readiness score is treated as unavailable (R = None) — the readiness axis drops out and the state is labelled rather than silently degraded.</p>
 
   <div class="alert red">
     <div class="alert-icon">🚫</div>
@@ -2175,7 +2181,7 @@
 
   <div class="zone-grid">
     <div class="zone-card safe">
-      <div class="zone-badge">Safe · 76–100</div>
+      <div class="zone-badge">Safe · 50–100</div>
       <h4>🟢 Safe Zone</h4>
       <p style="font-size:13px;color:var(--text-dim);margin:0 0 10px;"><strong style="color:var(--text);">Signals:</strong> Systemic readiness clear · Thermal asymmetry clear</p>
       <p style="font-size:13.5px;margin:0 0 12px;"><strong>Plan:</strong> Maintenance + Monitoring. Full training load permitted. Engine reinforces behaviours sustaining Safe status and sets next scan cadence.</p>
@@ -2186,7 +2192,7 @@
       </div>
     </div>
     <div class="zone-card recovery">
-      <div class="zone-badge">Recovery · 51–75</div>
+      <div class="zone-badge">Recovery · 25–75</div>
       <h4>🟡 Recovery Zone</h4>
       <p style="font-size:13px;color:var(--text-dim);margin:0 0 10px;"><strong style="color:var(--text);">Signals:</strong> Systemic fatigued (HRV suppressed) · Thermal clear</p>
       <p style="font-size:13.5px;margin:0 0 12px;"><strong>Plan:</strong> Workout Modification. Engine produces a volume-reduced training plan with ACWR targets, active recovery modalities, and sleep/HRV optimisation guidance.</p>
@@ -2197,7 +2203,7 @@
       </div>
     </div>
     <div class="zone-card deceptive">
-      <div class="zone-badge">Deceptive · 26–50</div>
+      <div class="zone-badge">Deceptive · 25–75</div>
       <h4>🟠 Deceptive Readiness</h4>
       <p style="font-size:13px;color:var(--text-dim);margin:0 0 10px;"><strong style="color:var(--text);">Signals:</strong> Systemic ready · Thermal inflamed — athlete feels ready, tissue is stressed</p>
       <p style="font-size:13.5px;margin:0 0 12px;"><strong>Plan:</strong> Physio (Primary) + Load Modification. Physiotherapy assessment is mandatory before any intensity increase. Engine targets flagged regions with a conservative load plan.</p>
@@ -2208,7 +2214,7 @@
       </div>
     </div>
     <div class="zone-card danger">
-      <div class="zone-badge">Danger · 0–25</div>
+      <div class="zone-badge">Danger · 0–50</div>
       <h4>🔴 Danger Zone</h4>
       <p style="font-size:13px;color:var(--text-dim);margin:0 0 10px;"><strong style="color:var(--text);">Signals:</strong> Systemic fatigued · Thermal inflamed — both axes critical</p>
       <p style="font-size:13.5px;margin:0 0 12px;"><strong>Plan:</strong> Combined Plan + Mandatory Clinical Review. Engine generates a full physio + systemic recovery plan and raises a clinical review flag. No load plan is issued until a clinician clears the trigger.</p>
@@ -2292,7 +2298,7 @@
 <section id="rtp-protocol">
   <div class="section-label">Section 7.4</div>
   <h3>Return-to-Play: Thermal Eligibility Module</h3>
-  <p class="section-intro">COMPASS replaces time-based and subjective RTP decisions with a continuous, per-region thermal eligibility model. Every athlete in the Deceptive Readiness or Danger zone is monitored across all 34 COMPASS body regions. A region is declared RTP-eligible only when bilateral asymmetry has normalised on consecutive scans — providing objective, anatomy-specific clearance evidence rather than a single composite score.</p>
+  <p class="section-intro">COMPASS replaces time-based and subjective RTP decisions with a continuous, per-region thermal eligibility model. Every athlete in the Deceptive Readiness or Danger zone is monitored across all 89 measured body regions. A region side is declared RTP-eligible only when its asymmetry severity has stayed below the concern band (Moderate) on consecutive scans — providing objective, anatomy-specific clearance evidence rather than a single composite score.</p>
 
   <div class="alert" style="border-left-color:var(--accent);">
     <div>
@@ -2328,23 +2334,23 @@
         <!-- ── SCAN ── -->
         <rect x="195" y="87" width="250" height="44" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
         <text x="320" y="105" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="0.08em">FULL-BODY THERMAL SCAN</text>
-        <text x="320" y="121" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">Every 2 days · all 34 body regions</text>
+        <text x="320" y="121" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">Every 2 days · all 89 measured regions</text>
 
         <!-- arrow -->
         <line x1="320" y1="131" x2="320" y2="161" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- ── BILATERAL ASYMMETRY ── -->
         <rect x="195" y="162" width="250" height="44" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
-        <text x="320" y="180" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="0.08em">BILATERAL ASYMMETRY MEASURED</text>
-        <text x="320" y="196" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">Left vs. right per region (°C)</text>
+        <text x="320" y="180" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="700" letter-spacing="0.08em">PER-SIDE SEVERITY MEASURED</text>
+        <text x="320" y="196" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="500">z-category per region side</text>
 
         <!-- arrow -->
         <line x1="320" y1="206" x2="320" y2="240" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr)"/>
 
         <!-- ── DECISION DIAMOND ── -->
         <polygon points="320,242 390,276 320,310 250,276" fill="#0f172a" stroke="#f97316" stroke-width="1.5"/>
-        <text x="320" y="271" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="600">Asymmetry</text>
-        <text x="320" y="286" text-anchor="middle" fill="#f97316" font-size="11" font-weight="700">≤ 0.5 °C?</text>
+        <text x="320" y="271" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="600">Side below</text>
+        <text x="320" y="286" text-anchor="middle" fill="#f97316" font-size="11" font-weight="700">Moderate?</text>
 
         <!-- NO → right → loop back -->
         <text x="438" y="272" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">NO</text>
@@ -2360,7 +2366,7 @@
         <!-- ── SECOND CONSECUTIVE CHECK ── -->
         <polygon points="320,346 390,380 320,414 250,380" fill="#0f172a" stroke="#f97316" stroke-width="1.5"/>
         <text x="320" y="374" text-anchor="middle" fill="#e2e8f0" font-size="10.5" font-weight="600">Previous scan</text>
-        <text x="320" y="389" text-anchor="middle" fill="#f97316" font-size="11" font-weight="700">also ≤ 0.5 °C?</text>
+        <text x="320" y="389" text-anchor="middle" fill="#f97316" font-size="11" font-weight="700">also &lt; Moderate?</text>
 
         <!-- NO → left → loop back -->
         <text x="200" y="376" text-anchor="middle" fill="#f87171" font-size="10" font-weight="700">NO</text>
@@ -2375,8 +2381,8 @@
 
         <!-- ── REGION CLEARED ── -->
         <rect x="195" y="449" width="250" height="40" rx="8" fill="#052e16" stroke="#34d399" stroke-width="1.5"/>
-        <text x="320" y="466" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700" letter-spacing="0.07em">REGION CLEARED</text>
-        <text x="320" y="481" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="500">Bilateral symmetry confirmed</text>
+        <text x="320" y="466" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700" letter-spacing="0.07em">REGION SIDE CLEARED</text>
+        <text x="320" y="481" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="500">No Moderate+ on last 2 scans (≥ 2 needed)</text>
 
         <!-- arrow -->
         <line x1="320" y1="489" x2="320" y2="519" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr-g)"/>
@@ -2390,13 +2396,13 @@
   </figure>
 
   <div class="section-label" style="margin-top:40px;">Section 7.4.1</div>
-  <h4>The Eligibility Criterion — 0.5 °C Bilateral Symmetry Threshold</h4>
-  <p>A body region is classified as <strong>RTP-eligible</strong> when both of the two most recent scans show a bilateral asymmetry of <strong>≤ 0.5 °C</strong> at that region. A single normal reading is insufficient; two consecutive readings within threshold confirm that normalisation is stable, not a transient fluctuation.</p>
+  <h4>The Eligibility Criterion — Two Consecutive Non-Concern Scans</h4>
+  <p>A region <strong>side</strong> is classified as <strong>RTP-eligible</strong> once it has at least <strong>2 qualifying scans</strong> and neither of its two most recent readings flagged that side at <strong>Moderate or Elevated</strong> severity (z &gt; 2.0). A single normal reading is insufficient; the check spans the last two scans so clearance reflects stable normalisation, not a transient fluctuation. With fewer than 2 qualifying scans the region returns <strong>N/A</strong> (insufficient history). Clearance is evaluated independently for each side of a bilateral pair — only the affected (hotter) side carries the concern.</p>
 
   <table class="data-table">
     <thead>
       <tr>
-        <th>Condition</th>
+        <th>Condition (this side)</th>
         <th>Last Scan</th>
         <th>Scan Before Last</th>
         <th>Eligibility</th>
@@ -2404,33 +2410,38 @@
     </thead>
     <tbody>
       <tr>
-        <td>Both within threshold</td>
-        <td>≤ 0.5 °C</td>
-        <td>≤ 0.5 °C</td>
-        <td><span style="color:var(--safe);font-weight:600;">✓ Eligible</span></td>
+        <td>Both below concern</td>
+        <td>Clear / Mild</td>
+        <td>Clear / Mild</td>
+        <td><span style="color:var(--safe);font-weight:600;">✓ Eligible (YES)</span></td>
       </tr>
       <tr>
-        <td>Most recent normal, prior elevated</td>
-        <td>≤ 0.5 °C</td>
-        <td>&gt; 0.5 °C</td>
-        <td><span style="color:var(--danger);font-weight:600;">✗ Pending</span> — one more normal scan required</td>
+        <td>Most recent clear, prior in concern band</td>
+        <td>Clear / Mild</td>
+        <td>Moderate / Elevated</td>
+        <td><span style="color:var(--danger);font-weight:600;">✗ Pending (NO)</span> — one more non-concern scan required</td>
       </tr>
       <tr>
-        <td>Most recent elevated</td>
-        <td>&gt; 0.5 °C</td>
+        <td>Most recent in concern band</td>
+        <td>Moderate / Elevated</td>
         <td>Any</td>
-        <td><span style="color:var(--danger);font-weight:600;">✗ Pending</span></td>
+        <td><span style="color:var(--danger);font-weight:600;">✗ Pending (NO)</span></td>
+      </tr>
+      <tr>
+        <td>Insufficient history</td>
+        <td colspan="2" style="text-align:center;">fewer than 2 qualifying scans</td>
+        <td><span style="color:var(--text-muted);font-weight:600;">— N/A</span></td>
       </tr>
     </tbody>
   </table>
 
   <div class="insight" style="margin-top:20px;">
-    <p><strong>Why 0.5 °C?</strong> The 0.5 °C bilateral asymmetry boundary is the established clinical standard for normal inter-limb thermal symmetry in musculoskeletal thermography (Hildebrandt et al.; IACT consensus guidelines). Values above this threshold indicate physiologically meaningful asymmetric tissue activity. Using an absolute °C value rather than a population SD preserves interpretability across all 34 body regions — a single threshold applies universally without per-region calibration tables.</p>
+    <p><strong>Why a severity category, not an absolute °C?</strong> The live clearance threshold is the same z-based severity that drives the COMPASS T Score — Moderate begins at z &gt; 2.0. Because that z is computed against each region's shrunk reference (the athlete's own thermal norm once history accumulates, the population SD before then), RTP adapts per athlete and per region rather than applying one fixed population °C value. This keeps return-to-play decisions consistent with the rest of the framework and removes the need for per-region calibration tables. (The clinical literature on inter-limb symmetry — Hildebrandt et al.; IACT guidelines — informs why ~0.8°C in population terms is a sensible concern boundary, but it is not hard-coded as the threshold.)</p>
   </div>
 
   <div class="section-label" style="margin-top:40px;">Section 7.4.2</div>
-  <h4>Full-Body Coverage — All 34 COMPASS Regions</h4>
-  <p>COMPASS tracks thermal eligibility across all 34 anatomically defined body regions simultaneously. This is distinct from injury-site-only monitoring: every region is evaluated on every scan cycle, regardless of the stated injury location. This catches two clinically important patterns:</p>
+  <h4>Full-Body Coverage — All 89 Measured Regions</h4>
+  <p>COMPASS tracks thermal eligibility across all 89 measured body regions (45 front-view + 44 back-view) simultaneously. This is distinct from injury-site-only monitoring: every region is evaluated on every scan cycle, regardless of the stated injury location. This catches two clinically important patterns:</p>
 
   <ul style="line-height:1.9; padding-left:20px; color:var(--text);">
     <li><strong>Compensatory load stress</strong> — rising asymmetry in a region contralateral or adjacent to the injury site, signalling that the athlete is over-relying on compensating structures during rehabilitation.</li>
@@ -2440,55 +2451,40 @@
   <table class="data-table">
     <thead>
       <tr>
-        <th>Region Group</th>
-        <th>Body Regions Tracked</th>
+        <th>View</th>
+        <th>Regions Measured</th>
         <th>Contralateral Pairs</th>
+        <th>Median (unpaired)</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>Upper Limb</td>
-        <td>Shoulder, Upper Arm, Elbow, Forearm, Wrist/Hand (bilateral)</td>
-        <td>5 pairs</td>
+        <td>Front view</td>
+        <td>45</td>
+        <td>22 pairs</td>
+        <td>1 (Head)</td>
       </tr>
       <tr>
-        <td>Trunk</td>
-        <td>Upper Back, Mid Back, Lower Back, Abdomen (center/bilateral)</td>
-        <td>2 pairs + center regions</td>
-      </tr>
-      <tr>
-        <td>Hip &amp; Groin</td>
-        <td>Hip, Groin (bilateral)</td>
-        <td>2 pairs</td>
-      </tr>
-      <tr>
-        <td>Thigh</td>
-        <td>Thigh, Inner Thigh, Outer Thigh, Hamstring (bilateral)</td>
-        <td>4 pairs</td>
-      </tr>
-      <tr>
-        <td>Knee &amp; Lower Leg</td>
-        <td>Knee, Lower Leg, Calf (bilateral)</td>
-        <td>3 pairs</td>
-      </tr>
-      <tr>
-        <td>Foot &amp; Ankle</td>
-        <td>Ankle, Foot (bilateral)</td>
-        <td>2 pairs</td>
+        <td>Back view</td>
+        <td>44</td>
+        <td>21 pairs</td>
+        <td>2 (Head, Sacrum)</td>
       </tr>
       <tr>
         <td><strong>Total</strong></td>
-        <td><strong>34 regions</strong></td>
-        <td><strong>16 contralateral pairs + center regions</strong></td>
+        <td><strong>89 regions</strong></td>
+        <td><strong>43 contralateral pairs</strong></td>
+        <td><strong>3 median regions</strong></td>
       </tr>
     </tbody>
   </table>
+  <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">Regions are defined by the <code>BodyPart</code> enum (89 concrete region IDs spanning 36 muscle sets). The whole-body silhouette and skin mask come from a single Sapiens segmentation pass; per-region temperatures are the median over valid skin pixels.</p>
 
   <div class="section-label" style="margin-top:40px;">Section 7.4.3</div>
   <h4>Contralateral Limb Monitoring</h4>
   <p>Injured athletes compensate by redistributing load to the contralateral limb. COMPASS bilateral scanning tracks both limbs simultaneously throughout rehabilitation. The contralateral limb is not a passive reference — it is an active monitoring target with its own independent eligibility status.</p>
 
-  <p style="margin-top:12px;">For each of the 16 bilateral region pairs, COMPASS computes the <strong>absolute delta</strong> between left and right asymmetry readings across every scan:</p>
+  <p style="margin-top:12px;">For each of the 43 bilateral region pairs, COMPASS computes the <strong>left/right temperature delta</strong> at the region and tracks it across every scan:</p>
 
   <div style="background:var(--surface2);border-radius:8px;padding:14px 20px;margin:16px 0;font-family:monospace;font-size:13px;color:var(--text);">
     delta[scan_n] = |left_region.asymmetry[n] &minus; right_region.asymmetry[n]|
@@ -2512,16 +2508,16 @@
     </div>
     <div class="zone-card safe">
       <h4>✅ Bilateral Symmetry Restored</h4>
-      <p style="font-size:13.5px;margin:0 0 12px;">Both limbs of a contralateral pair showing ≤ 0.5 °C on two consecutive scans. Full bilateral clearance — the most reliable available signal that tissue has returned to pre-injury function.</p>
+      <p style="font-size:13.5px;margin:0 0 12px;">Both sides of a contralateral pair staying below the concern band (Clear/Mild) on two consecutive qualifying scans. Full bilateral clearance — the most reliable available signal that tissue has returned to pre-injury function.</p>
       <div class="zone-signals">
-        <span>Both limbs: ≤ 0.5 °C ×2</span>
+        <span>Both sides: &lt; Moderate ×2</span>
         <span>Status: RTP eligible</span>
       </div>
     </div>
   </div>
 
   <div class="insight" style="margin-top:24px;">
-    <p><strong>Why This Approach Is Clinically Unique:</strong> Existing AMS platforms (Catapult, Smartabase, Kitman Labs) report a single composite load or readiness score per athlete. COMPASS surfaces 34 independent eligibility decisions — one per anatomical region — giving clinicians the anatomical specificity to identify exactly which tissue site is still at risk, not just whether the athlete as a whole is "cleared". The contralateral delta chart makes compensatory overload visible scan-by-scan, before it causes a secondary injury.</p>
+    <p><strong>Why This Approach Is Clinically Unique:</strong> Existing AMS platforms (Catapult, Smartabase, Kitman Labs) report a single composite load or readiness score per athlete. COMPASS surfaces a per-region, per-side eligibility decision across all 89 measured regions — giving clinicians the anatomical specificity to identify exactly which tissue site is still at risk, not just whether the athlete as a whole is "cleared". The contralateral delta chart makes compensatory overload visible scan-by-scan, before it causes a secondary injury.</p>
   </div>
 
   <div class="section-label" style="margin-top:40px;">Section 7.4.4</div>
@@ -2537,19 +2533,19 @@
     <tbody>
       <tr>
         <td>Eligibility rule</td>
-        <td>Last 2 consecutive scans both showing bilateral asymmetry ≤ 0.5 °C at the region</td>
+        <td>≥ 2 qualifying scans and neither of the last 2 readings flags this side at Moderate/Elevated severity (z &gt; 2.0); else N/A</td>
       </tr>
       <tr>
         <td>Threshold basis</td>
-        <td>0.5 °C absolute — established clinical bilateral symmetry standard (Hildebrandt et al., IACT guidelines)</td>
+        <td>z-based severity category (Moderate = z &gt; 2.0) against each region's shrunk reference — not an absolute °C value</td>
       </tr>
       <tr>
         <td>Region coverage</td>
-        <td>All 34 COMPASS anatomical regions, every athlete, every scan cycle</td>
+        <td>All 89 measured regions, every athlete, every scan cycle</td>
       </tr>
       <tr>
         <td>Contralateral pairs</td>
-        <td>16 bilateral pairs tracked independently; absolute delta time series per pair</td>
+        <td>43 bilateral pairs, each side cleared independently; left/right delta time series per pair</td>
       </tr>
       <tr>
         <td>Squad filter</td>
@@ -2932,7 +2928,7 @@
       <tr>
         <td>Thermal sensitivity (NETD)</td>
         <td><strong>&lt; 50 mK</strong> minimum; <strong>&lt; 30 mK</strong> preferred</td>
-        <td>The COMPASS 1.5 SD alert threshold corresponds to ≈ 0.4°C. A sensor with NETD > 50 mK cannot reliably resolve this signal above noise. Sub-30 mK sensors provide comfortable margin above threshold.</td>
+        <td>COMPASS resolves asymmetry from a population SD of 0.40°C (σ_pop), so the smallest meaningful signal is sub-degree. A sensor with NETD > 50 mK cannot reliably resolve this above noise. Sub-30 mK sensors provide comfortable margin.</td>
         <td><span class="cam-badge partial">Partial</span><br><span class="cam-detail">≤ 40 mK · minimum requirement met (&lt; 50 mK) · preferred threshold (&lt; 30 mK) not met</span></td>
       </tr>
       <tr>
@@ -2962,7 +2958,7 @@
       <tr>
         <td>Temperature accuracy</td>
         <td><strong>≤ ±0.5°C</strong> at skin temperature range (clinical recommendation)</td>
-        <td>COMPASS asymmetry flags operate at deltas of ≈ 0.4–1.0°C. A camera with accuracy coarser than ±0.5°C cannot reliably resolve the minimum clinically significant asymmetry.</td>
+        <td>COMPASS severity bands span deltas of ≈ 0.4–1.2°C in population terms (σ_pop = 0.40°C). A camera with accuracy coarser than ±0.5°C cannot reliably resolve the minimum clinically significant asymmetry.</td>
         <td><span class="cam-badge fail">Fail</span><br><span class="cam-detail"><strong>±2°C or ±2%</strong> (whichever greater); exceeds acceptable clinical error margin by ~4×</span></td>
       </tr>
       <tr>
@@ -3127,48 +3123,48 @@
   </div>
 
   <h3>1.8 — SD Classification Framework in Sports Monitoring</h3>
-  <p style="font-size:14px; color:var(--text-muted); max-width:720px; margin-bottom:20px;">Evidence supporting the use of standard deviation tiers — rather than fixed absolute values — as the authoritative classification system once an individual baseline is established. These studies underpin the COMPASS 1.5 SD alert threshold and the broader SD tier framework in Section 05B.</p>
+  <p style="font-size:14px; color:var(--text-muted); max-width:720px; margin-bottom:20px;">Evidence supporting the use of standard-deviation tiers — rather than fixed absolute values — for individual monitoring. These studies informed the decision to use a z-based severity model in Section 05B; the live anchors (z = 1 / 2 / 3) are set in code, not taken verbatim from any one study.</p>
   <div class="evidence-grid">
     <div class="evidence-card">
       <span class="ev-strength strong">Strong</span>
       <h4>Plews, D.J. et al. (2013) — SD Tier Consensus</h4>
       <div class="ev-journal">International Journal of Sports Physiology and Performance, 8(5):461–470</div>
-      <div class="ev-finding">Establishes the widely-adopted SD tier framework for individual monitoring in sport: &lt;0.5 SD = within normal variation; 1.0 SD = meaningful departure (training modification flag); 1.5 SD = clinically important; ≥2.0 SD = extreme deviation requiring clinical review. Applied here to thermography because the same intra-individual departure logic applies: the question is not "how far from population average?" but "how far from this athlete's personal norm?" <strong>Directly supports the 1.0 / 1.5 / 2.0 SD tier boundaries used in Section 05B.</strong></div>
+      <div class="ev-finding">Establishes the widely-adopted SD tier framework for individual monitoring in sport: &lt;0.5 SD = within normal variation; 1.0 SD = meaningful departure (training modification flag); 1.5 SD = clinically important; ≥2.0 SD = extreme deviation requiring clinical review. Applied here to thermography because the same intra-individual departure logic applies: the question is not "how far from population average?" but "how far from this athlete's personal norm?" <strong>Background support for a z/SD-based severity model; COMPASS sets its own anchors (z = 1 / 2 / 3) in code rather than adopting these exact tier values.</strong></div>
     </div>
     <div class="evidence-card">
       <span class="ev-strength strong">Strong</span>
       <h4>Saw, A.E., Main, L.C., &amp; Gastin, P.B. (2016) — Individual vs. Population Reference</h4>
       <div class="ev-journal">British Journal of Sports Medicine, 50(3):192–200</div>
-      <div class="ev-finding">Intra-individual variability in HRV, sleep, and wellness scores is more sensitive to training load and fatigue than absolute values. Individual-referenced thresholds outperform population-referenced thresholds across all wellness biomarkers. Below 1 SD from personal baseline = normal fluctuation; above 1.5 SD = clinically important departure. <strong>Directly validates the principle that individual SD thresholds supersede population °C thresholds — the foundational logic of the Section 05B framework.</strong></div>
+      <div class="ev-finding">Intra-individual variability in HRV, sleep, and wellness scores is more sensitive to training load and fatigue than absolute values. Individual-referenced thresholds outperform population-referenced thresholds across all wellness biomarkers. Below 1 SD from personal baseline = normal fluctuation; larger departures = clinically important. <strong>Supports referencing each athlete to their own baseline — in COMPASS the personal mean/SD is blended toward the population via shrinkage, rather than switching over from a population threshold.</strong></div>
     </div>
     <div class="evidence-card">
       <span class="ev-strength emerging">Emerging</span>
       <h4>Claudino et al. (2024) — Individual Baselines in ML Models</h4>
       <div class="ev-journal">British Journal of Sports Medicine</div>
-      <div class="ev-finding">Machine learning models trained on individual athlete baselines significantly outperformed models trained on group norms for injury risk prediction (AUC 0.84 vs. 0.61). 28–35 days of training data required for reliable individual baseline establishment (consistent with the 4–6 scan, 3–5 week COMPASS onboarding protocol). <strong>Quantifies the performance gap between individual and population reference frames: the SD-based individual framework is not just conceptually superior — it is measurably more predictive.</strong></div>
+      <div class="ev-finding">Machine learning models trained on individual athlete baselines significantly outperformed models trained on group norms for injury risk prediction (AUC 0.84 vs. 0.61). 28–35 days of training data noted for reliable individual baseline establishment. <strong>Quantifies the performance gap between individual and population reference frames. COMPASS has no fixed onboarding gate — personalisation strengthens continuously via shrinkage (personal weight n/(n+5)).</strong></div>
     </div>
   </div>
 
   <h3>1.9 — Thermal Asymmetry Risk Stratification Studies</h3>
-  <p style="font-size:14px; color:var(--text-muted); max-width:720px; margin-bottom:20px;">Studies directly establishing which absolute asymmetry values (°C) correspond to clinically meaningful injury risk levels. These anchor the Moderate and High population-based tiers where the literature provides most specific threshold evidence.</p>
+  <p style="font-size:14px; color:var(--text-muted); max-width:720px; margin-bottom:20px;">Studies relating absolute asymmetry values (°C) to clinically meaningful injury risk. These informed the population reference (σ_pop = 0.40°C) used when no personal history exists; they are background evidence, not the live thresholds.</p>
   <div class="evidence-grid">
     <div class="evidence-card">
       <span class="ev-strength moderate">Moderate</span>
       <h4>Marins, J.C.B. et al. (2014)</h4>
       <div class="ev-journal">International Journal of Morphology, 32(3):769–776</div>
-      <div class="ev-finding">Thermal body pattern study in healthy Brazilian adults establishing region-specific normative asymmetry values and risk gradients. Asymmetry ≥ 0.3°C warrants clinical attention in major muscle groups. Values approaching 0.4°C indicate meaningfully elevated injury risk. Recommended for clinical investigation and contextualisation with load data when exceeded. <strong>Anchors the lower boundary of the Moderate tier (0.30°C) and confirms the transition zone toward the High tier prevention threshold approaching 0.4–0.5°C.</strong></div>
+      <div class="ev-finding">Thermal body pattern study in healthy Brazilian adults establishing region-specific normative asymmetry values and risk gradients. Asymmetry ≥ 0.3°C warrants clinical attention in major muscle groups. Values approaching 0.4°C indicate meaningfully elevated injury risk. Recommended for clinical investigation and contextualisation with load data when exceeded. <strong>Background evidence that sub-degree asymmetry carries injury-risk signal — consistent with the population SD (0.40°C) COMPASS uses as its no-history reference.</strong></div>
     </div>
     <div class="evidence-card">
       <span class="ev-strength strong">Strong</span>
       <h4>Gómez-Carmona et al. (2020) — 0.5°C Clinical Threshold</h4>
       <div class="ev-journal">Journal of Sport Rehabilitation, 29(8):1222–1227</div>
-      <div class="ev-finding">Asymmetry &gt;0.5°C identified 83% of subsequent soft tissue injuries before symptom onset (n=24 professional players). Detection occurred an average 8.2 days prior to clinical presentation. Daily thermography protocol reduced injuries from 0.63 to 0.25 per player, and days lost from 156 to 14. <strong>Definitively establishes 0.5°C as the lower boundary of the High tier — and confirms that the corresponding SD value (≈ 1.85 SD) sits firmly within the 1.5–1.99 SD COMPASS alert band, validating the calibration between both frameworks.</strong></div>
+      <div class="ev-finding">Asymmetry &gt;0.5°C identified 83% of subsequent soft tissue injuries before symptom onset (n=24 professional players). Detection occurred an average 8.2 days prior to clinical presentation. Daily thermography protocol reduced injuries from 0.63 to 0.25 per player, and days lost from 156 to 14. <strong>Strong background evidence for the early-warning value of sub-degree asymmetry. COMPASS does not hard-code 0.5°C; the live concern boundary is z &gt; 2.0 (≈ 0.80°C in population terms).</strong></div>
     </div>
     <div class="evidence-card">
       <span class="ev-strength moderate">Moderate</span>
       <h4>Arnaiz-Lastras et al. (2019) — 0.4°C Prevention Protocol</h4>
       <div class="ev-journal">PMC — Pilot Study (Complementary Screening)</div>
-      <div class="ev-finding">Twice-weekly thermography (48 hours post-match) in professional soccer. Prevention protocol triggered when asymmetry exceeded 0.4°C. Muscle injuries reduced from 11 to 4 over the monitored period — a 64% reduction. <strong>Establishes 0.4°C as an operational prevention threshold. Critically, 0.4°C ≈ 1.5 SD for major muscle groups, confirming that the COMPASS 1.5 SD alert threshold and this literature-based 0.4°C threshold are drawing the line at the same physiological signal.</strong></div>
+      <div class="ev-finding">Twice-weekly thermography (48 hours post-match) in professional soccer. Prevention protocol triggered when asymmetry exceeded 0.4°C. Muscle injuries reduced from 11 to 4 over the monitored period — a 64% reduction. <strong>Demonstrates that an operational prevention protocol at sub-degree asymmetry reduces injuries. Its ≈ 0.4°C operating point coincides with the population SD (σ_pop = 0.40°C) COMPASS uses as its no-history reference — background support for the chosen anchor, not a hard-coded threshold.</strong></div>
     </div>
   </div>
 
@@ -3298,16 +3294,8 @@ Chart.defaults.font.size = 12;
           callbacks: {
             label: (c) => {
               const R = c.parsed.x, T = c.parsed.y;
-              let score;
-              if (R >= 50 && T < 50) {
-                score = Math.round(76 + 24 * ((( R-50)/50 + (50-T)/50) / 2));
-              } else if (R < 50 && T < 50) {
-                score = Math.round(51 + 24 * ((R/50 + (50-T)/50) / 2));
-              } else if (R >= 50 && T >= 50) {
-                score = Math.round(26 + 24 * (0.3*(R-50)/50 + 0.7*(100-T)/50));
-              } else {
-                score = Math.round(25 * (0.3*R/50 + 0.7*(100-T)/50));
-              }
+              // Single equal-weight plane (w_t = 0.5): 50 + 0.5*(R - T), clamped.
+              const score = Math.round(Math.min(100, Math.max(0, 50 + 0.5 * (R - T))));
               return ` Readiness: ${R}% | Thermal Risk: ${T}% | COMPASS Score: ${score}`;
             }
           }
@@ -3333,14 +3321,16 @@ Chart.defaults.font.size = 12;
 // ── Thermal Baseline Onboarding Chart ──
 (function() {
   const ctx = document.getElementById('baselineChart').getContext('2d');
-  // Model: scans every ~5 days, 6 scans = full baseline (~30 days)
-  // Show individual scan events as step-ups in confidence
+  // Model: scans every ~5 days. Shrinkage personal weight = n / (n + n0), n0 = 5.
+  // No hard cut-over: weight rises smoothly, reaching 50% (parity with the
+  // population prior) at the 5th scan and approaching 100% asymptotically.
+  const N0 = 5;
   const scanDays  = [1, 6, 11, 16, 21, 26];
   const scanLabels = Array.from({length: 30}, (_, i) => `Day ${i+1}`);
   const thermalConfidence = scanLabels.map((_, i) => {
     const day = i + 1;
     const scansCompleted = scanDays.filter(s => s <= day).length;
-    return Math.min(100, Math.round((scansCompleted / 6) * 100));
+    return scansCompleted === 0 ? 0 : Math.round((scansCompleted / (scansCompleted + N0)) * 100);
   });
 
   // Annotation plugin: phase bands + scan markers
@@ -3349,29 +3339,28 @@ Chart.defaults.font.size = 12;
     beforeDraw(chart) {
       // Draw phase background bands
       const {ctx: c, chartArea: {left, right, top, bottom}, scales: {x}} = chart;
-      // Population baseline phase: day 1–26 (0-indexed: 0–25)
-      const xPopEnd  = x.getPixelForValue(25); // last day of population phase (day 26, index 25)
-      const xPerStart = xPopEnd;
+      // Parity at scan 5 (day 21, index 20): personal weight crosses 50%.
+      const xParity = x.getPixelForValue(20);
       c.save();
-      // Population phase — amber tint
+      // Population-dominant region (weight < 50%) — amber tint
       c.fillStyle = 'rgba(245,158,11,0.07)';
-      c.fillRect(left, top, xPopEnd - left, bottom - top);
-      // Personal baseline phase — green tint
+      c.fillRect(left, top, xParity - left, bottom - top);
+      // Personal-dominant region (weight ≥ 50%) — green tint
       c.fillStyle = 'rgba(34,197,94,0.07)';
-      c.fillRect(xPerStart, top, right - xPerStart, bottom - top);
-      // Phase divider
+      c.fillRect(xParity, top, right - xParity, bottom - top);
+      // Parity divider
       c.strokeStyle = 'rgba(34,197,94,0.4)';
       c.lineWidth = 1.5;
       c.setLineDash([5, 4]);
-      c.beginPath(); c.moveTo(xPopEnd, top); c.lineTo(xPopEnd, bottom); c.stroke();
+      c.beginPath(); c.moveTo(xParity, top); c.lineTo(xParity, bottom); c.stroke();
       c.setLineDash([]);
-      // Phase labels
+      // Region labels
       c.font = '600 11px system-ui, sans-serif';
       c.globalAlpha = 0.6;
       c.fillStyle = '#f59e0b';
-      c.fillText('👥 Population Baseline', left + 8, top + 16);
+      c.fillText('👥 Population-dominant', left + 8, top + 16);
       c.fillStyle = '#22c55e';
-      c.fillText('✅ Personal Baseline', xPerStart + 8, top + 16);
+      c.fillText('✅ Personal-dominant (≥ 50%)', xParity + 8, top + 16);
       c.globalAlpha = 1;
       c.restore();
     },
@@ -3400,7 +3389,7 @@ Chart.defaults.font.size = 12;
       labels: scanLabels,
       datasets: [
         {
-          label: '🌡️ Thermal Baseline Confidence (%)',
+          label: '🌡️ Personal Baseline Weight — n/(n+5) (%)',
           data: thermalConfidence,
           borderColor: '#f97316',
           backgroundColor: 'rgba(249,115,22,0.1)',
@@ -3420,8 +3409,8 @@ Chart.defaults.font.size = 12;
           callbacks: {
             label: c => {
               const scans = scanDays.filter(s => s <= c.dataIndex + 1).length;
-              const phase = scans >= 6 ? '✅ Personal baseline active' : '👥 Population baseline in use';
-              return ` ${c.parsed.y}% confidence · ${scans}/6 scans · ${phase}`;
+              const phase = c.parsed.y >= 50 ? '✅ Personal-dominant' : '👥 Population-dominant';
+              return ` ${c.parsed.y}% personal weight · ${scans} scan${scans === 1 ? '' : 's'} · ${phase}`;
             }
           }
         }
@@ -3433,7 +3422,7 @@ Chart.defaults.font.size = 12;
           ticks: { maxTicksLimit: 10 }
         },
         y: {
-          title: { display: true, text: 'Thermal Baseline Confidence (%) →', color: '#8b949e' },
+          title: { display: true, text: 'Personal Baseline Weight (%) →', color: '#8b949e' },
           min: 0, max: 110,
           grid: { color: 'rgba(255,255,255,0.04)' },
           ticks: { callback: v => v <= 100 ? v + '%' : '' }
