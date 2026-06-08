@@ -363,12 +363,14 @@
               <g><circle cx="235" cy="470" r="13" fill="#0F5E5A"/><text x="235" y="475" text-anchor="middle" fill="#fff" font-size="12" class="svg-mono">9</text><text x="257" y="475">Return to play</text></g>
             </g>
 
-            <!-- feedback loop 8 -> 2 -->
+            <!-- feedback loop 8 -> 2, via the outlier filter -->
             <path d="M222 420 C 30 420, 30 124, 57 124" fill="none" stroke="#0F5E5A" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#md)"/>
-            <text x="18" y="272" text-anchor="middle" class="svg-mono" font-size="10" fill="#0F5E5A" transform="rotate(-90 18 272)">baseline sharpens the reference</text>
+            <rect x="64" y="407" width="116" height="26" rx="13" fill="#FBF8F2" stroke="#0F5E5A" stroke-width="1.4"/>
+            <text x="122" y="424" text-anchor="middle" class="svg-mono" font-size="11" fill="#0F5E5A">⊘ outlier filter</text>
+            <text x="18" y="262" text-anchor="middle" class="svg-mono" font-size="10" fill="#0F5E5A" transform="rotate(-90 18 262)">filtered baseline sharpens the reference</text>
           </svg>
         </div>
-        <figcaption><b>Map</b>Two parallel branches — a five-step thermal pipeline (1–5) and the ready-made wearable recovery score (6) — fuse at the COMPASS step (7). Steps 8–9 are how the system learns and clears.</figcaption>
+        <figcaption><b>Map</b>Two parallel branches — a five-step thermal pipeline (1–5) and the ready-made wearable recovery score (6) — fuse at the COMPASS step (7). Steps 8–9 are how the system learns and clears; the dashed return path feeds step 8's learning back into step 2's reference, but only after an <em>outlier filter</em> drops anomalous scans so they can't skew the baseline.</figcaption>
       </figure>
     </section>
 
@@ -660,7 +662,15 @@
         <div class="srow">After a month of clean scans, this region's personal SD might settle near 0.30 °C</div>
         <div class="srow">the same +0.9 °C gap now reads z ≈ 3.0 against a tighter personal norm <span class="ar">→</span> a stronger signal, tuned to <strong>this athlete</strong></div>
       </div>
-      <p class="reveal">The learning itself is simple. After every scan a background job gathers that region's Δ from every prior scan, adds the new one, and recomputes the personal mean and spread — the standard deviation needs at least two readings before it exists. Only scans with a valid Δ count, so a region that couldn't be measured can't poison the baseline. Those values become the personal reference that future scans are shrunk toward, closing the loop with Step 2. Because shrinkage handles thin histories gracefully, there is no "you need N scans before we score you" gate — every athlete gets a score from scan one.</p>
+      <p class="reveal">The learning is careful, not blind. After every scan a background job gathers that region's Δ from every prior scan and adds the current one — but it does <strong>not</strong> simply average them. A single anomalous scan (a registration error, or a reading taken mid-injury) would otherwise drag the mean and inflate the spread, widening the "normal" band and masking real asymmetry on later scans. So the deltas first pass through a two-stage <strong>outlier filter</strong>, and the personal mean and SD are computed only over the survivors.</p>
+      <div class="callout reveal">
+        <div class="clab">Two-stage outlier rejection</div>
+        <ul class="clean" style="margin:0;">
+          <li><b>Hard clinical gate.</b> Drop any scan whose <code>|Δ|</code> exceeds the population Elevated level — <code>3 × SD_pop = 1.2 °C</code>. A clinically significant reading is real signal, not "normal", so it can't be allowed to define the norm.</li>
+          <li><b>Robust (MAD) rejection.</b> Once at least 5 deltas survive the gate, drop any sitting more than <code>3 × 1.4826 × MAD</code> from the median. Median-absolute-deviation is used rather than quartiles, which are unstable at the small samples seen in practice.</li>
+        </ul>
+      </div>
+      <p class="reveal">The current scan is included <em>before</em> filtering, so an anomalous scan can never pollute its own stored baseline. If nothing survives, the region falls back to the population reference (Step 2). Return-to-play clearance is unaffected — it counts raw scan history, not the filtered baseline. And because shrinkage handles thin histories gracefully, there is still no "you need N scans before we score you" gate — every athlete gets a score from scan one.</p>
     </section>
 
     <!-- STEP 9 -->
@@ -856,6 +866,8 @@
           <div><div class="k">freshness = 2 d</div><div class="v">Wearable data older than this drops the readiness axis.</div></div>
           <div><div class="k">thermal valid = 7 d</div><div class="v">A scan stays valid through day 6; on day 7 thermal scoring is suspended.</div></div>
           <div><div class="k">bg filter = 15°C</div><div class="v">Pixels colder than this are treated as room, not body, and dropped.</div></div>
+          <div><div class="k">baseline gate = 1.2°C</div><div class="v">Scans with |Δ| above the population Elevated level (3 × SD_pop) are excluded from the baseline.</div></div>
+          <div><div class="k">MAD: k = 3, n ≥ 5</div><div class="v">Robust outlier rejection on surviving deltas — 3 × 1.4826 × MAD, once ≥ 5 remain.</div></div>
         </div>
       </div>
       <p class="reveal" style="font-size:13.5px;color:var(--ink-dim);">Every value here is a deliberate, adjustable dial — set from clinical reasoning, not a fact of nature — and can be re-tuned as data accrues without changing any of the logic above.</p>
