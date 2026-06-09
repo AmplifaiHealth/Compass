@@ -389,8 +389,13 @@
       <div class="eq reveal">Δ = temp_right − temp_left</div>
       <div class="worked reveal">
         <div class="wlab">Worked example · right hamstring</div>
-        <div class="srow">temp_left = 31.0 °C <span class="ar">·</span> temp_right = 31.9 °C</div>
-        <div class="srow">Δ = 31.9 − 31.0 <span class="ar">=</span> <strong>+0.9 °C</strong> <span class="note">The right side runs warmer — but is 0.9 °C meaningful? That depends on what's normal. Step 2.</span></div>
+        <div class="srow">temp_left = 31.0 °C <span class="ar">·</span> temp_right = 32.15 °C</div>
+        <div class="srow">Δ = 32.15 − 31.0 <span class="ar">=</span> <strong>+1.15 °C</strong> <span class="note">The right side runs warmer — but is 1.15 °C meaningful? That depends on what's normal. Step 2.</span></div>
+      </div>
+      <div class="callout reveal">
+        <div class="clab">When a pair can't be trusted</div>
+        <p>Δ only means something if both sides measured <em>comparable</em> tissue. If registration nudges one mask so it straddles a thermal edge — clipping cooler background into the region — that side's median is dragged off and the gap becomes an artifact, not physiology. (A real case: a misaligned forearm mask depressed one side ~2 °C and the old hotter-side rule flagged the <em>other</em> side as hyperthermia on an asymptomatic athlete.)</p>
+        <p>So before scoring, a <strong>mask-quality gate</strong> compares the two sides' coverage and spread. If they disagree <em>asymmetrically</em> — one side's dispersion far wider, or its coverage materially lower — the pair is <strong>voided</strong>: flagged "no data", neither scored as Clear nor allowed to inflate the Thermal Risk Score. A symmetric error cancels in the delta and is left alone.</p>
       </div>
     </section>
 
@@ -398,17 +403,17 @@
     <section id="s2">
       <div class="sec-num step reveal"><span class="chip">STEP 2</span> The thermal signal</div>
       <h2 class="reveal">What counts as "normal"?</h2>
-      <p class="reveal">A 0.9 °C gap might be alarming in one athlete and unremarkable in another. COMPASS judges it against a <strong>reference</strong> — the mean and spread of that region's bilateral difference. The question is whose reference to use.</p>
-      <p class="reveal">With no scan history, COMPASS uses a <strong>population</strong> reference: a mean of 0 °C (symmetry) and a standard deviation of 0.40 °C, drawn from healthy-athlete normative data. As the athlete accumulates their own scans, their personal mean and spread <strong>blend in</strong> — weighted by how much history exists. This is shrinkage, and it means the system is never naïve early on, yet becomes fully personal with use (Step 8).</p>
+      <p class="reveal">A 1.15 °C gap might be alarming in one athlete and unremarkable in another. COMPASS judges it against a <strong>reference</strong> — the mean and spread of that region's bilateral difference. The question is whose reference to use.</p>
+      <p class="reveal">With no scan history, COMPASS uses a <strong>population</strong> reference: a mean of 0 °C (symmetry) and a standard deviation of 0.50 °C, drawn from healthy-athlete normative data. As the athlete accumulates their own scans, their personal mean and spread <strong>blend in</strong> — weighted by how much history exists. This is shrinkage, and it means the system is never naïve early on, yet becomes fully personal with use (Step 8).</p>
       <div class="eq reveal">
         SD_eff = sqrt( (n × SD_i^2 + n0 × SD_pop^2) / (n + n0) )<br>
         mean_eff = ( n × mean_i + n0 × mean_pop ) / (n + n0)<br>
-        <span class="c">// n = this region's scans · n0 = 5 · mean_pop = 0 · SD_pop = 0.40 °C</span>
+        <span class="c">// n = this region's scans · n0 = 7 · mean_pop = 0 · SD_pop = 0.50 °C</span>
       </div>
       <div class="worked reveal">
         <div class="wlab">Worked example · right hamstring</div>
         <div class="srow">Early scans, little personal history <span class="ar">→</span> reference is essentially population</div>
-        <div class="srow">reference mean mean_eff = <strong>0</strong> <span class="ar">·</span> reference SD SD_eff = <strong>0.40 °C</strong></div>
+        <div class="srow">reference mean mean_eff = <strong>0</strong> <span class="ar">·</span> reference SD SD_eff = <strong>0.50 °C</strong></div>
       </div>
     </section>
 
@@ -421,7 +426,7 @@
       <p class="reveal">A z of 1 means "one SD from symmetry"; a z of 3 means "far outside the normal band". Because it's standardised, the same z carries the same clinical weight on a hamstring, a calf, or a shoulder.</p>
       <div class="worked reveal">
         <div class="wlab">Worked example · right hamstring</div>
-        <div class="srow">z = |0.9 − 0| / 0.40 <span class="ar">=</span> <strong>2.25</strong> <span class="note">More than two standard deviations from this region's normal — well into "look closer" territory.</span></div>
+        <div class="srow">z = |1.15 − 0| / 0.50 <span class="ar">=</span> <strong>2.30</strong> <span class="note">More than two standard deviations from this region's normal — well into "look closer" territory.</span></div>
       </div>
     </section>
 
@@ -431,11 +436,11 @@
       <h2 class="reveal">Thermal-risk score &amp; severity</h2>
       <p class="reveal">The deviation z is mapped to a 0–100 <strong>Thermal-Risk score (TR)</strong> and, in parallel, a clinical <strong>severity category</strong>. Two anchors set the scale: nothing below 1 SD counts as risk (TR = 0), and 3 SD or beyond is the ceiling (TR = 100).</p>
       <div class="eq reveal">TR = clamp( (z − 1) / 2 × 100, 0, 100 )</div>
-      <p class="reveal">The same z also lands in one of four categories — Clear, Mild, Moderate, Elevated. Both the score and the category are built from the <em>same</em> two anchors (TR = 0 at z = 1, TR = 100 at z = 3, with the midpoint z = 2 splitting Mild from Moderate), so the number and the word can never disagree. Once a region clears Clear, the <strong>hotter side</strong> is flagged as hyperthermia and the cooler side stays normal. The concern boundary that drives clinical action sits at <code>z &gt; 2</code> (Moderate). Drag the marker to see a deviation become a severity.</p>
+      <p class="reveal">The same z also lands in one of four categories — Clear, Mild, Moderate, Elevated. Both the score and the category are built from the <em>same</em> three named anchors (TR = 0 at z = 1, TR = 100 at z = 3, and the <strong>Moderate anchor</strong> <code>Z_ANCHOR_MID</code> at z = 2 — the single source of truth that both splits Mild from Moderate and sets the outlier gate), so the number and the word can never disagree. Severity answers <em>how far from normal</em>; <em>which side</em> is affected, and in which direction, is decided separately (below). The concern boundary that drives clinical action sits at <code>z &gt; 2</code> (Moderate). Drag the marker to see a deviation become a severity.</p>
 
       <figure class="reveal">
         <div class="frame">
-          <svg id="sevSvg" viewBox="0 0 640 150" role="img" aria-label="Interactive severity scale mapping standardised deviation z to clinical category and thermal-risk score.">
+          <svg id="sevSvg" viewBox="0 0 640 168" role="img" aria-label="Interactive severity scale mapping standardised deviation z to clinical category, thermal-risk score, and the no-history population delta in degrees Celsius.">
             <g>
               <rect x="40" y="44" width="135" height="34" fill="#2F7D55" opacity="0.16"/>
               <rect x="175" y="44" width="135" height="34" fill="#C2881A" opacity="0.16"/>
@@ -447,11 +452,21 @@
               <text x="522" y="66" text-anchor="middle" class="svg-lbl" font-size="12" fill="#A8201A">Elevated</text>
             </g>
             <line x1="40" y1="92" x2="600" y2="92" stroke="#1C1A16" stroke-width="1.5"/>
-            <g class="svg-mono" font-size="11" fill="#4A453D" text-anchor="middle">
-              <text x="40" y="112">z 0</text><text x="175" y="112">1</text><text x="310" y="112">2</text><text x="445" y="112">3</text><text x="600" y="112">4</text>
-            </g>
-            <g class="svg-mono" font-size="10" fill="#857C6E" text-anchor="middle">
-              <text x="175" y="132">TR 0</text><text x="310" y="132">50</text><text x="445" y="132">100</text>
+            <g class="svg-mono" text-anchor="middle">
+              <g font-size="11" fill="#4A453D">
+                <text x="40" y="110">0</text><text x="175" y="110">1</text><text x="310" y="110">2</text><text x="445" y="110">3</text><text x="600" y="110">4</text>
+              </g>
+              <g font-size="10" fill="#857C6E">
+                <text x="175" y="130">0</text><text x="310" y="130">50</text><text x="445" y="130">100</text>
+              </g>
+              <g font-size="10" fill="#1F7A8C">
+                <text x="175" y="150">0.50</text><text x="310" y="150">1.00</text><text x="445" y="150">1.50</text>
+              </g>
+              <g text-anchor="end" font-size="9.5">
+                <text x="32" y="110" fill="#4A453D">z</text>
+                <text x="32" y="130" fill="#857C6E">TR</text>
+                <text x="32" y="150" fill="#1F7A8C">Δ°C</text>
+              </g>
             </g>
             <g id="sevMark" style="cursor:grab" transform="translate(343.75,0)">
               <line x1="0" y1="40" x2="0" y2="96" stroke="#0F5E5A" stroke-width="2"/>
@@ -460,22 +475,43 @@
             </g>
           </svg>
           <div class="readout">
-            <div class="ro"><div class="lab">deviation z</div><div class="val" id="roZ">2.25</div></div>
+            <div class="ro"><div class="lab">deviation z</div><div class="val" id="roZ">2.30</div></div>
             <div class="ro"><div class="lab">severity</div><div class="val" id="roCat" style="color:var(--deceptive)">Moderate</div></div>
-            <div class="ro"><div class="lab">TR score</div><div class="val" id="roT">63</div></div>
-            <div class="ro"><div class="lab">≈ Δ at n=0</div><div class="val" id="roD">0.90°C</div></div>
+            <div class="ro"><div class="lab">TR score</div><div class="val" id="roT">65</div></div>
+            <div class="ro"><div class="lab">≈ Δ at n=0</div><div class="val" id="roD">1.15°C</div></div>
           </div>
-          <div class="hint">Drag the handle. The °C column is the no-history case (z × 0.40 °C); with personal history the same z maps to that athlete's own degrees.</div>
+          <div class="hint">Drag the handle. The °C column is the no-history case (z × 0.50 °C); with personal history the same z maps to that athlete's own degrees.</div>
         </div>
-        <figcaption><b>Fig 1</b>The severity scale. Category and score move together; <code>z &gt; 2</code> (Moderate) is the line at which a region becomes a clinical concern.</figcaption>
+        <figcaption><b>Fig 1</b>The severity scale. Category and score move together; <code>z &gt; 2</code> (Moderate) is the line at which a region becomes a clinical concern. The bottom row is the no-history population mapping — <code>z × SD_pop</code> at <code>SD_pop = 0.50 °C</code>, so the anchors land at 0.50 / 1.00 / 1.50 °C.</figcaption>
       </figure>
+
+      <h3 class="reveal">The anchors, and the population thresholds they map to</h3>
+      <p class="reveal">Three named z-anchors pin the entire scale, and the severity bands are coupled to them — so TR and the category can never disagree. With no personal history, those anchors map to fixed population temperatures (<code>z × SD_pop</code>, with <code>SD_pop = 0.50 °C</code>):</p>
+      <table class="reveal">
+        <thead><tr><th>Anchor</th><th>z</th><th>TR</th><th>Population Δ (n = 0)</th><th>Severity boundary</th></tr></thead>
+        <tbody>
+          <tr><td><code>Z_ANCHOR_LOW</code></td><td>1.0</td><td>0</td><td>0.50 °C</td><td>Clear → Mild</td></tr>
+          <tr><td><code>Z_ANCHOR_MID</code></td><td>2.0</td><td>50</td><td>1.00 °C</td><td>Mild → Moderate <span style="color:var(--deceptive)">(concern)</span></td></tr>
+          <tr><td><code>Z_ANCHOR_HIGH</code></td><td>3.0</td><td>100</td><td>1.50 °C</td><td>Moderate → Elevated</td></tr>
+        </tbody>
+      </table>
+      <p class="reveal">As an athlete's own baseline accumulates, the °C column shrinks toward their personal spread (Step 8) — but the z-anchors and the severity bands never move. So a deviation that reads Moderate on a population reference and on a personal one carries the same clinical weight.</p>
 
       <div class="worked reveal">
         <div class="wlab">Worked example · right hamstring</div>
-        <div class="srow">TR = (2.25 − 1) / 2 × 100 <span class="ar">=</span> <strong>62.5</strong></div>
-        <div class="srow">z = 2.25 falls in 2.0–3.0 <span class="ar">→</span> <span class="chip-s moderate">Moderate</span></div>
-        <div class="srow">right (31.9) hotter than left (31.0) <span class="ar">→</span> <strong>right hamstring = hyperthermia</strong></div>
+        <div class="srow">TR = (2.30 − 1) / 2 × 100 <span class="ar">=</span> <strong>65</strong></div>
+        <div class="srow">z = 2.30 falls in 2.0–3.0 <span class="ar">→</span> <span class="chip-s moderate">Moderate</span></div>
+        <div class="srow">right side deviates above its own baseline <span class="ar">→</span> <strong>right hamstring = hyperthermia</strong> <span class="note">With &lt; 3 side scans it falls back to the hotter-side rule, which agrees here.</span></div>
       </div>
+
+      <h3 class="reveal">Which side — and hyper or hypo?</h3>
+      <p class="reveal">The bilateral z-score owns the <em>magnitude</em> — how far from normal — and that never changes. But the old "hotter side is the injured one" rule misses a whole class of signatures: tissue that runs <strong>colder</strong> than its baseline (poor circulation, chronic or nerve involvement) is just as abnormal. So which side is affected, and whether it is hyper- or hypo-thermic, is decided per side, from each side's own history.</p>
+      <p class="reveal">Each side's temperature is first normalised against the body as a whole — <code>side_norm = side_temp − body-median</code> for that view — which cancels ambient drift while keeping a per-side signal. The <strong>affected side</strong> is the one whose <code>side_norm</code> sits furthest from its <em>own</em> baseline (largest |z|), and the sign of that deviation picks the condition:</p>
+      <ul class="clean reveal">
+        <li><b>Hyperthermia</b> — the side reads above its baseline: inflammation, acute overload.</li>
+        <li><b>Hypothermia</b> — the side reads below its baseline: reduced perfusion, chronic or neural involvement — the case the hotter-side rule used to mislabel.</li>
+      </ul>
+      <p class="reveal">A floor on each side's SD stops an unusually stable side from dominating the comparison. Like everything baseline-driven it has a cold start: with fewer than <strong>3 per-side scans</strong> (or no usable side history) attribution falls back to the legacy rule — hotter side, hyperthermia — switching on per athlete as history accrues. This is <em>augment-only</em>: it never changes the severity or TR, only the side and the condition label.</p>
     </section>
 
     <!-- STEP 5 -->
@@ -484,11 +520,11 @@
       <h2 class="reveal">From many regions to one scan score</h2>
       <p class="reveal">A full scan covers some 89 regions, each with its own TR. COMPASS does <strong>not</strong> average them — one badly-stressed region is the clinical signal, and averaging would bury it under dozens of quiet ones. The scan's Thermal-Risk score is the <strong>worst region</strong>:</p>
       <div class="eq reveal">Thermal Risk Score = max( TR over all regions )</div>
-      <p class="reveal">Coverage is whole-body and fixed: <strong>89 regions</strong> — 45 in the anterior view and 44 in the posterior — comprising <strong>43 contralateral pairs</strong> plus 3 unpaired median regions (head; head and sacrum on the back). Every region is scored on every scan regardless of the stated injury site, so the per-region detail is preserved for the dashboard while the worst region drives the headline number.</p>
+      <p class="reveal">Coverage is whole-body and fixed: <strong>89 regions</strong> — 45 in the anterior view and 44 in the posterior — comprising <strong>43 contralateral pairs</strong> plus 3 unpaired median regions (head; head and sacrum on the back). Every region is scored on every scan regardless of the stated injury site, so the per-region detail is preserved for the dashboard while the worst region drives the headline number. Regions voided by the mask-quality gate (Step 1) are excluded from the max — they count as "no data", never as a quiet Clear.</p>
       <div class="worked reveal">
         <div class="wlab">Worked example · this scan</div>
-        <div class="srow">right hamstring TR = 62.5 — the athlete's hottest region today</div>
-        <div class="srow">no other region exceeds it <span class="ar">→</span> <strong>Thermal Risk Score = 62.5</strong></div>
+        <div class="srow">right hamstring TR = 65 — the athlete's hottest region today</div>
+        <div class="srow">no other region exceeds it <span class="ar">→</span> <strong>Thermal Risk Score = 65</strong></div>
       </div>
     </section>
 
@@ -566,13 +602,13 @@
 
       <div class="worked reveal">
         <div class="wlab">Worked example · the call</div>
-        <div class="srow">Thermal Risk Score = 62.5 (a Moderate hot-spot) <span class="ar">·</span> R = 70 (feels recovered)</div>
+        <div class="srow">Thermal Risk Score = 65 (a Moderate hot-spot) <span class="ar">·</span> R = 70 (feels recovered)</div>
         <div class="srow">R ≥ 50 and TR ≥ 50 <span class="ar">→</span> <span class="chip-s deceptive">Deceptive readiness</span></div>
-        <div class="srow">Score = 50 + 0.5 × (70 − 62.5) = 50 + 3.75 <span class="ar">=</span> <strong>≈ 54</strong> <span class="note">The wearable alone said "70 — go." COMPASS pulls it to a cautious 54 and raises the deceptive-readiness flag pointing straight at the warm hamstring.</span></div>
+        <div class="srow">Score = 50 + 0.5 × (70 − 65) = 50 + 2.5 <span class="ar">=</span> <strong>≈ 53</strong> <span class="note">The wearable alone said "70 — go." COMPASS pulls it to a cautious 53 and raises the deceptive-readiness flag pointing straight at the warm hamstring.</span></div>
       </div>
 
       <h3 class="reveal">The score ranges, and why they overlap</h3>
-      <p class="reveal">Because the score is continuous while the zone is categorical, the four zones <strong>overlap</strong> on the 0–100 axis. Safe occupies 50–100, Danger 0–50, and the two mixed zones — Recovery and Deceptive — each span 25–75. So the number alone can't pin the zone: a 54 could be a near-recovered Recovery, a mid Deceptive (our example), or a low Safe. Only the zone label disambiguates — which is why COMPASS always reports the two together. Drag the marker to see which zones a given score can belong to.</p>
+      <p class="reveal">Because the score is continuous while the zone is categorical, the four zones <strong>overlap</strong> on the 0–100 axis. Safe occupies 50–100, Danger 0–50, and the two mixed zones — Recovery and Deceptive — each span 25–75. So the number alone can't pin the zone: a 53 could be a near-recovered Recovery, a mid Deceptive (our example), or a low Safe. Only the zone label disambiguates — which is why COMPASS always reports the two together. Drag the marker to see which zones a given score can belong to.</p>
 
       <figure class="reveal">
         <div class="frame">
@@ -591,7 +627,7 @@
             </g>
           </svg>
           <div class="readout">
-            <div class="ro"><div class="lab">score</div><div class="val" id="rngScore">54</div></div>
+            <div class="ro"><div class="lab">score</div><div class="val" id="rngScore">53</div></div>
             <div class="ro" style="flex:1"><div class="lab">possible zones</div><div id="rngZones" style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"></div></div>
           </div>
           <div class="hint">Drag the marker along the 0–100 axis. Where bars overlap, the score is ambiguous on its own.</div>
@@ -637,11 +673,11 @@
     <section id="s8">
       <div class="sec-num step reveal"><span class="chip">STEP 8</span> Fusion &amp; action</div>
       <h2 class="reveal">Learning the athlete's baseline</h2>
-      <p class="reveal">Our worked example used the population reference because the athlete was new. With every clean scan, that changes. Each region's personal mean and spread gain weight in the blend from Step 2 — weight <code>n / (n + 5)</code> — overtaking the population prior at the fifth scan and approaching the athlete's own variability thereafter. The curve is smooth; there is no moment where the system "switches over".</p>
+      <p class="reveal">Our worked example used the population reference because the athlete was new. With every clean scan, that changes. Each region's personal mean and spread gain weight in the blend from Step 2 — weight <code>n / (n + 7)</code> — overtaking the population prior at the seventh scan and approaching the athlete's own variability thereafter. The curve is smooth; there is no moment where the system "switches over".</p>
 
       <figure class="reveal">
         <div class="frame">
-          <svg viewBox="0 0 640 230" role="img" aria-label="A smooth curve showing the personal baseline weight n over n plus 5 rising from 0, crossing 50 percent at the fifth scan and approaching 100 percent.">
+          <svg viewBox="0 0 640 230" role="img" aria-label="A smooth curve showing the personal baseline weight n over n plus 7 rising from 0, crossing 50 percent at the seventh scan and approaching 100 percent.">
             <line x1="50" y1="30" x2="50" y2="185" stroke="#1C1A16" stroke-width="1.3"/>
             <line x1="50" y1="185" x2="610" y2="185" stroke="#1C1A16" stroke-width="1.3"/>
             <line x1="50" y1="107.5" x2="610" y2="107.5" stroke="#D3C9B7" stroke-width="1" stroke-dasharray="4 4"/>
@@ -655,18 +691,18 @@
             </g>
           </svg>
         </div>
-        <figcaption><b>Fig 4</b>The shrinkage curve, <code>n / (n + 5)</code>. Population-dominant to the left of parity, personal-dominant to the right — always one continuous reference, never a switch.</figcaption>
+        <figcaption><b>Fig 4</b>The shrinkage curve, <code>n / (n + 7)</code>. Population-dominant to the left of parity, personal-dominant to the right — always one continuous reference, never a switch.</figcaption>
       </figure>
       <div class="worked reveal">
         <div class="wlab">Worked example · the same hamstring, later</div>
-        <div class="srow">After a month of clean scans, this region's personal SD might settle near 0.30 °C</div>
-        <div class="srow">the same +0.9 °C gap now reads z ≈ 3.0 against a tighter personal norm <span class="ar">→</span> a stronger signal, tuned to <strong>this athlete</strong></div>
+        <div class="srow">After a month of clean scans, this region's personal SD might settle near 0.40 °C</div>
+        <div class="srow">the same +1.15 °C gap now reads z ≈ 2.9 against a tighter personal norm <span class="ar">→</span> a stronger signal, tuned to <strong>this athlete</strong></div>
       </div>
       <p class="reveal">The learning is careful, not blind. After every scan a background job gathers that region's Δ from every prior scan and adds the current one — but it does <strong>not</strong> simply average them. A single anomalous scan (a registration error, or a reading taken mid-injury) would otherwise drag the mean and inflate the spread, widening the "normal" band and masking real asymmetry on later scans. So the deltas first pass through a two-stage <strong>outlier filter</strong>, and the personal mean and SD are computed only over the survivors.</p>
       <div class="callout reveal">
         <div class="clab">Two-stage outlier rejection</div>
         <ul class="clean" style="margin:0;">
-          <li><b>Hard clinical gate.</b> Drop any scan whose <code>|Δ|</code> exceeds the population Elevated level — <code>3 × SD_pop = 1.2 °C</code>. A clinically significant reading is real signal, not "normal", so it can't be allowed to define the norm.</li>
+          <li><b>Hard clinical gate.</b> Drop any scan whose <code>|Δ|</code> reaches the population Moderate level — the same Moderate anchor, <code>Z_ANCHOR_MID × SD_pop = 2 × 0.50 = 1.0 °C</code>. A clinically significant reading is real signal, not "normal", so it can't be allowed to define the norm.</li>
           <li><b>Robust (MAD) rejection.</b> Once at least 5 deltas survive the gate, drop any sitting more than <code>3 × 1.4826 × MAD</code> from the median. Median-absolute-deviation is used rather than quartiles, which are unstable at the small samples seen in practice.</li>
         </ul>
       </div>
@@ -711,7 +747,7 @@
             </defs>
           </svg>
         </div>
-        <figcaption><b>Fig 5</b>Per-side RTP clearance. The concern boundary is the same z-based severity (Moderate, <code>z &gt; 2</code>) used everywhere else, so clearance stays consistent with the rest of the framework. Only the affected (hotter) side carries the test.</figcaption>
+        <figcaption><b>Fig 5</b>Per-side RTP clearance. The concern boundary is the same z-based severity (Moderate, <code>z &gt; 2</code>) used everywhere else, so clearance stays consistent with the rest of the framework. Only the affected side carries the test — and that is whichever side deviates furthest from its own baseline, hot <em>or</em> cold (Step 4), not automatically the warmer one.</figcaption>
       </figure>
 
       <div class="worked reveal">
@@ -766,7 +802,7 @@
       </div>
       <div class="callout reveal">
         <div class="clab">The reasoning engine, and what it cannot do</div>
-        <p>A multimodal reasoning engine turns each assessment into a plain-language explanation and a tailored plan. It receives the fully computed assessment as a <strong>read-only</strong> input — it cannot alter scores, zones, or thresholds. All classification stays deterministic and governed by the steps above; the engine's only job is to explain and to recommend.</p>
+        <p>A multimodal reasoning engine turns each assessment into a plain-language explanation and a tailored plan. It receives the fully computed assessment as a <strong>read-only</strong> input — including each flagged region's affected side and hyper/hypo condition — and cannot alter scores, zones, or thresholds. All classification stays deterministic and governed by the steps above; the engine's only job is to explain and to recommend.</p>
       </div>
     </section>
 
@@ -850,24 +886,30 @@
         <dt>R (recovery score)</dt><dd>The 0–100 systemic recovery figure from the wearable, via Spike.</dd>
         <dt>Zone</dt><dd>One of Safe, Recovery, Deceptive Readiness, Danger — set by R and TR against a 50/50 split.</dd>
         <dt>COMPASS score</dt><dd>The continuous 0–100 readiness number from the equal-weight fusion of R and TR.</dd>
-        <dt>Anchors (z = 1, z = 3)</dt><dd>The two fixed deviations that pin the scale: TR = 0 at z = 1, TR = 100 at z = 3. The severity bands share them, so the score and the category cannot disagree.</dd>
+        <dt>Anchors (z = 1, 2, 3)</dt><dd>The fixed deviations that pin the scale: TR = 0 at z = 1 (LOW), 50 at the Moderate anchor z = 2 (MID), and 100 at z = 3 (HIGH). The severity bands and the baseline outlier gate share them, so score and category cannot disagree. At n = 0 they map to 0.50 / 1.00 / 1.50 °C.</dd>
         <dt>Shrinkage</dt><dd>Blending a thin personal history toward the stable population reference, so early scans are never trusted too much — and there is no minimum-scan gate.</dd>
+        <dt>Affected side &amp; condition</dt><dd>Which side of a region is flagged, and whether it is <em>hyperthermia</em> (above its baseline) or <em>hypothermia</em> (below). Decided per side from each side's own normalised history; cold-starts to "hotter side = hyperthermia". Magnitude still comes from the bilateral z.</dd>
+        <dt>Voided pair (quality flag)</dt><dd>A region whose two masks measured non-comparable tissue (asymmetric coverage or dispersion) — flagged "no data" by the mask-quality gate, excluded from severity and the Thermal Risk Score. Distinct from a genuine Clear and from never-measured.</dd>
         <dt>RTP clearance</dt><dd>Per-side return-to-play status: YES, NO (pending), or N/A (insufficient history).</dd>
       </dl>
 
       <div class="constants reveal">
         <h4>The tunable constants, and their defaults</h4>
         <div class="grid">
-          <div><div class="k">SD_pop = 0.40°C</div><div class="v">Population SD of bilateral difference — the no-history reference.</div></div>
+          <div><div class="k">SD_pop = 0.50°C</div><div class="v">Population SD of bilateral difference — the no-history reference.</div></div>
           <div><div class="k">mean_pop = 0</div><div class="v">Population mean — perfect bilateral symmetry.</div></div>
-          <div><div class="k">n0 = 5</div><div class="v">Shrinkage prior strength; personal &amp; population reach parity at 5 scans.</div></div>
-          <div><div class="k">z = 1 → 3</div><div class="v">Severity anchors: TR = 0 at 1 SD, TR = 100 at 3 SD.</div></div>
+          <div><div class="k">n0 = 7</div><div class="v">Shrinkage prior strength; personal &amp; population reach parity at 7 scans.</div></div>
+          <div><div class="k">z = 1 · 2 · 3</div><div class="v">Severity anchors LOW · MID · HIGH: TR = 0 / 50 / 100. The Moderate anchor (z = 2) also sets the outlier gate.</div></div>
           <div><div class="k">weight = 0.5</div><div class="v">Equal weighting of R and TR in the COMPASS score.</div></div>
           <div><div class="k">freshness = 2 d</div><div class="v">Wearable data older than this drops the readiness axis.</div></div>
           <div><div class="k">thermal valid = 7 d</div><div class="v">A scan stays valid through day 6; on day 7 thermal scoring is suspended.</div></div>
           <div><div class="k">bg filter = 15°C</div><div class="v">Pixels colder than this are treated as room, not body, and dropped.</div></div>
-          <div><div class="k">baseline gate = 1.2°C</div><div class="v">Scans with |Δ| above the population Elevated level (3 × SD_pop) are excluded from the baseline.</div></div>
+          <div><div class="k">baseline gate = 1.0°C</div><div class="v">Scans with |Δ| at/above the population Moderate level (Z_ANCHOR_MID × SD_pop) are excluded from the baseline.</div></div>
           <div><div class="k">MAD: k = 3, n ≥ 5</div><div class="v">Robust outlier rejection on surviving deltas — 3 × 1.4826 × MAD, once ≥ 5 remain.</div></div>
+          <div><div class="k">side baseline n ≥ 3</div><div class="v">Per-side hyper/hypo attribution needs 3 scans on that side; below that, cold-start falls back to the hotter side.</div></div>
+          <div><div class="k">side SD floor = 0.3°C</div><div class="v">Minimum per-side spread, so an ultra-stable side can't dominate the affected-side comparison.</div></div>
+          <div><div class="k">quality: IQR ≥ 3.0°C ×1.8</div><div class="v">Void a pair when one side's dispersion is both large (≥ 3.0 °C) and ≥ 1.8× the other's.</div></div>
+          <div><div class="k">quality: coverage Δ ≥ 0.10</div><div class="v">Void a pair when the two masks' coverage differs by 0.10 or more.</div></div>
         </div>
       </div>
       <p class="reveal" style="font-size:13.5px;color:var(--ink-dim);">Every value here is a deliberate, adjustable dial — set from clinical reasoning, not a fact of nature — and can be re-tuned as data accrues without changing any of the logic above.</p>
@@ -897,7 +939,7 @@
         <tbody>
           <tr><td><b>Spectral band</b></td><td>LWIR 8–14 µm</td><td>Correct band for skin-surface temperature; MWIR is unsuitable.</td></tr>
           <tr><td><b>Sensitivity (NETD)</b></td><td>&lt; 50 mK (≤ 30 mK preferred)</td><td>The smallest meaningful signal is sub-degree; coarse sensors lose it in noise.</td></tr>
-          <tr><td><b>Accuracy</b></td><td>≤ ±0.5 °C at skin range</td><td>Severity bands span ≈ 0.4–1.2 °C; coarser accuracy can't resolve them.</td></tr>
+          <tr><td><b>Accuracy</b></td><td>≤ ±0.5 °C at skin range</td><td>Population severity bands span ≈ 0.5–1.5 °C; coarser accuracy can't resolve them.</td></tr>
           <tr><td><b>Resolution</b></td><td>≥ 320 × 240 native</td><td>More pixels per region → more reliable per-region statistics.</td></tr>
           <tr><td><b>Temperature scale</b></td><td>Fixed min/max across sessions</td><td>Auto-scale makes images visually incomparable over time.</td></tr>
         </tbody>
@@ -959,7 +1001,7 @@
 
       <h3 class="reveal">Population normatives &amp; scan frequency</h3>
       <div class="evgrid reveal">
-        <div class="evcard"><span class="str strong">Strong</span><h4>ThermoHuman (2022)</h4><div class="jr">Applied research — 950 athletes</div><p>Global mean bilateral asymmetry 0.004 ± 0.66 °C, confirming bilateral homeostasis; 0.3 °C alert and 0.6 °C action boundaries. Supports the sub-degree population reference (SD_pop = 0.40 °C).</p></div>
+        <div class="evcard"><span class="str strong">Strong</span><h4>ThermoHuman (2022)</h4><div class="jr">Applied research — 950 athletes</div><p>Global mean bilateral asymmetry 0.004 ± 0.66 °C, confirming bilateral homeostasis; 0.3 °C alert and 0.6 °C action boundaries. Supports the sub-degree population reference (SD_pop = 0.50 °C).</p></div>
         <div class="evcard"><span class="str moderate">Moderate</span><h4>Marins et al. (2014)</h4><div class="jr">Int J Morphol. 32(3):769–776</div><p>Region-specific normative asymmetry; ≥0.3 °C warrants attention and ~0.4 °C marks meaningfully elevated risk — consistent with the no-history reference.</p></div>
         <div class="evcard"><span class="str moderate">Moderate</span><h4>Arnaiz-Lastras et al. (2019)</h4><div class="jr">Pilot study — complementary screening</div><p>Twice-weekly post-match scanning with a &gt;0.4 °C prevention trigger cut muscle injuries from 11 to 4. Directionally supports the twice-weekly rehab cadence.</p></div>
         <div class="evcard"><span class="str emerging">Emerging</span><h4>Frontiers in Sports &amp; Active Living (2024)</h4><div class="jr">Systematic review — 13 studies, n = 231</div><p>IRT parameters are sensitive to muscle overload and fatigue; supports periodic scanning as practical load monitoring, though optimal intervals remain unspecified.</p></div>
@@ -1002,7 +1044,7 @@
     mark.setAttribute('transform','translate('+(X0+(z/ZMAX)*(X1-X0))+',0)');
     var s=sevFromZ(z);
     roZ.textContent=z.toFixed(2); roCat.textContent=s.cat; roCat.style.color=catColor[s.cat];
-    roT.textContent=Math.round(s.T); roD.textContent=(z*0.40).toFixed(2)+'°C';
+    roT.textContent=Math.round(s.T); roD.textContent=(z*0.50).toFixed(2)+'°C';
   }
   function zFromEvent(ev){ var pt=sevSvg.getBoundingClientRect(); var x=((ev.touches?ev.touches[0].clientX:ev.clientX)-pt.left)/pt.width*640; return (x-X0)/(X1-X0)*ZMAX; }
   var dragS=false;
@@ -1013,7 +1055,7 @@
   window.addEventListener('mousemove',moveS); window.addEventListener('mouseup',endS);
   mark.addEventListener('touchstart',startS,{passive:false}); sevSvg.addEventListener('touchstart',startS,{passive:false});
   window.addEventListener('touchmove',moveS,{passive:false}); window.addEventListener('touchend',endS);
-  setZ(2.25);
+  setZ(2.30);
 
   /* Fig 5: fusion plane */
   var hit=document.getElementById('hit'), planeSvg=document.getElementById('planeSvg'), ch=document.getElementById('ch');
@@ -1074,18 +1116,18 @@
     window.addEventListener('mousemove',mv); window.addEventListener('mouseup',en);
     mk.addEventListener('touchstart',st,{passive:false}); svg.addEventListener('touchstart',st,{passive:false});
     window.addEventListener('touchmove',mv,{passive:false}); window.addEventListener('touchend',en);
-    setScore(54);
+    setScore(53);
   })();
 
   /* Fig 4: shrinkage curve */
   (function(){
-    var SX0=50,SX1=610,SY0=185,SY1=30,NMAX=20,N0=5;
+    var SX0=50,SX1=610,SY0=185,SY1=30,NMAX=20,N0=7;
     function px(n){return SX0+(n/NMAX)*(SX1-SX0);}
     function py(w){return SY0+w*(SY1-SY0);}
     var d='M'+px(0)+' '+py(0);
     for(var n=0.1;n<=NMAX;n+=0.2){ d+=' L'+px(n).toFixed(1)+' '+py(n/(n+N0)).toFixed(1); }
     var c=document.getElementById('shrinkCurve'); if(c) c.setAttribute('d',d);
-    var dot=document.getElementById('parityDot'); if(dot){ dot.setAttribute('cx',px(5)); dot.setAttribute('cy',py(5/10)); }
+    var dot=document.getElementById('parityDot'); if(dot){ dot.setAttribute('cx',px(7)); dot.setAttribute('cy',py(0.5)); }
   })();
 })();
 </script>
